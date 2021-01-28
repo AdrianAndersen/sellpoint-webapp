@@ -16,9 +16,19 @@ The dev server starts on [http://localhost:3000](http://localhost:3000)
 
 ## Code formatting
 
-To format the code with our coding standards run:
+Use the following commands to ensure your code meets our coding standards:
 
 ```bash
 $ yarn prettier
 $ yarn lint
 ```
+
+**About**  
+[prettier](https://github.com/prettier/prettier) - JS code formatter  
+[eslint](https://eslint.org/) - Find common JS problems
+
+## Deployment
+
+When changes are merged into the master branch, the application is automatically deployed to [Vercel](https://vercel.com/):
+
+**Production site**: https://sellpoint-webapp.vercel.app/
