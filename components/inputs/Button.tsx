@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactChildren } from "react";
+import { MouseEvent, ReactChildren } from "react";
 
 const Button = ({
   type,
@@ -9,7 +9,9 @@ const Button = ({
   type?: "button" | "submit" | "reset";
   name?: string;
   value?: string;
-  onClick?: (event: MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (
+    event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => void;
   children: string | ReactChildren;
 }) => {
   return (
