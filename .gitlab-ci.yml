@@ -21,7 +21,7 @@ code style:
   image: node:latest
   stage: lint
   script:
-    - yarn
+    - yarn install
     - yarn lint
 
 # this job installs NPM dependencies and Cypress
@@ -32,11 +32,17 @@ install:
   script:
     # check Cypress binary path and cached versions
     # useful to make sure we are not carrying around old versions
-    - yarn && rm -rf cache/ && yarn build && yarn cypress install
+    - rm -rf cache/ && yarn build && yarn cypress install
     - npx cypress cache path
     - npx cypress cache list
     - yarn run cypress verify
     - yarn run cypress info
+
+jest:
+  image: node:latest
+  stage: test
+  script:
+    - yarn run jest
 
 # all jobs that actually run tests can use the same definition
 .job_template:
@@ -54,9 +60,9 @@ install:
 
 # actual job definitions
 # all steps are the same, they come from the template above
-electrons-1:
+cypress-1:
   extends: .job_template
-electrons-2:
+cypress-2:
   extends: .job_template
-electrons-3:
+cypress-3:
   extends: .job_template
