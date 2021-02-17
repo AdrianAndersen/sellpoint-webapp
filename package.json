@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "yarn run lint:js && yarn run lint:css && yarn run lint:prettier",
+    "lint": "yarn run lint:prettier && yarn run lint:js && yarn run lint:css",
     "lint:js": "eslint . --ext ts,tsx --ignore-path .prettierignore --fix",
     "lint:css": "stylelint '**/*.css' --fix",
     "lint:prettier": "prettier --check .",
