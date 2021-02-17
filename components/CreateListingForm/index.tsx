@@ -6,7 +6,7 @@ const CreateListingForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const fileUploadRef = useRef(document.createElement("input"));
+  const fileUploadRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="h-screen bg-gray-100 flex justify-center">
@@ -44,7 +44,7 @@ const CreateListingForm = () => {
               alert(`Title: ${title}
 Description: ${description}
 Price: ${price}
-Picture: ${fileUploadRef.current.files}`)
+Picture: ${fileUploadRef.current?.files}`)
             }
           >
             Submit
