@@ -1,12 +1,11 @@
-import Button from "@material-ui/core/Button";
 import React from "react";
-import styles from "../styles/Login2.module.css";
+import styles from "../styles/Signup.module.css";
 import { useState } from "react";
 
-export default function LoginForm() {
-  // const classes = useStyles();
-  //<button>LogIn</button>
-  return (
+export default function Signup (){
+  const person=true;
+
+  function PersonSignUp(){
     <div className={styles.loginForm}>
       <form>
         <h1>Login</h1>
@@ -33,4 +32,12 @@ export default function LoginForm() {
       </form>
     </div>
   );
+
+  }
+
+  function CompanySignUp(){
+    
+  }
+
+    return(person? {PersonSignUp} : {CompanySignUp});
 }
