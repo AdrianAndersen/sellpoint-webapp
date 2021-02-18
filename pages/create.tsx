@@ -1,9 +1,7 @@
-import CreateListingForm from "../components/CreateListingForm"
+import CreateListingForm from "../components/CreateListingForm";
 
 const CreateListing = () => {
-    return (
-        <CreateListingForm />
-    );
-}
+  return <CreateListingForm />;
+};
 
 export default CreateListing;
