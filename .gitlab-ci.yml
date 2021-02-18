@@ -1,15 +1,68 @@
-# This file is a template, and might need editing before it works on your project.
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/node/tags/
-image: node:latest
-
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
+  key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - node_modules/
+    - .npm
+    - cache/Cypress
+    - node_modules
+    - .next/cache/
+
+# to cache both npm modules and Cypress binary we use environment variables
+# to point at the folders we can list as paths in "cache" job settings
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
+stages:
+  - lint
+  - build
+  - test
 
 code style:
+  image: node:latest
+  stage: lint
   script:
-    - yarn
+    - yarn install
     - yarn lint
+
+# this job installs NPM dependencies and Cypress
+install:
+  image: cypress/base:latest
+  stage: build
+
+  script:
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - rm -rf cache/ && yarn build && yarn cypress install
+    - npx cypress cache path
+    - npx cypress cache list
+    - yarn run cypress verify
+    - yarn run cypress info
+
+jest:
+  image: node:latest
+  stage: test
+  script:
+    - yarn run jest
+
+# all jobs that actually run tests can use the same definition
+.job_template:
+  image: cypress/base:latest
+  stage: test
+  script:
+    # run Cypress test in load balancing mode
+    - yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --parallel --group "electrons on GitLab CI"
+  artifacts:
+    when: always
+    paths:
+      - cypress/videos/**/*.mp4
+      - cypress/screenshots/**/*.png
+    expire_in: 1 day
+
+# actual job definitions
+# all steps are the same, they come from the template above
+cypress-1:
+  extends: .job_template
+cypress-2:
+  extends: .job_template
+cypress-3:
+  extends: .job_template

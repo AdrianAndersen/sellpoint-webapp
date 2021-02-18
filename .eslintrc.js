@@ -7,7 +7,7 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:jest/recommended",
+    "plugin:cypress/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:promise/recommended",
     "plugin:react/recommended",
@@ -18,6 +18,7 @@ module.exports = {
   ],
   globals: {
     jest: true,
+    "cypress/globals": true,
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -29,7 +30,7 @@ module.exports = {
   },
   plugins: [
     "@typescript-eslint",
-    "jest",
+    "cypress",
     "jsx-a11y",
     "promise",
     "react",
