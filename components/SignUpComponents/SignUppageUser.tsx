@@ -1,4 +1,3 @@
-
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
-    
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -133,6 +131,5 @@ export default function SignUpPerson() {
         </div>
       </Grid>
     </Grid>
-
   );
 }

@@ -1,4 +1,3 @@
-
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -16,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://media.gettyimages.com/photos/shelf-life-episode-110-pictured-gabriel-macht-as-harvey-specter-picture-id138229872?s=2048x2048)",
+    backgroundImage:
+      "url(https://media.gettyimages.com/photos/shelf-life-episode-110-pictured-gabriel-macht-as-harvey-specter-picture-id138229872?s=2048x2048)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
-    
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -133,6 +132,5 @@ export default function SignUpPerson() {
         </div>
       </Grid>
     </Grid>
-
   );
 }

@@ -1,4 +1,3 @@
-
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -18,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10665746_10204566151107155_4286322363963488158_n.jpg?_nc_cat=104&ccb=3&_nc_sid=f9d7a1&_nc_ohc=MQ0N14mwUmUAX_2DLHI&_nc_ht=scontent-arn2-1.xx&oh=c414e20e09a1c306e98fa624aacf1a39&oe=60557A90)",
+    backgroundImage:
+      "url(https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10665746_10204566151107155_4286322363963488158_n.jpg?_nc_cat=104&ccb=3&_nc_sid=f9d7a1&_nc_ohc=MQ0N14mwUmUAX_2DLHI&_nc_ht=scontent-arn2-1.xx&oh=c414e20e09a1c306e98fa624aacf1a39&oe=60557A90)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -110,7 +110,5 @@ export default function SignInSide() {
       </Grid>
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
     </Grid>
-
-
   );
 }
