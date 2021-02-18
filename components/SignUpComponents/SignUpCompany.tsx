@@ -1,3 +1,4 @@
+
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -132,5 +133,6 @@ export default function SignUpPerson() {
         </div>
       </Grid>
     </Grid>
+
   );
 }
