@@ -11,15 +11,13 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "../../styles/Login.module.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
   image: {
-    backgroundImage:
-      "url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.naturalblaze.com%2Fwp-content%2Fuploads%2F2018%2F03%2Focean-Plastic.jpg&f=1&nofb=1)",
+    backgroundImage: "url(https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10665746_10204566151107155_4286322363963488158_n.jpg?_nc_cat=104&ccb=3&_nc_sid=f9d7a1&_nc_ohc=MQ0N14mwUmUAX_2DLHI&_nc_ht=scontent-arn2-1.xx&oh=c414e20e09a1c306e98fa624aacf1a39&oe=60557A90)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -53,7 +51,7 @@ export default function SignInSide() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -100,13 +98,8 @@ export default function SignInSide() {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -114,16 +107,7 @@ export default function SignInSide() {
           </form>
         </div>
       </Grid>
-      <div className={styles.seperator}>
-        <b>or</b>
-      </div>
-      <div>
-        <Link href="/register">
-          <Button href="#text-buttons" variant="outlined" color="primary">
-            Sign Up
-          </Button>
-        </Link>
-      </div>
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
     </Grid>
   );
 }
