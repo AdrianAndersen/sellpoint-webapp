@@ -32,7 +32,7 @@ install:
   script:
     # check Cypress binary path and cached versions
     # useful to make sure we are not carrying around old versions
-    - rm -rf cache/ && yarn build && yarn cypress install
+    - yarn install && rm -rf cache/ && yarn build && yarn cypress install
     - npx cypress cache path
     - npx cypress cache list
     - yarn run cypress verify
@@ -42,7 +42,7 @@ jest:
   image: node:latest
   stage: test
   script:
-    - yarn run jest
+    - yarn install && yarn run jest
 
 # all jobs that actually run tests can use the same definition
 .job_template:
@@ -50,7 +50,7 @@ jest:
   stage: test
   script:
     # run Cypress test in load balancing mode
-    - yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --parallel --group "electrons on GitLab CI"
+    - yarn install && yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --parallel --group "electrons on GitLab CI"
   artifacts:
     when: always
     paths:
