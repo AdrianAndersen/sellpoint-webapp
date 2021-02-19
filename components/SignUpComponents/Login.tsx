@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   image: {
     backgroundImage:
-      "url(https://scontent-arn2-1.xx.fbcdn.net/v/t1.0-9/10665746_10204566151107155_4286322363963488158_n.jpg?_nc_cat=104&ccb=3&_nc_sid=f9d7a1&_nc_ohc=MQ0N14mwUmUAX_2DLHI&_nc_ht=scontent-arn2-1.xx&oh=c414e20e09a1c306e98fa624aacf1a39&oe=60557A90)",
+      "url(https://scontent-arn2-2.xx.fbcdn.net/v/t1.0-9/45284379_2074032832636424_1208489632568705024_n.jpg?_nc_cat=100&ccb=3&_nc_sid=ad2b24&_nc_ohc=aeBw-hwR_50AX-eZ96_&_nc_ht=scontent-arn2-2.xx&oh=67c06036aaf2c8fff150e00bad6ed8fc&oe=6054E51A)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
