@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
           </Toolbar>
         </AppBar>
-        <Container className="h-full mt-2">
+        <Container className="min-h-full mt-2">
           <Component {...pageProps} />
         </Container>
         <footer className="w-full bg-blue-600 pt-5 pb-1">
@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Link href="https://github.com/AdrianAndersen">
                 <Button>Adrian Andersen</Button>
               </Link>
-              <Link href="">
+              <Link href="https://github.com/amatho">
                 <Button>Amandus Søve Thorsrud</Button>
               </Link>
               <Link href="">
