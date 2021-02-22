@@ -10,7 +10,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import Link from "next/link";
+import { useReducer } from "react";
 import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -28,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ListingOverview = () => {
   const classes = useStyles();
-  const { data, error } = useSWR("/api/listings", fetcher);
+  const { data, error } = useSWR<Array<any>>("/api/listings", fetcher);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   if (error) return <div>Failed to load listings</div>;
   if (!data) return <div>Loading...</div>;
@@ -51,6 +53,20 @@ const ListingOverview = () => {
           </CardContent>
           <CardActions>
             <Button>Se mer</Button>
+            {/* TODO: Check if user is admin */}
+            <Link href={"/edit-listing?id=" + index}>
+              <Button color="secondary">Endre</Button>
+            </Link>
+            <Button
+              color="secondary"
+              onClick={() => {
+                // TODO: Actually delete listing
+                delete data[index];
+                forceUpdate();
+              }}
+            >
+              Slett
+            </Button>
           </CardActions>
         </Card>
       ))}
