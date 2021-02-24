@@ -18,37 +18,41 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col min-h-screen justify-between bg-gray-100">
-        <AppBar position="static">
-          <Toolbar className="bg-green-600">
-            <Link href="/">
-              <Button color="inherit">
-                <Typography variant="h5">Sellpoint</Typography>
-              </Button>
-            </Link>
-            <div className="w-full flex flex-row justify-end">
-              <Link href="new-ad">
+        <div>
+          <AppBar position="static">
+            <Toolbar className="bg-green-600">
+              <Link href="/">
                 <Button color="inherit">
-                  <Typography>Ny reklame</Typography>
+                  <Typography variant="h5">Sellpoint</Typography>
                 </Button>
               </Link>
-              <Link href="new-listing">
-                <Button color="inherit">
-                  <Typography>Ny annonse</Typography>
-                </Button>
-              </Link>
-              <Link href="login">
-                <Button color="inherit">
-                  <Typography>
-                    Login <AccountCircle />
-                  </Typography>
-                </Button>
-              </Link>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Container className="mt-5">
-          <Component {...pageProps} />
-        </Container>
+              <div className="w-full flex flex-row justify-end">
+                <Link href="new-ad">
+                  <Button color="inherit">
+                    <Typography>Ny reklame</Typography>
+                  </Button>
+                </Link>
+                <Link href="new-listing">
+                  <Button color="inherit">
+                    <Typography>Ny annonse</Typography>
+                  </Button>
+                </Link>
+                <Link href="login">
+                  <Button color="inherit">
+                    <Typography>
+                      Login <AccountCircle />
+                    </Typography>
+                  </Button>
+                </Link>
+              </div>
+            </Toolbar>
+          </AppBar>
+
+          <Container className="mt-5">
+            <Component {...pageProps} />
+          </Container>
+        </div>
+
         <footer className="w-full bg-green-600 mt-5 pt-5 pb-1">
           <Container className="text-center">
             <Typography>Made by</Typography>
