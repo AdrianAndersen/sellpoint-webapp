@@ -4,15 +4,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import Link from "next/link";
 import Head from "next/head";
 import Container from "@material-ui/core/Container";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import Store from "../components/Store";
+import NavButtons from "../components/NavButtons";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Store>
       <Head>
         <title>Sellpoint</title>
         <link rel="icon" href="/favicon.ico" />
@@ -35,25 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   ></div>
                 </Button>
               </Link>
-              <div className="w-full flex flex-row justify-end">
-                <Link href="new-ad">
-                  <Button color="inherit">
-                    <Typography>Ny reklame</Typography>
-                  </Button>
-                </Link>
-                <Link href="new-listing">
-                  <Button color="inherit">
-                    <Typography>Ny annonse</Typography>
-                  </Button>
-                </Link>
-                <Link href="login">
-                  <Button color="inherit">
-                    <Typography>
-                      Login <AccountCircle />
-                    </Typography>
-                  </Button>
-                </Link>
-              </div>
+              <NavButtons />
             </Toolbar>
           </AppBar>
 
@@ -94,7 +77,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Container>
         </footer>
       </div>
-    </>
+    </Store>
   );
 }
 

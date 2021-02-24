@@ -3,19 +3,19 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
+import Link from "next/link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage:
+      "url(https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -43,11 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUpPerson() {
+export default function SignUpPerson({ createUser }: { createUser: any }) {
   const classes = useStyles();
+  const [user, setUser] = useState({ role: "private" });
+  const router = useRouter();
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component="main">
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -63,12 +65,14 @@ export default function SignUpPerson() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="fname"
-                  name="firstName"
+                  name="name"
                   variant="outlined"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Navn"
+                  // @ts-ignore
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
                 />
@@ -78,10 +82,14 @@ export default function SignUpPerson() {
                   variant="outlined"
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="lname"
+                  id="phoneNumber"
+                  label="Telefon"
+                  name="phoneNumber"
+                  autoComplete="fnumber"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, phoneNumber: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -89,10 +97,14 @@ export default function SignUpPerson() {
                   variant="outlined"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Brukernavn"
+                  name="username"
+                  autoComplete="uname"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, username: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -105,12 +117,18 @@ export default function SignUpPerson() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, password: e.target.value })
+                  }
                 />
               </Grid>
             </Grid>
             <Button
-              onClick={() => {
-                alert("Logged in");
+              onClick={(e) => {
+                e.preventDefault();
+                createUser(user);
+                router.push("/");
               }}
               type="submit"
               fullWidth
@@ -122,9 +140,7 @@ export default function SignUpPerson() {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+                <Link href="login/">Already have an account? Sign in</Link>
               </Grid>
             </Grid>
           </form>

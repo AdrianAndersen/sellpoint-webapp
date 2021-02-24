@@ -1,53 +1,76 @@
 import { Button } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import useSWR from "swr";
+import { useContext } from "react";
+import { Context } from "./Store";
+import Link from "next/link";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-const Slideshow = ({ ads }: { ads: any[] }) => {
+const Slideshow = ({
+  ads,
+  deleteAdvertisement,
+}: {
+  ads: any[];
+  deleteAdvertisement: any;
+}) => {
+  // @ts-ignore
+  const [state] = useContext(Context);
   const [index, setIndex] = useState(0);
-
+  const currentUser = state.users.find(
+    (user: { id: number }) => user.id === state.currentUser
+  );
   useEffect(() => {
     const interval = setTimeout(() => {
       setIndex((index + 1) % ads.length);
-    }, 10000);
+    }, 2000);
 
     return () => clearTimeout(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, ads]);
-
+  console.log(ads);
   return (
-    <div
-      className="h-20 w-full bg-center bg-cover"
-      style={{
-        backgroundImage: ads[index]
-          ? "url(" + ads[index].imageURL + ")"
-          : "none",
-      }}
-      title={ads[index]?.title}
-    >
-      <Button
-        color="secondary"
-        onClick={() => {
-          if (ads.length > 0) {
-            ads.splice(index, 1);
-            setIndex((index + 1) % ads.length);
-          }
+    <Link href={ads[index].link}>
+      <div
+        className="w-full bg-center bg-cover cursor-pointer"
+        style={{
+          backgroundImage: ads[index]
+            ? "url(" + ads[index].imageURL + ")"
+            : "none",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "gray",
+          height: "10rem",
         }}
+        title={ads[index]?.title}
       >
-        X
-      </Button>
-    </div>
+        {(state.currentUser === ads[index].owner ||
+          (currentUser && currentUser.role === "admin")) && (
+          <Button
+            color="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              deleteAdvertisement(ads[index].id);
+              setIndex((index + 1) % ads.length);
+            }}
+          >
+            X
+          </Button>
+        )}
+      </div>
+    </Link>
   );
 };
 
 const AdvertisementSlideshow = () => {
-  const { data, error } = useSWR("/api/advertisements", fetcher);
-
-  if (error) return <div>Failed to load ads</div>;
-  if (!data) return <div>Loading...</div>;
-
-  return <Slideshow ads={data} />;
+  // @ts-ignore
+  const [state, dispatch] = useContext(Context);
+  if (state.advertisements.length === 0) return <p>No ads</p>;
+  return (
+    <Slideshow
+      ads={state.advertisements}
+      deleteAdvertisement={(advertisementId: number) =>
+        dispatch({ type: "REMOVE_ADVERTISEMENT", payload: advertisementId })
+      }
+    />
+  );
 };
 
 export default AdvertisementSlideshow;

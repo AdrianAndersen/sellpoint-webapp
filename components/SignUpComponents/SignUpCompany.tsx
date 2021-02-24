@@ -9,14 +9,13 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
   image: {
     backgroundImage:
-      "url(https://media.gettyimages.com/photos/shelf-life-episode-110-pictured-gabriel-macht-as-harvey-specter-picture-id138229872?s=2048x2048)",
+      "url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)",
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"
@@ -44,11 +43,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUpPerson() {
+export default function SignUpPerson({ createUser }: { createUser: any }) {
   const classes = useStyles();
+  const router = useRouter();
+  const [user, setUser] = useState({ role: "business" });
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component="main">
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -70,6 +71,8 @@ export default function SignUpPerson() {
                   fullWidth
                   id="companyName"
                   label="Company Name"
+                  // @ts-ignore
+                  onChange={(e) => setUser({ ...user, name: e.target.value })}
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
                 />
@@ -79,10 +82,14 @@ export default function SignUpPerson() {
                   variant="outlined"
                   required
                   fullWidth
-                  id="email"
-                  label="Company Emai"
-                  name="email"
-                  autoComplete="email"
+                  id="phoneNumber"
+                  label="Company Phone"
+                  name="phone"
+                  autoComplete="phone"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, phoneNumber: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -90,10 +97,14 @@ export default function SignUpPerson() {
                   variant="outlined"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="username"
+                  label="Brukernavn"
+                  name="username"
+                  autoComplete="uname"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, username: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,12 +117,18 @@ export default function SignUpPerson() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={(e) =>
+                    // @ts-ignore
+                    setUser({ ...user, password: e.target.value })
+                  }
                 />
               </Grid>
             </Grid>
             <Button
-              onClick={() => {
-                alert("Logged in");
+              onClick={(e) => {
+                e.preventDefault();
+                createUser(user);
+                router.push("/");
               }}
               type="submit"
               fullWidth

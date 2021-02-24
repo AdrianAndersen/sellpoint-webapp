@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
+import { useRouter } from "next/router";
+import { useContext } from "react";
+import { Context } from "./Store";
 
 const CreateNewAdvertisement = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
-  const [fileUpload, setFileUpload] = useState<File | undefined | null>(null);
-
+  const [imageURL, setImageURL] = useState("");
+  const router = useRouter();
+  // @ts-ignore
+  const [state, dispatch] = useContext(Context);
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
@@ -19,28 +24,18 @@ const CreateNewAdvertisement = () => {
         label="Link"
         variant="filled"
         margin="normal"
-        multiline={true}
-        rows={3}
         value={link}
+        multiline={true}
         onChange={(evt) => setLink(evt.target.value)}
       />
-      <div className="border border-transparent rounded p-2 my-4 flex flex-row justify-start space-x-4 bg-gray-100">
-        <input
-          className="hidden"
-          id="file-upload"
-          type="file"
-          accept="image/png, image/jpeg"
-          onChange={(evt) => setFileUpload(evt.target.files?.item(0))}
-        />
-        <label htmlFor="file-upload">
-          <Button variant="contained" color="primary" component="span">
-            Upload picture
-          </Button>
-        </label>
-        <Typography variant="h6">
-          {fileUpload?.name ?? "No file selected"}
-        </Typography>
-      </div>
+      <TextField
+        label="Bilde-URL"
+        variant="filled"
+        margin="normal"
+        value={imageURL}
+        multiline={true}
+        onChange={(evt) => setImageURL(evt.target.value)}
+      />
       <div className="flex flex-row justify-end space-x-4 my-8">
         <Button variant="contained" color="secondary">
           Cancel
@@ -48,11 +43,31 @@ const CreateNewAdvertisement = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() =>
-            alert(`Title: ${title}
-Description: ${link}
-Picture: ${fileUpload?.name}`)
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            let id;
+            if (state.advertisements.length === 0) {
+              id = 0;
+            } else {
+              id =
+                state.advertisements.reduce(
+                  (prev_ad: { id: number }, current_ad: { id: number }) => {
+                    return prev_ad.id > current_ad.id ? prev_ad : current_ad;
+                  }
+                ).id + 1;
+            }
+            dispatch({
+              type: "ADD_ADVERTISEMENT",
+              payload: {
+                id: id,
+                title: title,
+                link: link,
+                imageURL: imageURL,
+                owner: state.currentUser,
+              },
+            });
+            router.push("/");
+          }}
         >
           Submit
         </Button>

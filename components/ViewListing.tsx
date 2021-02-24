@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import {
   Card,
   CardActions,
@@ -8,8 +7,8 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useContext } from "react";
+import { Context } from "./Store";
 
 const useStyles = makeStyles(() => ({
   price: {
@@ -20,15 +19,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ViewListing = ({ index }: { index: number }) => {
-  const { data, error } = useSWR("/api/listings", fetcher);
+const ViewListing = ({ listing }: { listing: any }) => {
+  // @ts-ignore
+  const [state] = useContext(Context);
+  const owner = state.users.find(
+    (user: { id: number }) => user.id === listing.owner
+  );
 
   const classes = useStyles();
-
-  if (error) return <div>Failed to load listings</div>;
-  if (!data) return <div>Loading...</div>;
-
-  const listing = data[index];
 
   return (
     <Grid container direction="row" spacing={3}>
@@ -62,13 +60,10 @@ const ViewListing = ({ index }: { index: number }) => {
             </Typography>
 
             <Typography variant="h6">Navn:</Typography>
-            <Typography gutterBottom>{listing.name}</Typography>
-
-            <Typography variant="h6">E-post:</Typography>
-            <Typography gutterBottom>{listing.email}</Typography>
+            <Typography gutterBottom>{owner.name}</Typography>
 
             <Typography variant="h6">Telefonnummer:</Typography>
-            <Typography gutterBottom>{listing.phone}</Typography>
+            <Typography gutterBottom>{owner.phoneNumber}</Typography>
           </CardContent>
         </Card>
       </Grid>

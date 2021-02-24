@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import Link from "next/link";
+import { useContext } from "react";
+import { Context } from "./Store";
+import { useRouter } from "next/router";
 
 const CreateListingForm = ({
   initialListing = null,
@@ -10,10 +13,11 @@ const CreateListingForm = ({
   const [title, setTitle] = useState(initialListing?.title);
   const [description, setDescription] = useState(initialListing?.description);
   const [price, setPrice] = useState(initialListing?.price);
-  const [fileUpload, setFileUpload] = useState<File | undefined | null>(
-    initialListing?.fileUpload
-  );
+  const [imageURL, setImageURL] = useState(initialListing?.imageURL);
 
+  const router = useRouter();
+  // @ts-ignore
+  const [state, dispatch] = useContext(Context);
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
@@ -40,23 +44,14 @@ const CreateListingForm = ({
         value={"" + price}
         onChange={(evt) => setPrice(parseInt(evt.target.value, 10))}
       />
-      <div className="border border-transparent rounded p-2 my-4 flex flex-row justify-start space-x-4 bg-gray-100">
-        <input
-          className="hidden"
-          id="file-upload"
-          type="file"
-          accept="image/png, image/jpeg"
-          onChange={(evt) => setFileUpload(evt.target.files?.item(0))}
-        />
-        <label htmlFor="file-upload">
-          <Button variant="contained" color="primary" component="span">
-            Upload picture
-          </Button>
-        </label>
-        <Typography variant="h6">
-          {fileUpload?.name ?? "No file selected"}
-        </Typography>
-      </div>
+      <TextField
+        label="Bilde-URL"
+        variant="filled"
+        margin="normal"
+        multiline={true}
+        value={imageURL}
+        onChange={(evt) => setImageURL(evt.target.value)}
+      />
       <div className="flex flex-row justify-end space-x-4 my-8">
         <Link href="/">
           <Button variant="contained" color="secondary">
@@ -64,14 +59,45 @@ const CreateListingForm = ({
           </Button>
         </Link>
         <Button
+          onClick={(e) => {
+            e.preventDefault();
+            let id;
+            if (initialListing === null) {
+              if (state.listings.length === 0) {
+                id = 0;
+              } else {
+                id =
+                  state.listings.reduce(
+                    (
+                      prev_listing: { id: number },
+                      current_listing: { id: number }
+                    ) => {
+                      return prev_listing.id > current_listing.id
+                        ? prev_listing
+                        : current_listing;
+                    }
+                  ).id + 1;
+              }
+            } else {
+              dispatch({ type: "REMOVE_LISTING", payload: initialListing.id });
+              id = initialListing.id;
+            }
+
+            dispatch({
+              type: "ADD_LISTING",
+              payload: {
+                id: id,
+                title: title,
+                description: description,
+                price: price,
+                imageURL: imageURL,
+                owner: state.currentUser,
+              },
+            });
+            router.push("/listings/" + id);
+          }}
           variant="contained"
           color="primary"
-          onClick={() =>
-            alert(`Title: ${title}
-Description: ${description}
-Price: ${price}
-Picture: ${fileUpload?.name}`)
-          }
         >
           Submit
         </Button>
