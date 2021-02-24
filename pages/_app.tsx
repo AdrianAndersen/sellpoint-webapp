@@ -20,10 +20,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className="flex flex-col min-h-screen justify-between bg-gray-100">
         <div>
           <AppBar position="static">
-            <Toolbar className="bg-green-600">
+            <Toolbar className="bg-green-800">
               <Link href="/">
                 <Button color="inherit">
-                  <Typography variant="h5">Sellpoint</Typography>
+                  <div
+                    style={{
+                      width: "300px",
+                      height: "80px",
+                      backgroundImage:
+                        "url(" + `${require("../public/logo3.png")}` + ")",
+                      backgroundSize: "contain",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  ></div>
                 </Button>
               </Link>
               <div className="w-full flex flex-row justify-end">
