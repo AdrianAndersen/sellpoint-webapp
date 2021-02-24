@@ -1,9 +1,10 @@
 import ListingOverview from "../components/ListingOverview";
-import AdComponent from "../components/AdvertisementComp";
+import AdvertisementSlideshow from "../components/AdvertisementSlideshow";
+
 export default function Home() {
   return (
     <div className="h-full">
-      <AdComponent />
+      <AdvertisementSlideshow />
       <ListingOverview></ListingOverview>
     </div>
   );
