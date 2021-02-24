@@ -97,7 +97,6 @@ export default function SignInSide() {
           </form>
         </div>
       </Grid>
-      
     </Grid>
   );
 }
