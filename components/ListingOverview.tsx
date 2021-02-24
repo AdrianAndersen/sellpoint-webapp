@@ -12,9 +12,8 @@ import {
 } from "@material-ui/core";
 import Link from "next/link";
 import { useReducer } from "react";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { useContext } from "react";
+import { Context } from "./Store";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -27,50 +26,58 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListingOverview = () => {
+const ListingOverview = ({
+  listings,
+  deleteListing,
+}: {
+  listings: any;
+  deleteListing: any;
+}) => {
   const classes = useStyles();
-  const { data, error } = useSWR<Array<any>>("/api/listings", fetcher);
+  // @ts-ignore
+  const [state] = useContext(Context);
+  const currentUser = state.users.find(
+    (user: { id: number }) => user.id === state.currentUser
+  );
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  if (error) return <div>Failed to load listings</div>;
-  if (!data) return <div>Loading...</div>;
-
   return (
     <Grid container direction="row" justify="center" alignItems="flex-start">
-      {data.map((l: any, index: number) => (
-        <Card className={classes.card} key={index}>
+      {listings.map((listing: any) => (
+        <Card className={classes.card} key={listing.id}>
           <CardHeader
             avatar={<Avatar>ON</Avatar>}
-            title={l.title}
+            title={listing.title}
             subheader="01/01/1970"
           />
-          <CardMedia className={classes.media} image={l.imageURL} />
+          <CardMedia className={classes.media} image={listing.imageURL} />
           <CardContent>
             <Typography gutterBottom variant="button" component="h2">
-              {l.price} kr
+              {listing.price} kr
             </Typography>
             <Typography variant="body1">
-              {l.description.substr(0, 50) + "..."}
+              {listing.description.substr(0, 50) + "..."}
             </Typography>
           </CardContent>
           <CardActions>
-            <Link href={"/listings/" + index}>
+            <Link href={"/listings/" + listing.id}>
               <Button>Se mer</Button>
             </Link>
-            {/* TODO: Check if user is admin */}
-            <Link href={"/edit-listing?id=" + index}>
-              <Button color="secondary">Endre</Button>
-            </Link>
-            <Button
-              color="secondary"
-              onClick={() => {
-                // TODO: Actually delete listing
-                delete data[index];
-                forceUpdate();
-              }}
-            >
-              Slett
-            </Button>
+            {currentUser && currentUser.role === "admin" && (
+              <>
+                <Link href={"/edit-listing/" + listing.id}>
+                  <Button color="secondary">Endre</Button>
+                </Link>
+                <Button
+                  color="secondary"
+                  onClick={() => {
+                    deleteListing(listing.id);
+                    forceUpdate();
+                  }}
+                >
+                  Slett
+                </Button>
+              </>
+            )}
           </CardActions>
         </Card>
       ))}

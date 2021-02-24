@@ -1,13 +1,23 @@
-import Typography from "@material-ui/core/Typography";
 import { FormControlLabel, Switch } from "@material-ui/core";
 import { useState } from "react";
 import SignUpCompany from "../components/SignUpComponents/SignUpCompany";
 import SignUpUser from "../components/SignUpComponents/SignUppageUser";
+import { useContext } from "react";
+import { Context } from "../components/Store";
 
 const LoginPage = () => {
   const [person, setPerson] = useState(true);
-  var status = "";
-  person ? (status = "Company?") : (status = "Personal?");
+  // @ts-ignore
+  const [state, dispatch] = useContext(Context);
+  const next_id = () =>
+    state.users.reduce(
+      (prev_user: { id: number }, current_user: { id: number }) => {
+        return prev_user.id > current_user.id ? prev_user : current_user;
+      }
+    ).id + 1;
+
+  let status = "";
+  person ? (status = "Personal") : (status = "Company");
   return (
     <div>
       <FormControlLabel
@@ -23,22 +33,26 @@ const LoginPage = () => {
 
       <div>
         {person ? (
-          <div className="w-full h-5/6 bg-gray-400 p-10 text-center">
-            <Typography
-              variant="h6"
-              className="h-full flex flex-col justify-center"
-            >
-              <SignUpUser />
-            </Typography>
+          <div className="w-full flex flex-row justify-center">
+            <SignUpUser
+              createUser={(user: any) =>
+                dispatch({
+                  type: "ADD_USER",
+                  payload: { ...user, id: next_id() },
+                })
+              }
+            />
           </div>
         ) : (
-          <div className="w-full h-5/6 bg-red-400 p-10 text-center">
-            <Typography
-              variant="h6"
-              className="h-full flex flex-col justify-center"
-            >
-              <SignUpCompany />
-            </Typography>
+          <div className="w-full flex flex-row justify-center">
+            <SignUpCompany
+              createUser={(user: any) =>
+                dispatch({
+                  type: "ADD_USER",
+                  payload: { ...user, id: next_id() },
+                })
+              }
+            />
           </div>
         )}
       </div>

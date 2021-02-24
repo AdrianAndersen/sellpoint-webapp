@@ -42,7 +42,7 @@ jest:
   image: node:latest
   stage: test
   script:
-    - yarn install && yarn run jest
+    - yarn install && yarn run jest --passWithNoTests
 
 # all jobs that actually run tests can use the same definition
 .job_template:
