@@ -1,64 +1,78 @@
 import useSWR from "swr";
-import React from "react";
-import { Typography } from "@material-ui/core";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+const useStyles = makeStyles(() => ({
+  price: {
+    textAlign: "end",
+    paddingBottom: "0.5em",
+    marginBottom: "0.5em",
+    borderBottom: "1px solid #f1f1f1",
+  },
+}));
+
 const ViewListing = ({ index }: { index: number }) => {
   const { data, error } = useSWR("/api/listings", fetcher);
+
+  const classes = useStyles();
+
   if (error) return <div>Failed to load listings</div>;
   if (!data) return <div>Loading...</div>;
 
   const listing = data[index];
 
   return (
-    <div className="flex flex-row min-h-screen">
-      <div className="w-3/4 m-1 px-4 space-y-4">
-        <div className="py-2">
-          <Typography variant="h2">{listing.title}</Typography>
-        </div>
+    <Grid container direction="row" spacing={3}>
+      <Grid item xs={8}>
+        <Card>
+          <CardMedia image={listing.imageURL} style={{ height: 300 }} />
+          <CardContent>
+            <Typography className={classes.price} variant="h5">
+              {listing.price} kr
+            </Typography>
 
-        <div
-          className="h-2/5 bg-center bg-cover"
-          style={{ backgroundImage: "url(" + listing.imageURL + ")" }}
-        ></div>
+            <Typography variant="h4" gutterBottom>
+              {listing.title}
+            </Typography>
 
-        <div>
-          <Typography className="pt-4" variant="h4">
-            Beskrivelse
-          </Typography>
-          <Typography variant="body1">{listing.description}</Typography>
-        </div>
+            <Typography variant="h5" gutterBottom>
+              Beskrivelse
+            </Typography>
 
-        <Typography className="flex justify-end" variant="h3">
-          Pris {listing.price}kr
-        </Typography>
-      </div>
+            <Typography variant="body1">{listing.description}</Typography>
+          </CardContent>
+          <CardActions className="justify-end"></CardActions>
+        </Card>
+      </Grid>
 
-      <div className="m-1 pl-4 border-l-2 border-gray-300 ">
-        <Typography className="pb-6" variant="h2">
-          Kontakt
-        </Typography>
+      <Grid item xs={4}>
+        <Card>
+          <CardContent>
+            <Typography variant="h5" gutterBottom>
+              Kontakt
+            </Typography>
 
-        <Typography className="p4-6" variant="h5" gutterBottom>
-          Navn:
-          <Typography variant="h6">{listing.name}</Typography>
-          <hr />
-        </Typography>
+            <Typography variant="h6">Navn:</Typography>
+            <Typography gutterBottom>{listing.name}</Typography>
 
-        <Typography className="py-4" variant="h5" gutterBottom>
-          E-post:
-          <Typography variant="h6">{listing.email}</Typography>
-          <hr />
-        </Typography>
+            <Typography variant="h6">E-post:</Typography>
+            <Typography gutterBottom>{listing.email}</Typography>
 
-        <Typography className="py-4" variant="h5" gutterBottom>
-          Telefonnummer:
-          <Typography variant="h6">{listing.phone}</Typography>
-          <hr />
-        </Typography>
-      </div>
-    </div>
+            <Typography variant="h6">Telefonnummer:</Typography>
+            <Typography gutterBottom>{listing.phone}</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 

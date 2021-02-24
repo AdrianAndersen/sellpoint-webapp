@@ -17,9 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Sellpoint</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col h-screen justify-between">
+      <div className="flex flex-col min-h-screen justify-between bg-gray-100">
         <AppBar position="static">
-          <Toolbar className="bg-blue-600">
+          <Toolbar className="bg-green-600">
             <Link href="/">
               <Button color="inherit">
                 <Typography variant="h5">Sellpoint</Typography>
@@ -46,10 +46,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
           </Toolbar>
         </AppBar>
-        <Container className="min-h-full mt-2">
+        <Container className="mt-5">
           <Component {...pageProps} />
         </Container>
-        <footer className="w-full bg-blue-600 pt-5 pb-1">
+        <footer className="w-full bg-green-600 mt-5 pt-5 pb-1">
           <Container className="text-center">
             <Typography>Made by</Typography>
             <div>
