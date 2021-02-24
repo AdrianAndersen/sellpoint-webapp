@@ -97,7 +97,7 @@ export default function SignInSide() {
           </form>
         </div>
       </Grid>
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      
     </Grid>
   );
 }
