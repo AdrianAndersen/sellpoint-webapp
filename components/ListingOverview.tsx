@@ -49,10 +49,14 @@ const ListingOverview = () => {
             <Typography gutterBottom variant="button" component="h2">
               {l.price} kr
             </Typography>
-            <Typography variant="body1">{l.description}</Typography>
+            <Typography variant="body1">
+              {l.description.substr(0, 50) + "..."}
+            </Typography>
           </CardContent>
           <CardActions>
-            <Button>Se mer</Button>
+            <Link href={"/listings/" + index}>
+              <Button>Se mer</Button>
+            </Link>
             {/* TODO: Check if user is admin */}
             <Link href={"/edit-listing?id=" + index}>
               <Button color="secondary">Endre</Button>
