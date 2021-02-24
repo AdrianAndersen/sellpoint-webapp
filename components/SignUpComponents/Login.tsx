@@ -16,17 +16,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
   },
-  image: {
-    backgroundImage:
-      "url(https://scontent-arn2-2.xx.fbcdn.net/v/t1.0-9/45284379_2074032832636424_1208489632568705024_n.jpg?_nc_cat=100&ccb=3&_nc_sid=ad2b24&_nc_ohc=aeBw-hwR_50AX-eZ96_&_nc_ht=scontent-arn2-2.xx&oh=67c06036aaf2c8fff150e00bad6ed8fc&oe=6054E51A)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
   paper: {
     margin: theme.spacing(8, 4),
     display: "flex",
