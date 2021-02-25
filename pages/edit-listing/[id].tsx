@@ -15,9 +15,11 @@ const EditListingPage = () => {
   );
   return (
     <div className="min-h-screen flex flex-col items-center">
-      <Head>
-        <title>{listing.title} | Sellpoint</title>
-      </Head>
+      {listing && listing.title && (
+        <Head>
+          <title>{listing.title} | Sellpoint</title>
+        </Head>
+      )}
       <Typography variant="h2">Endre annonse</Typography>
       <CreateListingForm initialListing={listing} />
     </div>
