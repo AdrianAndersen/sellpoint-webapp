@@ -31,45 +31,44 @@ const initialState = {
   listings: [
     {
       id: 1,
-      title: "My first listing",
+      title: "Sykkel",
       imageURL:
-        "https://images.unsplash.com/photo-1612135945668-0c2190dfac07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
-      description: "My first description",
-      price: "123",
+        "https://images-na.ssl-images-amazon.com/images/I/61OXtQ80V3L.jpg",
+      description: "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
+      price: "600",
       owner: 1,
     },
     {
       id: 2,
-      title: "My second listing",
+      title: "Lamborghini Gallardo",
       imageURL:
-        "https://images.unsplash.com/photo-1612174462937-171b1f2e7e68?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
-      description: "My second description",
-      price: "321",
+        "https://upload.wikimedia.org/wikipedia/commons/0/0c/Orange_Lamborghini_Gallardo_LP560_fl.JPG",
+      description: "LP500-4 / Capristo Eksos / Skinn / PDC / Navi /",
+      price: "999 000",
       owner: 3,
     },
   ],
   advertisements: [
     {
       id: 1,
-      title: "Elkjøps nyttårssalg",
-      imageURL: "https://i.ytimg.com/vi/fudYqnuns3E/maxresdefault.jpg",
-      link: "https:www.elkjop.no",
+      title: "PPC ADS",
+      imageURL: "https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/media/images/google-display-ads-example-2-final.png?oV7qevVB2XtFyF_O64TG6L27AFM3M2oL&itok=TBfuuTM_",
+      link: "https://bitwarden.com/",
       owner: 2,
     },
     {
       id: 3,
-      title: "NTNU",
-      imageURL:
-        "https://tse1.mm.bing.net/th?id=OIP.oKAk1eaoTEy6Oobo7JOXsQHaCy&pid=Api&f=1",
-      link: "https:www.ntnu.no",
+      title: "The New Yorker",
+      imageURL: "https://blog.hubspot.com/hubfs/How%20to%20Explain%20Banner%20Ads%20to%20Anyone-5.png",
+      link: "https://blog.hubspot.com/",
       owner: 2,
     },
     {
       id: 4,
-      title: "NMBU",
+      title: "NTNU",
       imageURL:
-        "https://www.monkeyperson.com/wp-content/uploads/2020/05/wide-image.jpg",
-      link: "https:www.nmbu.no",
+        "https://www.akademika.no/sites/default/files/ntnu%20banner.png",
+      link: "https:www.ntnu.no",
       owner: 3,
     },
   ],
