@@ -34,7 +34,8 @@ const initialState = {
       title: "Sykkel",
       imageURL:
         "https://images-na.ssl-images-amazon.com/images/I/61OXtQ80V3L.jpg",
-      description: "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
+      description:
+        "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
       price: "600",
       owner: 1,
     },
@@ -52,14 +53,16 @@ const initialState = {
     {
       id: 1,
       title: "PPC ADS",
-      imageURL: "https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/media/images/google-display-ads-example-2-final.png?oV7qevVB2XtFyF_O64TG6L27AFM3M2oL&itok=TBfuuTM_",
+      imageURL:
+        "https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/media/images/google-display-ads-example-2-final.png?oV7qevVB2XtFyF_O64TG6L27AFM3M2oL&itok=TBfuuTM_",
       link: "https://bitwarden.com/",
       owner: 2,
     },
     {
       id: 3,
       title: "The New Yorker",
-      imageURL: "https://blog.hubspot.com/hubfs/How%20to%20Explain%20Banner%20Ads%20to%20Anyone-5.png",
+      imageURL:
+        "https://blog.hubspot.com/hubfs/How%20to%20Explain%20Banner%20Ads%20to%20Anyone-5.png",
       link: "https://blog.hubspot.com/",
       owner: 2,
     },
