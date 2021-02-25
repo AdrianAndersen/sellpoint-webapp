@@ -58,7 +58,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Ny bedriftskonto
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -70,7 +70,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   required
                   fullWidth
                   id="companyName"
-                  label="Company Name"
+                  label="Bedriftsnavn"
                   // @ts-ignore
                   onChange={(e) => setUser({ ...user, name: e.target.value })}
                   // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -83,7 +83,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   required
                   fullWidth
                   id="phoneNumber"
-                  label="Company Phone"
+                  label="Bedriftstelefon"
                   name="phone"
                   autoComplete="phone"
                   onChange={(e) =>
@@ -113,7 +113,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Passord"
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -136,12 +136,12 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              Registrer deg
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                  Har du allerede en konto? Logg inn
                 </Link>
               </Grid>
             </Grid>

@@ -4,6 +4,7 @@ import SignUpCompany from "../components/SignUpComponents/SignUpCompany";
 import SignUpUser from "../components/SignUpComponents/SignUppageUser";
 import { useContext } from "react";
 import { Context } from "../components/Store";
+import Head from "next/head";
 
 const LoginPage = () => {
   const [person, setPerson] = useState(true);
@@ -17,9 +18,12 @@ const LoginPage = () => {
     ).id + 1;
 
   let status = "";
-  person ? (status = "Personal") : (status = "Company");
+  person ? (status = "Privat") : (status = "Bedrift");
   return (
     <div>
+      <Head>
+        <title>Ny bruker | Sellpoint</title>
+      </Head>
       <FormControlLabel
         control={
           <Switch

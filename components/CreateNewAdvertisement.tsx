@@ -14,7 +14,7 @@ const CreateNewAdvertisement = () => {
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
-        label="Title"
+        label="Tittel"
         variant="filled"
         margin="normal"
         value={title}
@@ -69,7 +69,7 @@ const CreateNewAdvertisement = () => {
             router.push("/");
           }}
         >
-          Submit
+          Lag reklame
         </Button>
       </div>
     </form>

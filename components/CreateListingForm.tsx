@@ -21,14 +21,14 @@ const CreateListingForm = ({
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
-        label="Title"
+        label="Tittel"
         variant="filled"
         margin="normal"
         value={title}
         onChange={(evt) => setTitle(evt.target.value)}
       />
       <TextField
-        label="Description"
+        label="Beskrivelse"
         variant="filled"
         margin="normal"
         multiline={true}
@@ -38,7 +38,7 @@ const CreateListingForm = ({
       />
       <TextField
         type="number"
-        label="Price"
+        label="Pris"
         variant="filled"
         margin="normal"
         value={"" + price}
@@ -99,7 +99,7 @@ const CreateListingForm = ({
           variant="contained"
           color="primary"
         >
-          Submit
+          Lag annonse
         </Button>
       </div>
     </form>

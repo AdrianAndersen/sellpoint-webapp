@@ -25,7 +25,6 @@ const Slideshow = ({
     return () => clearTimeout(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, ads]);
-  console.log(ads);
   return (
     <Link href={ads[index].link}>
       <div
@@ -62,7 +61,7 @@ const Slideshow = ({
 const AdvertisementSlideshow = () => {
   // @ts-ignore
   const [state, dispatch] = useContext(Context);
-  if (state.advertisements.length === 0) return <p>No ads</p>;
+  if (state.advertisements.length === 0) return <p>Ingen reklamer å vise...</p>;
   return (
     <Slideshow
       ads={state.advertisements}
