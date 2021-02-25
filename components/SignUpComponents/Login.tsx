@@ -50,7 +50,7 @@ export default function SignInSide() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Logg inn
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -59,7 +59,7 @@ export default function SignInSide() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Epost"
             name="email"
             autoComplete="email"
             onChange={(e) => setUsername(e.target.value)}
@@ -72,7 +72,7 @@ export default function SignInSide() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Passord"
             type="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -100,15 +100,17 @@ export default function SignInSide() {
                 router.push("/");
                 dispatch({ type: "SET_CURRENT_USER", payload: userId });
               } else {
-                alert("Wrong password");
+                alert("Feil passord!");
               }
             }}
           >
-            Sign In
+            Logg inn
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="/register">{"Don't have an account? Sign Up"}</Link>
+              <Link href="/register">
+                {"Har du ikke en konto? Registrer deg"}
+              </Link>
             </Grid>
           </Grid>
         </form>

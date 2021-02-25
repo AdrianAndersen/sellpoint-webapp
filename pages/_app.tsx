@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <footer className="w-full bg-green-600 mt-5 pt-5 pb-1">
           <Container className="text-center">
-            <Typography>Made by</Typography>
+            <Typography>Laget av</Typography>
             <div>
               <Link href="https://github.com/AdrianAndersen">
                 <Button>Adrian Andersen</Button>

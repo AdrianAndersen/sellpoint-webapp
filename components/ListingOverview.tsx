@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useReducer } from "react";
 import { useContext } from "react";
 import { Context } from "./Store";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -45,9 +46,9 @@ const ListingOverview = ({
       {listings.map((listing: any) => (
         <Card className={classes.card} key={listing.id}>
           <CardHeader
-            avatar={<Avatar>ON</Avatar>}
+            avatar={<Avatar></Avatar>}
             title={listing.title}
-            subheader="01/01/1970"
+            subheader={moment().format("DD/MM/YYYY")}
           />
           <CardMedia className={classes.media} image={listing.imageURL} />
           <CardContent>

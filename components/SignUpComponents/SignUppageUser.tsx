@@ -58,7 +58,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Ny privatkonto
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
@@ -113,7 +113,7 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Passord"
                   type="password"
                   id="password"
                   autoComplete="current-password"
@@ -136,11 +136,11 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              Registrer deg
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="login/">Already have an account? Sign in</Link>
+                <Link href="login/">Har du allerede en konto? Logg inn</Link>
               </Grid>
             </Grid>
           </form>
