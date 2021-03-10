@@ -15,6 +15,7 @@ import { useReducer } from "react";
 import { useContext } from "react";
 import { Context } from "./Store";
 import moment from "moment";
+import { getPrettyDistance } from "./GoogleMaps/GoogleMapsComponent";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -64,6 +65,17 @@ const ListingOverview = ({
             <CardContent>
               <Typography gutterBottom variant="button" component="h2">
                 {listing.price} kr
+              </Typography>
+              <Typography gutterBottom variant="button" component="h2">
+                Avstand:{" "}
+                {currentUser
+                  ? getPrettyDistance(
+                      currentUser.location,
+                      state.users.find(
+                        (user: { id: number }) => user.id === listing.owner
+                      ).location
+                    )
+                  : "Du må logge inn for å se avstand!"}
               </Typography>
               <Typography variant="body1">
                 {listing.description.substr(0, 50) + "..."}

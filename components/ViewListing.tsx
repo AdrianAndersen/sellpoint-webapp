@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { useContext } from "react";
 import { Context } from "./Store";
+import GoogleMapsComponent from "../components/GoogleMaps/GoogleMapsComponent"
 
 const useStyles = makeStyles(() => ({
   price: {
@@ -26,6 +27,9 @@ const ViewListing = ({ listing }: { listing: any }) => {
   const owner = state.users.find(
     (user: { id: number }) => user.id === listing.owner
   );
+  const currentUser = state.users.find(    
+    (user: { id: number }) => user.id === state.currentUser
+  )
 
   const classes = useStyles();
 
@@ -69,6 +73,7 @@ const ViewListing = ({ listing }: { listing: any }) => {
 
             <Typography variant="h6">Telefonnummer:</Typography>
             <Typography gutterBottom>{owner.phoneNumber}</Typography>
+            <GoogleMapsComponent initial_markers={state.currentUser !== undefined ? [currentUser.location, owner.location] : [owner.location]} />
           </CardContent>
         </Card>
       </Grid>
