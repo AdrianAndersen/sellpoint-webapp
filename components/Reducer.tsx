@@ -28,6 +28,11 @@ const Reducer = (state: any, action: any) => {
           (listing: { id: number }) => listing.id !== action.payload
         ),
       };
+    case "ADD_CATEGORY":
+      return {
+        ...state,
+        categories: state.categories.concat(action.payload),
+      };
     case "ADD_ADVERTISEMENT":
       return {
         ...state,
