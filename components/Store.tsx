@@ -10,7 +10,7 @@ const initialState = {
       username: "ola",
       password: "ola",
       role: "private",
-      location: {lat: 63.436179, lng: 10.417865}
+      location: { lat: 63.436179, lng: 10.417865 },
     },
     {
       id: 2,
@@ -19,7 +19,7 @@ const initialState = {
       username: "erna",
       password: "erna",
       role: "business",
-      location: {lat: 63.418769, lng: 10.403894 }
+      location: { lat: 63.418769, lng: 10.403894 },
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ const initialState = {
       username: "admin",
       password: "admin",
       role: "admin",
-      location: {lat: 63.426926, lng: 10.395967}
+      location: { lat: 63.426926, lng: 10.395967 },
     },
   ],
   listings: [

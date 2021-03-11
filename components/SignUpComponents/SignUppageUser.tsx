@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
+import validateUser from "./UserValidator";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUpPerson({ createUser }: { createUser: any }) {
   const classes = useStyles();
-  const [user, setUser] = useState({ role: "private" });
+  const [user, setUser] = useState({});
   const router = useRouter();
 
   return (
@@ -123,12 +125,20 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   }
                 />
               </Grid>
+              <Grid item xs={12}>
+                <GoogleMapsComponent
+                  setPosition={(pos) => setUser({ ...user, location: pos })}
+                />
+              </Grid>
             </Grid>
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                createUser(user);
-                router.push("/");
+                setUser({ ...user, role: "private" });
+                if (validateUser(user)) {
+                  createUser(user);
+                  router.push("/");
+                } else alert("Du må fylle ut alle feltene!");
               }}
               type="submit"
               fullWidth
