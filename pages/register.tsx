@@ -5,17 +5,19 @@ import SignUpUser from "../components/SignUpComponents/SignUppageUser";
 import { useContext } from "react";
 import { Context } from "../components/Store";
 import Head from "next/head";
+import { UserEntity } from "../components/Types";
 
 const LoginPage = () => {
   const [person, setPerson] = useState(true);
   // @ts-ignore
   const [state, dispatch] = useContext(Context);
-  const next_id = () =>
-    state.users.reduce(
-      (prev_user: { id: number }, current_user: { id: number }) => {
-        return prev_user.id > current_user.id ? prev_user : current_user;
-      }
-    ).id + 1;
+  const newUserId = (): string => {
+    const randomId = Math.random().toString(36).substring(7);
+    if (state.users.find((user: UserEntity) => user.id === randomId)) {
+      return newUserId();
+    }
+    return randomId;
+  };
 
   let status = "";
   person ? (status = "Privat") : (status = "Bedrift");
@@ -39,10 +41,10 @@ const LoginPage = () => {
         {person ? (
           <div className="w-full flex flex-row justify-center">
             <SignUpUser
-              createUser={(user: any) =>
+              createUser={(user: Partial<UserEntity>) =>
                 dispatch({
                   type: "ADD_USER",
-                  payload: { ...user, id: next_id() },
+                  payload: { ...user, id: newUserId() },
                 })
               }
             />
@@ -50,10 +52,10 @@ const LoginPage = () => {
         ) : (
           <div className="w-full flex flex-row justify-center">
             <SignUpCompany
-              createUser={(user: any) =>
+              createUser={(user: Partial<UserEntity>) =>
                 dispatch({
                   type: "ADD_USER",
-                  payload: { ...user, id: next_id() },
+                  payload: { ...user, id: newUserId() },
                 })
               }
             />

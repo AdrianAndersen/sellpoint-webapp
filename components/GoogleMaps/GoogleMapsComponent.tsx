@@ -2,16 +2,12 @@ import React from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
+import { LatLng } from "../Types";
 
 const containerStyle = {
   width: "100%",
   height: "400px",
   borderRadius: "2%",
-};
-
-type LatLng = {
-  lng: number;
-  lat: number;
 };
 
 export const getExactDistance = (p1: LatLng, p2: LatLng) => {
@@ -87,16 +83,20 @@ function GoogleMapsComponent({
       } else if (markers.length === 1) map.setCenter([...markers]);
       else map.setCenter({ lat: 63.4, lng: 10.4 });
 
-      // @ts-ignore
-      setMap(map);
+      if (setMap != null) {
+        // @ts-ignore
+        setMap(map);
+      }
     },
     [markers, setMap]
   );
 
   const onUnmount = React.useCallback(
     function callback() {
-      // @ts-ignore
-      setMap(null);
+      if (setMap != null) {
+        // @ts-ignore
+        setMap(null);
+      }
     },
     [setMap]
   );

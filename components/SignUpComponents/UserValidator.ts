@@ -1,6 +1,14 @@
-const validateUser = (user: any): boolean => {
+import { UserEntity } from "../Types";
+
+const validateUser = (user: Partial<UserEntity>): boolean => {
   return (
-    user.name && user.phoneNumber && user.password && user.role && user.location
+    user != undefined &&
+    user.name != undefined &&
+    user.username != undefined &&
+    user.phoneNumber != undefined &&
+    user.password != undefined &&
+    user.role != undefined &&
+    user.location != undefined
   );
 };
 
