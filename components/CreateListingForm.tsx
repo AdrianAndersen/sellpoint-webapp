@@ -51,9 +51,7 @@ const CreateListingForm = ({
   const [price, setPrice] = useState(initialListing?.price);
   const [imageURL, setImageURL] = useState(initialListing?.imageURL);
   const [selectedCategories, setSelectedCategories] = useState(
-    Object.entries(state.categories)
-      .filter((e: any) => initialListing?.categories.includes(e[0]))
-      .map((e: any) => e[1])
+    initialListing?.categories ?? []
   );
 
   const classes = useStyles();
@@ -107,7 +105,7 @@ const CreateListingForm = ({
           renderValue={(selected: any) => selected.join(", ")}
           MenuProps={MENU_PROPS}
         >
-          {Object.entries(state.categories).map(([, category]: any[]) => (
+          {state.categories.map((category: any) => (
             <MenuItem key={category} value={category}>
               <Checkbox checked={selectedCategories.includes(category)} />
               <ListItemText primary={category} />
@@ -155,6 +153,7 @@ const CreateListingForm = ({
                 price: price,
                 imageURL: imageURL,
                 owner: state.currentUser,
+                categories: selectedCategories,
               },
             });
             router.push("/listings/" + id);

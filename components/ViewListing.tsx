@@ -3,6 +3,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Grid,
   makeStyles,
   Typography,
@@ -48,7 +49,11 @@ const ViewListing = ({ listing }: { listing: any }) => {
 
             <Typography variant="body1">{listing.description}</Typography>
           </CardContent>
-          <CardActions className="justify-end"></CardActions>
+          <CardActions>
+            {listing.categories.map((category: any) => (
+              <Chip key={category} label={category} />
+            ))}
+          </CardActions>
         </Card>
       </Grid>
 
