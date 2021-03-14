@@ -107,8 +107,8 @@ export default function SignInSide() {
             Logg inn
           </Button>
           <Grid container>
-            <Grid item>
-              <Link href="/register">
+            <Grid data-cy="registerLink" item>
+              <Link data-cy="signUpLink" href="/register">
                 {"Har du ikke en konto? Registrer deg"}
               </Link>
             </Grid>

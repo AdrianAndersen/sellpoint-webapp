@@ -36,7 +36,7 @@ const Reducer = (state: any, action: any) => {
     case "ADD_ADVERTISEMENT":
       return {
         ...state,
-        advertisements: state.advertisements.concat(action.payload),
+        advertisements: [action.payload, ...state.advertisements],
       };
     case "REMOVE_ADVERTISEMENT":
       return {

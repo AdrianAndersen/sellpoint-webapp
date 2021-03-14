@@ -39,11 +39,11 @@ const ViewListing = ({ listing }: { listing: any }) => {
         <Card>
           <CardMedia image={listing.imageURL} style={{ height: 300 }} />
           <CardContent>
-            <Typography className={classes.price} variant="h5">
+            <Typography data-cy="price" className={classes.price} variant="h5">
               {listing.price} kr
             </Typography>
 
-            <Typography variant="h4" gutterBottom>
+            <Typography data-cy="title" variant="h4" gutterBottom>
               {listing.title}
             </Typography>
 
@@ -69,10 +69,14 @@ const ViewListing = ({ listing }: { listing: any }) => {
             </Typography>
 
             <Typography variant="h6">Navn:</Typography>
-            <Typography gutterBottom>{owner.name}</Typography>
+            <Typography data-cy="ownerName" gutterBottom>
+              {owner.name}
+            </Typography>
 
             <Typography variant="h6">Telefonnummer:</Typography>
-            <Typography gutterBottom>{owner.phoneNumber}</Typography>
+            <Typography data-cy="ownerPhone" gutterBottom>
+              {owner.phoneNumber}
+            </Typography>
             <Typography variant="h6">Avstand:</Typography>
             <GoogleMapsComponent
               initialMarkers={

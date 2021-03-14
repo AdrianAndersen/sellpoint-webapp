@@ -138,6 +138,7 @@ export default function SignUpPerson({
               </Grid>
             </Grid>
             <Button
+              data-cy="signUpPrivateSubmit"
               onClick={(e) => {
                 e.preventDefault();
                 if (validateUser(user)) {

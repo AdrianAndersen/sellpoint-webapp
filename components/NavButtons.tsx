@@ -18,14 +18,14 @@ const NavButtons = () => {
       {currentUser && currentUser.role !== "private" && (
         <Link href="/new-ad">
           <Button color="inherit">
-            <Typography>Ny reklame</Typography>
+            <Typography data-cy="navNewAdBtn">Ny reklame</Typography>
           </Button>
         </Link>
       )}
       {currentUser && currentUser.role !== "business" && (
         <Link href="/new-listing">
           <Button color="inherit">
-            <Typography>Ny annonse</Typography>
+            <Typography data-cy="navNewListingBtn">Ny annonse</Typography>
           </Button>
         </Link>
       )}
@@ -40,7 +40,7 @@ const NavButtons = () => {
         }}
         color="inherit"
       >
-        <Typography>
+        <Typography data-cy="loginBtn">
           {state.currentUser === undefined ? "Logg inn" : "Logg ut"}{" "}
           <AccountCircle />
         </Typography>

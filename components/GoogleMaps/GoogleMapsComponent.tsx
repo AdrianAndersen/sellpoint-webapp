@@ -102,7 +102,7 @@ function GoogleMapsComponent({
   );
 
   return isLoaded ? (
-    <div>
+    <div data-cy="googleMap">
       <GoogleMap
         onClick={(e) => {
           if (setPosition) {

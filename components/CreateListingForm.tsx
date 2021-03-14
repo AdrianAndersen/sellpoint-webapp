@@ -59,6 +59,7 @@ const CreateListingForm = ({
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
+        name="title"
         label="Tittel"
         variant="filled"
         margin="normal"
@@ -66,6 +67,7 @@ const CreateListingForm = ({
         onChange={(evt) => setTitle(evt.target.value)}
       />
       <TextField
+        name="desc"
         label="Beskrivelse"
         variant="filled"
         margin="normal"
@@ -75,6 +77,7 @@ const CreateListingForm = ({
         onChange={(evt) => setDescription(evt.target.value)}
       />
       <TextField
+        name="price"
         type="number"
         label="Pris"
         variant="filled"
@@ -83,6 +86,7 @@ const CreateListingForm = ({
         onChange={(evt) => setPrice(parseInt(evt.target.value, 10))}
       />
       <TextField
+        name="imageURL"
         label="Bilde-URL"
         variant="filled"
         margin="normal"
@@ -117,6 +121,7 @@ const CreateListingForm = ({
           </Button>
         </Link>
         <Button
+          data-cy="submit"
           onClick={(e) => {
             e.preventDefault();
             let id;
