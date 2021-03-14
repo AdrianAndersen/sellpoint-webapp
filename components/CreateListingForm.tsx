@@ -97,10 +97,7 @@ const CreateListingForm = ({
           id="categories-select"
           multiple
           value={selectedCategories}
-          onChange={(e: any) => {
-            console.log(e.target.value);
-            setSelectedCategories(e.target.value);
-          }}
+          onChange={(e: any) => setSelectedCategories(e.target.value)}
           input={<Input className={classes.selectInput} />}
           renderValue={(selected: any) => selected.join(", ")}
           MenuProps={MENU_PROPS}
