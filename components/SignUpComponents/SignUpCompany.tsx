@@ -11,6 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
+import validateUser from "./UserValidator";
+import { UserEntity } from "../Types";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -43,10 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUpPerson({ createUser }: { createUser: any }) {
+export default function SignUpPerson({
+  createUser,
+}: {
+  // eslint-disable-next-line no-unused-vars
+  createUser: (user: Partial<UserEntity>) => void;
+}) {
   const classes = useStyles();
   const router = useRouter();
-  const [user, setUser] = useState({ role: "business" });
+  const [user, setUser] = useState<Partial<UserEntity>>({ role: "business" });
 
   return (
     <Grid container component="main">
@@ -123,12 +131,19 @@ export default function SignUpPerson({ createUser }: { createUser: any }) {
                   }
                 />
               </Grid>
+              <Grid item xs={12}>
+                <GoogleMapsComponent
+                  setPosition={(pos) => setUser({ ...user, location: pos })}
+                />
+              </Grid>
             </Grid>
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                createUser(user);
-                router.push("/");
+                if (validateUser(user)) {
+                  createUser(user);
+                  router.push("/");
+                } else alert("Du må fylle ut alle feltene!");
               }}
               type="submit"
               fullWidth
