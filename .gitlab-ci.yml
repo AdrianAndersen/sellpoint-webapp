@@ -2,12 +2,6 @@ default:
   tags:
     - docker
 
-stages:
-  - build
-  - lint
-  - test
-
-# Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
 variables:
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
@@ -19,34 +13,13 @@ cache:
     - node_modules
     - .next
 
-install:
+verify:
   image: cypress/browsers:node14.15.0-chrome86-ff82
-  stage: build
   script:
     - yarn install --cache-folder .yarn
-    - rm -rf cache/
-    - yarn build
-    - yarn cypress install
-
-lint:
-  image: node
-  stage: lint
-  script:
     - yarn lint
-
-cypress:
-  image: cypress/browsers:node14.15.0-chrome86-ff82
-  stage: test
-  script:
-    - yarn install --cache-folder .yarn
     - rm -rf cache/
     - yarn build
     - yarn cypress install
     - yarn start &
     - yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --browser chrome
-  artifacts:
-    when: always
-    paths:
-      - cypress/videos/**/*.mp4
-      - cypress/screenshots/**/*.png
-    expire_in: 1 day
