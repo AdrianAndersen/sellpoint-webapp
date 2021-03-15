@@ -1,7 +1,8 @@
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { useContext } from "react";
-import { Context } from "../Store";
+import { useGlobalState } from "../GlobalStateProvider";
+import { Category } from "../Types";
+import { Dispatch, SetStateAction } from "react";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -13,13 +14,12 @@ const useStyles = makeStyles(() =>
 
 const CategorySelect = ({
   selected,
-  onChange,
+  setSelected,
 }: {
-  selected: any;
-  onChange: any;
+  selected: Category[];
+  setSelected: Dispatch<SetStateAction<Category[]>>;
 }) => {
-  // @ts-ignore
-  const [state] = useContext(Context);
+  const { state } = useGlobalState();
   const classes = useStyles();
 
   return (
@@ -29,9 +29,9 @@ const CategorySelect = ({
           root: classes.root,
         }}
         value={selected}
-        onChange={(_, newCategories) => onChange(newCategories)}
+        onChange={(_, newCategories) => setSelected(newCategories)}
       >
-        {state.categories.map((category: any) => (
+        {state.categories.map((category: Category) => (
           <ToggleButton key={category} value={category}>
             {category}
           </ToggleButton>

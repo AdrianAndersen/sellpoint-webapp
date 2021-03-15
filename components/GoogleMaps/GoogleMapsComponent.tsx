@@ -1,8 +1,8 @@
-import React from "react";
+import { SetStateAction, Dispatch, useCallback, memo } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
-import { LatLng } from "../Types";
+import { LatLng, User } from "../Types";
 
 const containerStyle = {
   width: "100%",
@@ -31,11 +31,12 @@ export const getPrettyDistance = (p1: LatLng, p2: LatLng) =>
 
 function GoogleMapsComponent({
   initialMarkers,
-  setPosition,
+  user,
+  setUser,
 }: {
   initialMarkers?: Array<LatLng>;
-  // eslint-disable-next-line no-unused-vars
-  setPosition?: (pos: LatLng) => void;
+  user?: Partial<User>;
+  setUser?: Dispatch<SetStateAction<Partial<User>>>;
 }) {
   const [markers, setMarkers] = useState(
     initialMarkers ? [...initialMarkers] : []
@@ -46,9 +47,9 @@ function GoogleMapsComponent({
     googleMapsApiKey: "AIzaSyBHmGArINV-1nxA2ojakVDe7wQJ-9Iy8kE",
   });
 
-  const [setMap] = React.useState(null);
+  const [setMap] = useState(null);
 
-  const onLoad = React.useCallback(
+  const onLoad = useCallback(
     function callback(map) {
       if (markers.length > 1) {
         const lineSymbol = {
@@ -91,7 +92,7 @@ function GoogleMapsComponent({
     [markers, setMap]
   );
 
-  const onUnmount = React.useCallback(
+  const onUnmount = useCallback(
     function callback() {
       if (setMap != null) {
         // @ts-ignore
@@ -105,13 +106,13 @@ function GoogleMapsComponent({
     <div data-cy="googleMap">
       <GoogleMap
         onClick={(e) => {
-          if (setPosition) {
+          if (setUser) {
             const latLng = {
               lat: e.latLng.lat(),
               lng: e.latLng.lng(),
-            };
+            } as LatLng;
             setMarkers([latLng]);
-            setPosition(latLng);
+            setUser({ ...user, location: latLng });
           }
         }}
         mapContainerStyle={containerStyle}
@@ -141,7 +142,7 @@ function GoogleMapsComponent({
       <Typography variant="body1" className="text-center">
         {markers.length > 1
           ? getPrettyDistance(markers[0], markers[1])
-          : setPosition
+          : setUser
           ? "Velg din posisjon"
           : "Du må logge inn for å se avstand"}
       </Typography>
@@ -151,4 +152,4 @@ function GoogleMapsComponent({
   );
 }
 
-export default React.memo(GoogleMapsComponent);
+export default memo(GoogleMapsComponent);

@@ -1,6 +1,6 @@
-import { UserEntity } from "../Types";
+import { User } from "../Types";
 
-const validateUser = (user: Partial<UserEntity>): boolean => {
+const validateUser = (user: Partial<User>): boolean => {
   return (
     user != undefined &&
     user.name != undefined &&

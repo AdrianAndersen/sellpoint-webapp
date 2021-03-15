@@ -2,16 +2,12 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { useContext } from "react";
 import { useRouter } from "next/router";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
 
 const NavButtons = () => {
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
-  const currentUser = state.users.find(
-    (user: { id: number }) => user.id === state.currentUser
-  );
+  const { state, dispatch } = useGlobalState();
+  const currentUser = state.users.find((user) => user.id === state.currentUser);
   const router = useRouter();
   return (
     <div className="w-full flex flex-row justify-end">

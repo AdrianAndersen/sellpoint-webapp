@@ -13,7 +13,9 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import validateUser from "./UserValidator";
-import { UserEntity } from "../Types";
+import { User } from "../Types";
+import { getUniqueId } from "../../lib/utils";
+import { useGlobalState } from "../GlobalStateProvider";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -46,15 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUpPerson({
-  createUser,
-}: {
-  // eslint-disable-next-line no-unused-vars
-  createUser: (user: Partial<UserEntity>) => void;
-}) {
+export default function SignUpPerson() {
   const classes = useStyles();
-  const [user, setUser] = useState<Partial<UserEntity>>({ role: "private" });
+  const [user, setUser] = useState<Partial<User>>({ role: "private" });
   const router = useRouter();
+  const { state, dispatch } = useGlobalState();
 
   return (
     <Grid container component="main">
@@ -79,7 +77,6 @@ export default function SignUpPerson({
                   fullWidth
                   id="name"
                   label="Navn"
-                  // @ts-ignore
                   onChange={(e) => setUser({ ...user, name: e.target.value })}
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
@@ -95,7 +92,6 @@ export default function SignUpPerson({
                   name="phoneNumber"
                   autoComplete="fnumber"
                   onChange={(e) =>
-                    // @ts-ignore
                     setUser({ ...user, phoneNumber: e.target.value })
                   }
                 />
@@ -110,7 +106,6 @@ export default function SignUpPerson({
                   name="username"
                   autoComplete="uname"
                   onChange={(e) =>
-                    // @ts-ignore
                     setUser({ ...user, username: e.target.value })
                   }
                 />
@@ -126,15 +121,12 @@ export default function SignUpPerson({
                   id="password"
                   autoComplete="current-password"
                   onChange={(e) =>
-                    // @ts-ignore
                     setUser({ ...user, password: e.target.value })
                   }
                 />
               </Grid>
               <Grid item xs={12}>
-                <GoogleMapsComponent
-                  setPosition={(pos) => setUser({ ...user, location: pos })}
-                />
+                <GoogleMapsComponent user={user} setUser={setUser} />
               </Grid>
             </Grid>
             <Button
@@ -142,7 +134,13 @@ export default function SignUpPerson({
               onClick={(e) => {
                 e.preventDefault();
                 if (validateUser(user)) {
-                  createUser(user);
+                  dispatch({
+                    type: "ADD_USER",
+                    payload: {
+                      ...user,
+                      id: getUniqueId(state.users.map((user) => user.id)),
+                    },
+                  });
                   router.push("/");
                 } else alert("Du må fylle ut alle feltene!");
               }}
