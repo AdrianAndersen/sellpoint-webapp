@@ -8,12 +8,34 @@ import Link from "next/link";
 import Head from "next/head";
 import Container from "@material-ui/core/Container";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import GlobalStateProvider from "../components/GlobalStateProvider";
 import NavButtons from "../components/NavButtons";
+import useSWR from "swr";
+import GlobalStateProvider from "../components/GlobalStateProvider";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const multiFetcher = (...urls: string[]) =>
+  Promise.all(urls.map((url) => fetcher(url)));
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { data } = useSWR(
+    ["/api/users", "/api/listings", "/api/categories", "/api/advertisements"],
+    multiFetcher
+  );
+  if (!data) {
+    return <></>;
+  }
   return (
-    <GlobalStateProvider>
+    <GlobalStateProvider
+      initialState={{
+        currentUser: undefined,
+        users: data[0],
+        listings: data[1],
+        categories: data[2],
+        advertisements: data[3],
+        error: null,
+      }}
+    >
       <Head>
         <title>Sellpoint</title>
         <link rel="icon" href="/favicon.ico" />
@@ -39,7 +61,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               <NavButtons />
             </Toolbar>
           </AppBar>
-
           <Container className="mt-5">
             <Component {...pageProps} />
           </Container>
