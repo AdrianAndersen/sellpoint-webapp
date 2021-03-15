@@ -22,7 +22,7 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.get("input[name=phoneNumber]").type("567890");
     cy.get("input[name=username]").type("lars");
     cy.get("input[name=password]").type("batteryhorsestaple");
-    cy.getBySel("googleMap").click()
+    cy.getBySel("googleMap").click();
     cy.getBySel("signUpPrivateSubmit").click();
 
     cy.url().should("include", "/");
@@ -46,7 +46,7 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.get("input[name=phone]").type("31415");
     cy.get("input[name=username]").type("henrik");
     cy.get("input[name=password]").type("hemmelig");
-    cy.getBySel("googleMap").click()
+    cy.getBySel("googleMap").click();
     cy.getBySel("signUpBusinessSubmit").click();
 
     cy.url().should("include", "/");

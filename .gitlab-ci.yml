@@ -1,68 +1,48 @@
+default:
+  tags:
+    - docker
+
+stages:
+  - build
+  - lint
+  - test
+
+# Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
+variables:
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - .npm
+    - .yarn
     - cache/Cypress
     - node_modules
-    - .next/cache/
+    - .next
 
-# to cache both npm modules and Cypress binary we use environment variables
-# to point at the folders we can list as paths in "cache" job settings
-variables:
-  npm_config_cache: "$CI_PROJECT_DIR/.npm"
-  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+install:
+  image: cypress/browsers:node14.15.0-chrome86-ff82
+  stage: build
+  script:
+    - yarn install --cache-folder .yarn
+    - rm -rf cache/
+    - yarn build
+    - yarn cypress install
 
-stages:
-  - lint
-  - build
-  - test
-
-code style:
-  image: node:latest
+lint:
+  image: node
   stage: lint
   script:
-    - yarn install
     - yarn lint
 
-# this job installs NPM dependencies and Cypress
-install:
-  image: cypress/base:latest
-  stage: build
-
-  script:
-    # check Cypress binary path and cached versions
-    # useful to make sure we are not carrying around old versions
-    - yarn install && rm -rf cache/ && yarn build && yarn cypress install
-    - npx cypress cache path
-    - npx cypress cache list
-    - yarn run cypress verify
-    - yarn run cypress info
-
-jest:
-  image: node:latest
+cypress:
+  image: cypress/browsers:node14.15.0-chrome86-ff82
   stage: test
   script:
-    - yarn install && yarn run jest --passWithNoTests
-
-# all jobs that actually run tests can use the same definition
-.job_template:
-  image: cypress/base:latest
-  stage: test
-  script:
-    # run Cypress test in load balancing mode
-    - yarn install && yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --parallel --group "electrons on GitLab CI"
+    - yarn start &
+    - yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --browser chrome
   artifacts:
     when: always
     paths:
       - cypress/videos/**/*.mp4
       - cypress/screenshots/**/*.png
     expire_in: 1 day
-
-# actual job definitions
-# all steps are the same, they come from the template above
-cypress-1:
-  extends: .job_template
-cypress-2:
-  extends: .job_template
-cypress-3:
-  extends: .job_template
