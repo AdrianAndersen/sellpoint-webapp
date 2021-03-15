@@ -29,6 +29,7 @@ const LoginPage = () => {
       <FormControlLabel
         control={
           <Switch
+            data-cy="accountSwitch"
             value="checkedA"
             inputProps={{ "aria-label": "Switch A" }}
             onChange={() => setPerson(!person)}

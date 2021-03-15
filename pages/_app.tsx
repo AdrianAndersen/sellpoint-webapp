@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <AppBar position="static">
             <Toolbar className="bg-green-800">
               <Link href="/">
-                <Button color="inherit">
+                <Button data-cy="homeBtn" color="inherit">
                   <div
                     style={{
                       width: "300px",

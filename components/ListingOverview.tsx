@@ -45,7 +45,13 @@ const ListingOverview = ({
   );
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   return (
-    <Grid container direction="row" justify="center" alignItems="flex-start">
+    <Grid
+      data-cy="listingOverview"
+      container
+      direction="row"
+      justify="center"
+      alignItems="flex-start"
+    >
       {listings
         .filter(
           (listing: any) =>

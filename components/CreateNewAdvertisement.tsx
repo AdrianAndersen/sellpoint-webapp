@@ -14,6 +14,7 @@ const CreateNewAdvertisement = () => {
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
+        name="title"
         label="Tittel"
         variant="filled"
         margin="normal"
@@ -21,6 +22,7 @@ const CreateNewAdvertisement = () => {
         onChange={(evt) => setTitle(evt.target.value)}
       />
       <TextField
+        name="link"
         label="Link"
         variant="filled"
         margin="normal"
@@ -29,6 +31,7 @@ const CreateNewAdvertisement = () => {
         onChange={(evt) => setLink(evt.target.value)}
       />
       <TextField
+        name="imageURL"
         label="Bilde-URL"
         variant="filled"
         margin="normal"
@@ -41,6 +44,7 @@ const CreateNewAdvertisement = () => {
           Cancel
         </Button>
         <Button
+          data-cy="submit"
           variant="contained"
           color="primary"
           onClick={(e) => {

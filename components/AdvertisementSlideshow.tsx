@@ -28,6 +28,7 @@ const Slideshow = ({
   return (
     <Link href={ads[index].link}>
       <div
+        data-cy="adSlide"
         className="w-full bg-center bg-cover cursor-pointer"
         style={{
           backgroundImage: ads[index]
@@ -43,6 +44,7 @@ const Slideshow = ({
         {(state.currentUser === ads[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
           <Button
+            data-cy="deleteAdBtn"
             color="secondary"
             onClick={(e) => {
               e.preventDefault();
