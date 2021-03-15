@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import Link from "next/link";
-import { useContext } from "react";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
 import { useRouter } from "next/router";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -13,6 +12,8 @@ import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Listing } from "./Types";
+import { getUniqueId } from "../lib/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,14 +39,10 @@ const MENU_PROPS: Partial<MenuProps> = {
 };
 
 const CreateListingForm = ({
-  initialListing = null,
+  initialListing,
 }: {
-  initialListing?: any;
+  initialListing?: Listing;
 }) => {
-  const router = useRouter();
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
-
   const [title, setTitle] = useState(initialListing?.title);
   const [description, setDescription] = useState(initialListing?.description);
   const [price, setPrice] = useState(initialListing?.price);
@@ -56,6 +53,8 @@ const CreateListingForm = ({
 
   const classes = useStyles();
 
+  const router = useRouter();
+  const { state, dispatch } = useGlobalState();
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
@@ -82,7 +81,7 @@ const CreateListingForm = ({
         label="Pris"
         variant="filled"
         margin="normal"
-        value={"" + price}
+        value={price}
         onChange={(evt) => setPrice(parseInt(evt.target.value, 10))}
       />
       <TextField
@@ -106,7 +105,7 @@ const CreateListingForm = ({
           renderValue={(selected: any) => selected.join(", ")}
           MenuProps={MENU_PROPS}
         >
-          {state.categories.map((category: any) => (
+          {state.categories.map((category) => (
             <MenuItem key={category} value={category}>
               <Checkbox checked={selectedCategories.includes(category)} />
               <ListItemText primary={category} />
@@ -125,25 +124,11 @@ const CreateListingForm = ({
           onClick={(e) => {
             e.preventDefault();
             let id;
-            if (initialListing === null) {
-              if (state.listings.length === 0) {
-                id = 0;
-              } else {
-                id =
-                  state.listings.reduce(
-                    (
-                      prev_listing: { id: number },
-                      current_listing: { id: number }
-                    ) => {
-                      return prev_listing.id > current_listing.id
-                        ? prev_listing
-                        : current_listing;
-                    }
-                  ).id + 1;
-              }
-            } else {
+            if (initialListing) {
               dispatch({ type: "REMOVE_LISTING", payload: initialListing.id });
               id = initialListing.id;
+            } else {
+              id = getUniqueId(state.users.map((user) => user.id));
             }
 
             dispatch({

@@ -1,39 +1,35 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Advertisement } from "../../components/Types";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const listings = [
+  const advertisements: Advertisement[] = [
     {
-      title: "Elkjøps nyttårssalg",
-      imageURL: "https://i.ytimg.com/vi/fudYqnuns3E/maxresdefault.jpg",
-      link: "https:www.elkjop.no",
+      id: "1",
+      title: "PPC ADS",
+      imageURL:
+        "https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/media/images/google-display-ads-example-2-final.png?oV7qevVB2XtFyF_O64TG6L27AFM3M2oL&itok=TBfuuTM_",
+      link: "https://bitwarden.com/",
+      owner: "2",
     },
     {
-      title: "Nille",
+      id: "3",
+      title: "The New Yorker",
       imageURL:
-        "http://digital-photography-school.com/wp-content/uploads/2012/10/image5.jpg",
-      link: "https:www.nille.no",
+        "https://blog.hubspot.com/hubfs/How%20to%20Explain%20Banner%20Ads%20to%20Anyone-5.png",
+      link: "https://blog.hubspot.com/",
+      owner: "2",
     },
     {
-      title: "NTNu",
+      id: "4",
+      title: "NTNU",
       imageURL:
-        "https://tse1.mm.bing.net/th?id=OIP.oKAk1eaoTEy6Oobo7JOXsQHaCy&pid=Api&f=1",
-      link: "https:www.nille.no",
-    },
-    {
-      title: "NMBU",
-      imageURL:
-        "https://www.monkeyperson.com/wp-content/uploads/2020/05/wide-image.jpg",
-      link: "https:www.nille.no",
-    },
-    {
-      title: "Boller",
-      imageURL:
-        "https://wallup.net/wp-content/uploads/2019/09/08/669951-monobeno-cura-highres-wide-image-game-cg-cloud-clouds-748x210.jpg",
-      link: "https:www.nille.no",
+        "https://www.akademika.no/sites/default/files/ntnu%20banner.png",
+      link: "https:www.ntnu.no",
+      owner: "3",
     },
   ];
   res.statusCode = 200;
-  res.json(listings);
+  res.json(advertisements);
 };

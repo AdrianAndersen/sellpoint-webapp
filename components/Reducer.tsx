@@ -1,5 +1,9 @@
-const Reducer = (state: any, action: any) => {
+import { DispatchObject, GlobalState } from "./Types";
+
+const Reducer = (state: GlobalState, action: DispatchObject) => {
   switch (action.type) {
+    case "SET_STATE":
+      return { ...action.payload };
     case "ADD_USER":
       return {
         ...state,
@@ -25,7 +29,7 @@ const Reducer = (state: any, action: any) => {
       return {
         ...state,
         listings: state.listings.filter(
-          (listing: { id: number }) => listing.id !== action.payload
+          (listing) => listing.id !== action.payload
         ),
       };
     case "ADD_CATEGORY":
@@ -42,7 +46,7 @@ const Reducer = (state: any, action: any) => {
       return {
         ...state,
         advertisements: state.advertisements.filter(
-          (advertisement: { id: number }) => advertisement.id !== action.payload
+          (advertisement) => advertisement.id !== action.payload
         ),
       };
     case "SET_ERROR":

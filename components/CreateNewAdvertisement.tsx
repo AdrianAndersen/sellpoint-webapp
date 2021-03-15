@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { useRouter } from "next/router";
-import { useContext } from "react";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
+import { getUniqueId } from "../lib/utils";
 
 const CreateNewAdvertisement = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [imageURL, setImageURL] = useState("");
   const router = useRouter();
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
+  const { state, dispatch } = useGlobalState();
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
@@ -49,21 +48,10 @@ const CreateNewAdvertisement = () => {
           color="primary"
           onClick={(e) => {
             e.preventDefault();
-            let id;
-            if (state.advertisements.length === 0) {
-              id = 0;
-            } else {
-              id =
-                state.advertisements.reduce(
-                  (prev_ad: { id: number }, current_ad: { id: number }) => {
-                    return prev_ad.id > current_ad.id ? prev_ad : current_ad;
-                  }
-                ).id + 1;
-            }
             dispatch({
               type: "ADD_ADVERTISEMENT",
               payload: {
-                id: id,
+                id: getUniqueId(state.advertisements.map((ad) => ad.id)),
                 title: title,
                 link: link,
                 imageURL: imageURL,

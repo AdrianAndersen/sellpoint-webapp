@@ -1,28 +1,38 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { User } from "../../components/Types";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const listings = [
+  const users: User[] = [
     {
-      firstName: "Ola",
-      lastName: "Halvorsen",
-      dateOfBirth: "29.07.2000",
-      gender: "male",
+      id: "1",
+      name: "Ola Halvorsen",
       phoneNumber: "98765432",
-      username: "ola.halvorsen@gmail.com",
-      password: "very secret pass",
+      username: "ola",
+      password: "ola",
+      role: "private",
+      location: { lat: 63.436179, lng: 10.417865 },
     },
     {
-      firstName: "Ida",
-      lastName: "Pettersen",
-      dateOfBirth: "20.02.1929",
-      gender: "female",
+      id: "2",
+      name: "Erna Solberg",
       phoneNumber: "12345677",
-      username: "ida.pettersen@gmail.com",
-      password: "password",
+      username: "erna",
+      password: "erna",
+      role: "business",
+      location: { lat: 63.418769, lng: 10.403894 },
+    },
+    {
+      id: "3",
+      name: "Admin Adminsen",
+      phoneNumber: "1234567",
+      username: "admin",
+      password: "admin",
+      role: "admin",
+      location: { lat: 63.426926, lng: 10.395967 },
     },
   ];
   res.statusCode = 200;
-  res.json(listings);
+  res.json(users);
 };

@@ -19,7 +19,7 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/index.tsx",
-    "components/Store.tsx"
+    "components/GlobalStateProvider.tsx"
   ],
   "exclude": ["node_modules"]
 }

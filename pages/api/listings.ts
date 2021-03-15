@@ -1,31 +1,30 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Listing } from "../../components/Types";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
-  const listings = [
+  const listings: Listing[] = [
     {
-      title: "Min første annonse",
+      id: "1",
+      title: "Sykkel",
       imageURL:
-        "https://images.unsplash.com/photo-1612135945668-0c2190dfac07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
+        "https://images-na.ssl-images-amazon.com/images/I/61OXtQ80V3L.jpg",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus, metus eget sollicitudin congue, elit nisl convallis lectus, sed tristique ex risus ac mauris. Donec lobortis augue viverra ex ornare aliquam. Sed ornare euismod aliquam. Donec varius augue quis urna gravida tempus. Sed eu auctor mauris. Donec vel accumsan purus. Nam non tincidunt magna. Aenean vehicula, ex id dictum dapibus, nisl dui tempus turpis, ut maximus tortor ante at magna. Integer tincidunt, magna vel lacinia dapibus, felis leo ultrices metus, ac hendrerit ipsum ante quis eros. Donec condimentum mauris at euismod maximus. Donec ac nisl sagittis, rhoncus urna sit amet, blandit purus. Donec sed egestas lectus, in efficitur neque. Praesent ornare fringilla enim, ac mattis elit ultricies ac. Morbi gravida justo vel convallis euismod. Mauris viverra mauris in convallis ultricies. Suspendisse vehicula, risus non molestie commodo, tortor quam ultricies mi, id fermentum turpis orci sit amet eros. Pellentesque vel tempor metus. Fusce purus felis, maximus non lacus vitae, fringilla laoreet quam. Morbi fermentum finibus semper. Pellentesque pulvinar mollis facilisis.",
-      createdBy: "ola.halvorsen@gmail.com",
-      price: "123",
-      email: "ola.halvorsen@gmail.com",
-      name: "Ola Halvorsen",
-      phone: "98765432",
+        "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
+      price: 600,
+      categories: ["Sykkel"],
+      owner: "1",
     },
     {
-      title: "Min andre annonse",
+      id: "2",
+      title: "Lamborghini Gallardo",
       imageURL:
-        "https://images.unsplash.com/photo-1612174462937-171b1f2e7e68?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus, metus eget sollicitudin congue, elit nisl convallis lectus, sed tristique ex risus ac mauris. Donec lobortis augue viverra ex ornare aliquam. Sed ornare euismod aliquam. Donec varius augue quis urna gravida tempus. Sed eu auctor mauris. Donec vel accumsan purus. Nam non tincidunt magna. Aenean vehicula, ex id dictum dapibus, nisl dui tempus turpis, ut maximus tortor ante at magna. Integer tincidunt, magna vel lacinia dapibus, felis leo ultrices metus, ac hendrerit ipsum ante quis eros. Donec condimentum mauris at euismod maximus. Donec ac nisl sagittis, rhoncus urna sit amet, blandit purus. Donec sed egestas lectus, in efficitur neque. Praesent ornare fringilla enim, ac mattis elit ultricies ac. Morbi gravida justo vel convallis euismod. Mauris viverra mauris in convallis ultricies. Suspendisse vehicula, risus non molestie commodo, tortor quam ultricies mi, id fermentum turpis orci sit amet eros. Pellentesque vel tempor metus. Fusce purus felis, maximus non lacus vitae, fringilla laoreet quam. Morbi fermentum finibus semper. Pellentesque pulvinar mollis facilisis.",
-      price: "321",
-      email: "ida.pettersen@gmail.com",
-      name: "Ida Pettersen",
-      phone: "97531357",
+        "https://upload.wikimedia.org/wikipedia/commons/0/0c/Orange_Lamborghini_Gallardo_LP560_fl.JPG",
+      description: "LP500-4 / Capristo Eksos / Skinn / PDC / Navi /",
+      price: 999000,
+      categories: ["Kjøretøy"],
+      owner: "3",
     },
   ];
   res.statusCode = 200;

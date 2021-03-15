@@ -12,10 +12,10 @@ import {
 } from "@material-ui/core";
 import Link from "next/link";
 import { useReducer } from "react";
-import { useContext } from "react";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
 import moment from "moment";
 import { getPrettyDistance } from "./GoogleMaps/GoogleMapsComponent";
+import { Category } from "./Types";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -28,21 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListingOverview = ({
-  listings,
-  deleteListing,
-  categories,
-}: {
-  listings: any;
-  deleteListing: any;
-  categories: any;
-}) => {
+const ListingOverview = ({ categories }: { categories: Category[] }) => {
   const classes = useStyles();
-  // @ts-ignore
-  const [state] = useContext(Context);
-  const currentUser = state.users.find(
-    (user: { id: number }) => user.id === state.currentUser
-  );
+  const { state, dispatch } = useGlobalState();
+  const currentUser = state.users.find((user) => user.id === state.currentUser);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   return (
     <Grid
@@ -52,15 +41,13 @@ const ListingOverview = ({
       justify="center"
       alignItems="flex-start"
     >
-      {listings
+      {state.listings
         .filter(
-          (listing: any) =>
+          (listing) =>
             categories.length == 0 ||
-            listing.categories.some((category: any) =>
-              categories.includes(category)
-            )
+            listing.categories.some((category) => categories.includes(category))
         )
-        .map((listing: any) => (
+        .map((listing) => (
           <Card className={classes.card} key={listing.id}>
             <CardHeader
               avatar={<Avatar></Avatar>}
@@ -74,14 +61,18 @@ const ListingOverview = ({
               </Typography>
               <Typography gutterBottom variant="button" component="h2">
                 Avstand:{" "}
-                {currentUser
-                  ? getPrettyDistance(
+                {() => {
+                  const owner = state.users.find(
+                    (user) => user.id === listing.owner
+                  );
+                  if (owner && currentUser) {
+                    return getPrettyDistance(
                       currentUser.location,
-                      state.users.find(
-                        (user: { id: number }) => user.id === listing.owner
-                      ).location
-                    )
-                  : "Du må logge inn for å se avstand!"}
+                      owner.location
+                    );
+                  }
+                  return "Du må logge inn for å se avstand!";
+                }}
               </Typography>
               <Typography variant="body1">
                 {listing.description.substr(0, 50) + "..."}
@@ -99,7 +90,7 @@ const ListingOverview = ({
                   <Button
                     color="secondary"
                     onClick={() => {
-                      deleteListing(listing.id);
+                      dispatch({ type: "REMOVE_LISTING", payload: listing.id });
                       forceUpdate();
                     }}
                   >

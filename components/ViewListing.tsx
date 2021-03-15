@@ -8,9 +8,9 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { useContext } from "react";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
 import GoogleMapsComponent from "../components/GoogleMaps/GoogleMapsComponent";
+import { Listing } from "./Types";
 
 const useStyles = makeStyles(() => ({
   price: {
@@ -21,15 +21,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ViewListing = ({ listing }: { listing: any }) => {
-  // @ts-ignore
-  const [state] = useContext(Context);
-  const owner = state.users.find(
-    (user: { id: number }) => user.id === listing.owner
-  );
-  const currentUser = state.users.find(
-    (user: { id: number }) => user.id === state.currentUser
-  );
+const ViewListing = ({ listing }: { listing: Listing }) => {
+  const { state } = useGlobalState();
+  const owner = state.users.find((user) => user.id === listing.owner);
+  const currentUser = state.users.find((user) => user.id === state.currentUser);
 
   const classes = useStyles();
 
@@ -54,7 +49,7 @@ const ViewListing = ({ listing }: { listing: any }) => {
             <Typography variant="body1">{listing.description}</Typography>
           </CardContent>
           <CardActions>
-            {listing.categories.map((category: any) => (
+            {listing.categories.map((category) => (
               <Chip key={category} label={category} />
             ))}
           </CardActions>
@@ -70,19 +65,21 @@ const ViewListing = ({ listing }: { listing: any }) => {
 
             <Typography variant="h6">Navn:</Typography>
             <Typography data-cy="ownerName" gutterBottom>
-              {owner.name}
+              {owner && owner.name}
             </Typography>
 
             <Typography variant="h6">Telefonnummer:</Typography>
             <Typography data-cy="ownerPhone" gutterBottom>
-              {owner.phoneNumber}
+              {owner && owner.phoneNumber}
             </Typography>
             <Typography variant="h6">Avstand:</Typography>
             <GoogleMapsComponent
               initialMarkers={
-                state.currentUser !== undefined
+                currentUser && owner
                   ? [currentUser.location, owner.location]
-                  : [owner.location]
+                  : owner
+                  ? [owner.location]
+                  : []
               }
             />
           </CardContent>

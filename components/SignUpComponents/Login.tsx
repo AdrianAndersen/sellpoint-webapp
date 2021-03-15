@@ -11,8 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import Link from "next/link";
-import { useContext } from "react";
-import { Context } from "../Store";
+import { useGlobalState } from "../GlobalStateProvider";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,8 +38,7 @@ export default function SignInSide() {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
+  const { state, dispatch } = useGlobalState();
   const router = useRouter();
 
   return (

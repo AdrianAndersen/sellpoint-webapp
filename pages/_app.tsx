@@ -8,12 +8,12 @@ import Link from "next/link";
 import Head from "next/head";
 import Container from "@material-ui/core/Container";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import Store from "../components/Store";
+import GlobalStateProvider from "../components/GlobalStateProvider";
 import NavButtons from "../components/NavButtons";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Store>
+    <GlobalStateProvider>
       <Head>
         <title>Sellpoint</title>
         <link rel="icon" href="/favicon.ico" />
@@ -77,7 +77,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Container>
         </footer>
       </div>
-    </Store>
+    </GlobalStateProvider>
   );
 }
 

@@ -1,55 +1,47 @@
 import { Button } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { useContext } from "react";
-import { Context } from "./Store";
+import { useGlobalState } from "./GlobalStateProvider";
 import Link from "next/link";
 
-const Slideshow = ({
-  ads,
-  deleteAdvertisement,
-}: {
-  ads: any[];
-  deleteAdvertisement: any;
-}) => {
-  // @ts-ignore
-  const [state] = useContext(Context);
+const Slideshow = () => {
+  const { state, dispatch } = useGlobalState();
   const [index, setIndex] = useState(0);
-  const currentUser = state.users.find(
-    (user: { id: number }) => user.id === state.currentUser
-  );
+  const currentUser = state.users.find((user) => user.id === state.currentUser);
   useEffect(() => {
     const interval = setTimeout(() => {
-      setIndex((index + 1) % ads.length);
+      setIndex((index + 1) % state.advertisements.length);
     }, 2000);
 
     return () => clearTimeout(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, ads]);
+  }, [index, state.advertisements]);
   return (
-    <Link href={ads[index].link}>
+    <Link href={state.advertisements[index].link}>
       <div
         data-cy="adSlide"
         className="w-full bg-center bg-cover cursor-pointer"
         style={{
-          backgroundImage: ads[index]
-            ? "url(" + ads[index].imageURL + ")"
+          backgroundImage: state.advertisements[index]
+            ? "url(" + state.advertisements[index].imageURL + ")"
             : "none",
           backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundColor: "gray",
           height: "10rem",
         }}
-        title={ads[index]?.title}
+        title={state.advertisements[index]?.title}
       >
-        {(state.currentUser === ads[index].owner ||
+        {(state.currentUser === state.advertisements[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
           <Button
             data-cy="deleteAdBtn"
             color="secondary"
             onClick={(e) => {
               e.preventDefault();
-              deleteAdvertisement(ads[index].id);
-              setIndex((index + 1) % ads.length);
+              dispatch({
+                type: "REMOVE_ADVERTISEMENT",
+                payload: state.advertisements[index].id,
+              });
+              setIndex((index + 1) % state.advertisements.length);
             }}
           >
             X
@@ -61,17 +53,9 @@ const Slideshow = ({
 };
 
 const AdvertisementSlideshow = () => {
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
+  const { state } = useGlobalState();
   if (state.advertisements.length === 0) return <p>Ingen reklamer å vise...</p>;
-  return (
-    <Slideshow
-      ads={state.advertisements}
-      deleteAdvertisement={(advertisementId: number) =>
-        dispatch({ type: "REMOVE_ADVERTISEMENT", payload: advertisementId })
-      }
-    />
-  );
+  return <Slideshow />;
 };
 
 export default AdvertisementSlideshow;
