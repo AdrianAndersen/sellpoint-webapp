@@ -4,20 +4,58 @@ import Link from "next/link";
 import { useContext } from "react";
 import { Context } from "./Store";
 import { useRouter } from "next/router";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import { MenuProps } from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import ListItemText from "@material-ui/core/ListItemText";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formControl: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(1),
+    },
+    selectInput: {},
+  })
+);
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MENU_PROPS: Partial<MenuProps> = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+  variant: "menu",
+  getContentAnchorEl: null,
+};
 
 const CreateListingForm = ({
   initialListing = null,
 }: {
   initialListing?: any;
 }) => {
+  const router = useRouter();
+  // @ts-ignore
+  const [state, dispatch] = useContext(Context);
+
   const [title, setTitle] = useState(initialListing?.title);
   const [description, setDescription] = useState(initialListing?.description);
   const [price, setPrice] = useState(initialListing?.price);
   const [imageURL, setImageURL] = useState(initialListing?.imageURL);
+  const [selectedCategories, setSelectedCategories] = useState(
+    initialListing?.categories ?? []
+  );
 
-  const router = useRouter();
-  // @ts-ignore
-  const [state, dispatch] = useContext(Context);
+  const classes = useStyles();
+
   return (
     <form className="w-1/2 p-4 flex flex-col">
       <TextField
@@ -52,6 +90,26 @@ const CreateListingForm = ({
         value={imageURL}
         onChange={(evt) => setImageURL(evt.target.value)}
       />
+      <FormControl className={classes.formControl}>
+        <InputLabel id="categories-label">Kategorier</InputLabel>
+        <Select
+          labelId="categories-label"
+          id="categories-select"
+          multiple
+          value={selectedCategories}
+          onChange={(e: any) => setSelectedCategories(e.target.value)}
+          input={<Input className={classes.selectInput} />}
+          renderValue={(selected: any) => selected.join(", ")}
+          MenuProps={MENU_PROPS}
+        >
+          {state.categories.map((category: any) => (
+            <MenuItem key={category} value={category}>
+              <Checkbox checked={selectedCategories.includes(category)} />
+              <ListItemText primary={category} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <div className="flex flex-row justify-end space-x-4 my-8">
         <Link href="/">
           <Button variant="contained" color="secondary">
@@ -92,6 +150,7 @@ const CreateListingForm = ({
                 price: price,
                 imageURL: imageURL,
                 owner: state.currentUser,
+                categories: selectedCategories,
               },
             });
             router.push("/listings/" + id);

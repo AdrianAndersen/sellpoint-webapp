@@ -13,7 +13,7 @@ const initialState = {
     },
     {
       id: 2,
-      name: "Erna Soberg",
+      name: "Erna Solberg",
       phoneNumber: "12345677",
       username: "erna",
       password: "erna",
@@ -37,6 +37,7 @@ const initialState = {
       description:
         "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
       price: "600",
+      categories: ["Sykkel"],
       owner: 1,
     },
     {
@@ -46,9 +47,11 @@ const initialState = {
         "https://upload.wikimedia.org/wikipedia/commons/0/0c/Orange_Lamborghini_Gallardo_LP560_fl.JPG",
       description: "LP500-4 / Capristo Eksos / Skinn / PDC / Navi /",
       price: "999 000",
+      categories: ["Kjøretøy"],
       owner: 3,
     },
   ],
+  categories: ["Kjøretøy", "Møbler", "Dyr", "Hage", "Elektronikk", "Sykkel"],
   advertisements: [
     {
       id: 1,
