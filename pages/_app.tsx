@@ -11,6 +11,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import NavButtons from "../components/NavButtons";
 import useSWR from "swr";
 import GlobalStateProvider from "../components/GlobalStateProvider";
+import StateSWR from "../components/LoadingScreen/StateSWR";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -18,13 +19,13 @@ const multiFetcher = (...urls: string[]) =>
   Promise.all(urls.map((url) => fetcher(url)));
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { data } = useSWR(
+  const { data, error } = useSWR(
     ["/api/users", "/api/listings", "/api/categories", "/api/advertisements"],
     multiFetcher
   );
-  if (!data) {
-    return <></>;
-  }
+  if (error) return <StateSWR error={true} />;
+  if (!data) return <StateSWR />;
+
   return (
     <GlobalStateProvider
       initialState={{
