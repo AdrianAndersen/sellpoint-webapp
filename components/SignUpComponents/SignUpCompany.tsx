@@ -132,17 +132,28 @@ export default function SignUpCompany() {
               onClick={async (e) => {
                 e.preventDefault();
                 if (validateUser(user)) {
-                  const response = await fetch("/api/users", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(user),
-                  }).then((response) => response.json());
-                  if (response) {
+                  if (process.env.DATABASE_URL) {
+                    const response = await fetch("/api/users", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(user),
+                    }).then((response) => response.json());
+                    if (response) {
+                      dispatch({
+                        type: "ADD_USER",
+                        payload: { id: response.id, ...user },
+                      });
+                      router.push("/");
+                    }
+                  } else {
                     dispatch({
                       type: "ADD_USER",
-                      payload: { id: response.id, ...user },
+                      payload: {
+                        id: Math.floor(Math.random() * Math.floor(10000000)),
+                        ...user,
+                      },
                     });
                     router.push("/");
                   }

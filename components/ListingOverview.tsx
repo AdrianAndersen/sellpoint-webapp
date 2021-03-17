@@ -85,7 +85,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
               </CardContent>
               <CardActions>
                 <Link href={"/listings/" + listing.id}>
-                  <Button>Se mer</Button>
+                  <Button data-cy="viewListing">Se mer</Button>
                 </Link>
                 {currentUser && currentUser.role === "admin" && (
                   <>
@@ -95,14 +95,17 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                     <Button
                       color="secondary"
                       onClick={async () => {
-                        const response = await fetch("/api/listings", {
-                          method: "DELETE",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({ id: listing.id }),
-                        }).then((response) => response.json());
-                        if (response) {
+                        let response;
+                        if (process.env.DATABASE_URL) {
+                          response = await fetch("/api/listings", {
+                            method: "DELETE",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ id: listing.id }),
+                          }).then((response) => response.json());
+                        }
+                        if (response || !process.env.DATABASE_URL) {
                           dispatch({
                             type: "REMOVE_LISTING",
                             payload: listing.id,

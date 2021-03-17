@@ -61,17 +61,28 @@ const CreateNewAdvertisement = ({
               imageURL: imageURL,
               owner: state.currentUser,
             };
-            const response = await fetch("/api/advertisements", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(advertisement),
-            }).then((response) => response.json());
-            if (response) {
+            if (process.env.DATABASE_URL) {
+              const response = await fetch("/api/advertisements", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(advertisement),
+              }).then((response) => response.json());
+              if (response) {
+                dispatch({
+                  type: "ADD_ADVERTISEMENT",
+                  payload: { id: response.id, ...advertisement },
+                });
+                router.push("/");
+              }
+            } else {
               dispatch({
                 type: "ADD_ADVERTISEMENT",
-                payload: { id: response.id, ...advertisement },
+                payload: {
+                  id: Math.floor(Math.random() * Math.floor(10000000)),
+                  ...advertisement,
+                },
               });
               router.push("/");
             }

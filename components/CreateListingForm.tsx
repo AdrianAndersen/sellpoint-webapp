@@ -130,19 +130,29 @@ const CreateListingForm = ({
               owner: state.currentUser,
               categories: selectedCategories,
             };
+            if (process.env.DATABASE_URL) {
+              const response = await fetch("/api/listings", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newListing),
+              }).then((response) => response.json());
 
-            const response = await fetch("/api/listings", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(newListing),
-            }).then((response) => response.json());
-
-            if (response) {
+              if (response) {
+                dispatch({
+                  type: "ADD_LISTING",
+                  payload: { id: response.id, ...newListing },
+                });
+                router.push("/");
+              }
+            } else {
               dispatch({
                 type: "ADD_LISTING",
-                payload: { id: response.id, ...newListing },
+                payload: {
+                  id: Math.floor(Math.random() * Math.floor(10000000)),
+                  ...newListing,
+                },
               });
               router.push("/");
             }

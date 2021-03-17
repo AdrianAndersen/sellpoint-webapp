@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "DATABASE_URL=$(heroku config:get DATABASE_URL -a sellpoint-db) next dev",
+    "dev:test": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "DATABASE_URL=$(heroku config:get DATABASE_URL -a sellpoint-db) next start",
+    "start:test": "next start",
     "lint": "yarn run lint:prettier && yarn run lint:js && yarn run lint:css",
     "lint:js": "eslint . --ext ts,tsx --ignore-path .prettierignore --fix",
     "lint:css": "stylelint \"**/*.css\" --fix --ignore-path .prettierignore",
