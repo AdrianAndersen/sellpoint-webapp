@@ -48,6 +48,28 @@ const UserManager = () => {
         onClick={(e) => {
           e.preventDefault();
           if (selectedUser) {
+            if (selectedUser.role !== "business") {
+              state.listings
+                .filter((listing) => listing.owner === selectedUser.id)
+                .forEach((listing) => {
+                  dispatch({
+                    type: "REMOVE_LISTING",
+                    payload: listing.id,
+                  });
+                });
+            }
+
+            if (selectedUser.role !== "private") {
+              state.advertisements
+                .filter((ad) => ad.owner === selectedUser.id)
+                .forEach((ad) => {
+                  dispatch({
+                    type: "REMOVE_ADVERTISEMENT",
+                    payload: ad.id,
+                  });
+                });
+            }
+
             dispatch({
               type: "REMOVE_USER",
               payload: selectedUser.id,
