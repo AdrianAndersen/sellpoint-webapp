@@ -66,18 +66,15 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                 </Typography>
                 <Typography gutterBottom variant="button" component="h2">
                   Avstand:{" "}
-                  {() => {
-                    const owner = state.users.find(
-                      (user) => user.id === listing.owner
-                    );
-                    if (owner && currentUser) {
-                      return getPrettyDistance(
-                        currentUser.location,
-                        owner.location
-                      );
-                    }
-                    return "Du må logge inn for å se avstand!";
-                  }}
+                  {currentUser &&
+                    state.users.find((user) => user.id === listing.owner) &&
+                    getPrettyDistance(
+                      currentUser.location,
+                      // @ts-ignore
+                      state.users.find((user) => user.id === listing.owner)
+                        .location
+                    )}
+                  {!currentUser && <>Du må logge inn for å se avstand!</>}
                 </Typography>
                 <Typography variant="body1">
                   {listing.description.substr(0, 50) + "..."}
