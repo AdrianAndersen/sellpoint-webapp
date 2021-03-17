@@ -19,7 +19,6 @@ const emptyState: GlobalState = {
   listings: [],
   categories: [],
   advertisements: [],
-  error: null,
 };
 
 const GlobalStateProvider = ({

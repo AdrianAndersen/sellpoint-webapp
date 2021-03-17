@@ -13,7 +13,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Listing } from "./Types";
-import { getUniqueId } from "../lib/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -121,29 +120,32 @@ const CreateListingForm = ({
         </Link>
         <Button
           data-cy="submit"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            let id;
-            if (initialListing) {
-              dispatch({ type: "REMOVE_LISTING", payload: initialListing.id });
-              id = initialListing.id;
-            } else {
-              id = getUniqueId(state.users.map((user) => user.id));
-            }
+            const newListing: Partial<Listing> = {
+              title: title,
+              description: description,
+              price: price,
+              imageURL: imageURL,
+              owner: state.currentUser,
+              categories: selectedCategories,
+            };
 
-            dispatch({
-              type: "ADD_LISTING",
-              payload: {
-                id: id,
-                title: title,
-                description: description,
-                price: price,
-                imageURL: imageURL,
-                owner: state.currentUser,
-                categories: selectedCategories,
+            const response = await fetch("/api/listings", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-            });
-            router.push("/listings/" + id);
+              body: JSON.stringify(newListing),
+            }).then((response) => response.json());
+
+            if (response) {
+              dispatch({
+                type: "ADD_LISTING",
+                payload: { id: response.id, ...newListing },
+              });
+              router.push("/");
+            }
           }}
           variant="contained"
           color="primary"

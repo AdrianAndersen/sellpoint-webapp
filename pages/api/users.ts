@@ -1,38 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User } from "../../components/Types";
+import prisma from "../../lib/prisma";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  const users: User[] = [
-    {
-      id: "1",
-      name: "Ola Halvorsen",
-      phoneNumber: "98765432",
-      username: "ola",
-      password: "ola",
-      role: "private",
-      location: { lat: 63.436179, lng: 10.417865 },
-    },
-    {
-      id: "2",
-      name: "Erna Solberg",
-      phoneNumber: "12345677",
-      username: "erna",
-      password: "erna",
-      role: "business",
-      location: { lat: 63.418769, lng: 10.403894 },
-    },
-    {
-      id: "3",
-      name: "Admin Adminsen",
-      phoneNumber: "1234567",
-      username: "admin",
-      password: "admin",
-      role: "admin",
-      location: { lat: 63.426926, lng: 10.395967 },
-    },
-  ];
-  res.statusCode = 200;
-  res.json(users);
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === "POST") {
+    const result = await prisma.user.create({
+      data: {
+        name: req.body["name"],
+        username: req.body["username"],
+        password: req.body["password"],
+        phoneNumber: req.body["phoneNumber"],
+        role: req.body["role"],
+        lat: req.body["location"]["lat"],
+        lng: req.body["location"]["lng"],
+      },
+    });
+    res.json(result);
+  }
 };

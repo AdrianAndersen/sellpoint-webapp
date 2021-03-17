@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useGlobalState } from "./GlobalStateProvider";
-import { getUniqueId } from "../lib/utils";
 import { Advertisement } from "./Types";
 import Link from "next/link";
 
@@ -54,30 +53,28 @@ const CreateNewAdvertisement = ({
           data-cy="submit"
           variant="contained"
           color="primary"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            let id;
-            if (initialAdvertisement) {
-              dispatch({
-                type: "REMOVE_ADVERTISEMENT",
-                payload: initialAdvertisement.id,
-              });
-              id = initialAdvertisement.id;
-            } else {
-              id = getUniqueId(state.users.map((user) => user.id));
-            }
-
-            dispatch({
-              type: "ADD_ADVERTISEMENT",
-              payload: {
-                id: id,
-                title: title,
-                link: link,
-                imageURL: imageURL,
-                owner: state.currentUser,
+            const advertisement = {
+              title: title,
+              link: link,
+              imageURL: imageURL,
+              owner: state.currentUser,
+            };
+            const response = await fetch("/api/advertisements", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
               },
-            });
-            router.push("/");
+              body: JSON.stringify(advertisement),
+            }).then((response) => response.json());
+            if (response) {
+              dispatch({
+                type: "ADD_ADVERTISEMENT",
+                payload: { id: response.id, ...advertisement },
+              });
+              router.push("/");
+            }
           }}
         >
           Lag reklame

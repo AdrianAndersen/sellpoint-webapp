@@ -94,11 +94,20 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                     </Link>
                     <Button
                       color="secondary"
-                      onClick={() => {
-                        dispatch({
-                          type: "REMOVE_LISTING",
-                          payload: listing.id,
-                        });
+                      onClick={async () => {
+                        const response = await fetch("/api/listings", {
+                          method: "DELETE",
+                          headers: {
+                            "Content-Type": "application/json",
+                          },
+                          body: JSON.stringify({ id: listing.id }),
+                        }).then((response) => response.json());
+                        if (response) {
+                          dispatch({
+                            type: "REMOVE_LISTING",
+                            payload: listing.id,
+                          });
+                        }
                         forceUpdate();
                       }}
                     >

@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import validateUser from "./UserValidator";
 import { User } from "../Types";
-import { getUniqueId } from "../../lib/utils";
 import { useGlobalState } from "../GlobalStateProvider";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +51,7 @@ export default function SignUpPerson() {
   const classes = useStyles();
   const [user, setUser] = useState<Partial<User>>({ role: "private" });
   const router = useRouter();
-  const { state, dispatch } = useGlobalState();
+  const { dispatch } = useGlobalState();
 
   return (
     <Grid container component="main">
@@ -131,17 +130,23 @@ export default function SignUpPerson() {
             </Grid>
             <Button
               data-cy="signUpPrivateSubmit"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
                 if (validateUser(user)) {
-                  dispatch({
-                    type: "ADD_USER",
-                    payload: {
-                      ...user,
-                      id: getUniqueId(state.users.map((user) => user.id)),
+                  const response = await fetch("/api/users", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
                     },
-                  });
-                  router.push("/");
+                    body: JSON.stringify(user),
+                  }).then((response) => response.json());
+                  if (response) {
+                    dispatch({
+                      type: "ADD_USER",
+                      payload: { id: response.id, ...user },
+                    });
+                    router.push("/");
+                  }
                 } else alert("Du må fylle ut alle feltene!");
               }}
               type="submit"
