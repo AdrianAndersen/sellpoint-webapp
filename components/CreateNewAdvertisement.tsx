@@ -61,7 +61,7 @@ const CreateNewAdvertisement = ({
               imageURL: imageURL,
               owner: state.currentUser,
             };
-            if (process.env.DATABASE_URL) {
+            if (state.usingDB) {
               const response = await fetch("/api/advertisements", {
                 method: "POST",
                 headers: {

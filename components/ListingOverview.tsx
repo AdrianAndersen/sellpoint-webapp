@@ -96,7 +96,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                       color="secondary"
                       onClick={async () => {
                         let response;
-                        if (process.env.DATABASE_URL) {
+                        if (state.usingDB) {
                           response = await fetch("/api/listings", {
                             method: "DELETE",
                             headers: {
@@ -105,7 +105,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                             body: JSON.stringify({ id: listing.id }),
                           }).then((response) => response.json());
                         }
-                        if (response || !process.env.DATABASE_URL) {
+                        if (response || !state.usingDB) {
                           dispatch({
                             type: "REMOVE_LISTING",
                             payload: listing.id,

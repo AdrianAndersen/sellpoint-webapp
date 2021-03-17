@@ -51,7 +51,7 @@ export default function SignUpPerson() {
   const classes = useStyles();
   const [user, setUser] = useState<Partial<User>>({ role: "private" });
   const router = useRouter();
-  const { dispatch } = useGlobalState();
+  const { state, dispatch } = useGlobalState();
 
   return (
     <Grid container component="main">
@@ -133,7 +133,7 @@ export default function SignUpPerson() {
               onClick={async (e) => {
                 e.preventDefault();
                 if (validateUser(user)) {
-                  if (process.env.DATABASE_URL) {
+                  if (state.usingDB) {
                     const response = await fetch("/api/users", {
                       method: "POST",
                       headers: {

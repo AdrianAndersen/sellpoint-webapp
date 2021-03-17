@@ -13,6 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.DATABASE_URL) {
     const globalState: GlobalState = {
       currentUser: undefined,
+      usingDB: false,
       users: [
         {
           id: 1,
@@ -109,7 +110,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
     const categoryData = await prisma.category.findMany();
     const advertisementData = await prisma.advertisement.findMany();
-
     const users = userData.map((user) => {
       const userObj: { lat?: Decimal; lng?: Decimal; location: LatLng } = {
         ...user,
@@ -147,6 +147,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const globalState: GlobalState = {
       currentUser: undefined,
+      usingDB: true,
       users: users,
       listings: listings,
       categories: categories,

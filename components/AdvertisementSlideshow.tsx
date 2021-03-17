@@ -43,7 +43,7 @@ const Slideshow = () => {
             onClick={async (e) => {
               e.preventDefault();
               let response;
-              if (process.env.DATABASE_URL) {
+              if (state.usingDB) {
                 response = await fetch("/api/advertisements", {
                   method: "DELETE",
                   headers: {
@@ -53,7 +53,7 @@ const Slideshow = () => {
                 }).then((response) => response.json());
               }
 
-              if (response || !process.env.DATABASE_URL) {
+              if (response || !state.usingDB) {
                 dispatch({
                   type: "REMOVE_ADVERTISEMENT",
                   payload: state.advertisements[index].id,

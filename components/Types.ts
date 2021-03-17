@@ -39,6 +39,7 @@ export type Advertisement = {
 
 export type GlobalState = {
   currentUser?: ID;
+  usingDB: boolean;
   users: User[];
   listings: Listing[];
   categories: Category[];

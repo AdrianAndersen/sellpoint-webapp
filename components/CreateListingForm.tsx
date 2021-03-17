@@ -130,7 +130,7 @@ const CreateListingForm = ({
               owner: state.currentUser,
               categories: selectedCategories,
             };
-            if (process.env.DATABASE_URL) {
+            if (state.usingDB) {
               const response = await fetch("/api/listings", {
                 method: "POST",
                 headers: {
@@ -138,7 +138,6 @@ const CreateListingForm = ({
                 },
                 body: JSON.stringify(newListing),
               }).then((response) => response.json());
-
               if (response) {
                 dispatch({
                   type: "ADD_LISTING",

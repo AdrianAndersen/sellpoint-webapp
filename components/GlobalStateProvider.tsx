@@ -15,6 +15,7 @@ const GlobalStateContext = createContext({
 
 const emptyState: GlobalState = {
   currentUser: undefined,
+  usingDB: false,
   users: [],
   listings: [],
   categories: [],
