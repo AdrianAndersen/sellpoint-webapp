@@ -45,28 +45,46 @@ const UserManager = () => {
         data-cy="deleteUserBtn"
         variant="contained"
         color="secondary"
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
           if (selectedUser) {
             if (selectedUser.role !== "business") {
               state.listings
                 .filter((listing) => listing.owner === selectedUser.id)
-                .forEach((listing) => {
+                .forEach(async (listing) => {
                   dispatch({
                     type: "REMOVE_LISTING",
                     payload: listing.id,
                   });
+                  if (state.usingDB) {
+                    await fetch("/api/listings", {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: selectedUser.id }),
+                    });
+                  }
                 });
             }
 
             if (selectedUser.role !== "private") {
               state.advertisements
                 .filter((ad) => ad.owner === selectedUser.id)
-                .forEach((ad) => {
+                .forEach(async (ad) => {
                   dispatch({
                     type: "REMOVE_ADVERTISEMENT",
                     payload: ad.id,
                   });
+                  if (state.usingDB) {
+                    await fetch("/api/advertisements", {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: selectedUser.id }),
+                    });
+                  }
                 });
             }
 
@@ -74,6 +92,15 @@ const UserManager = () => {
               type: "REMOVE_USER",
               payload: selectedUser.id,
             });
+            if (state.usingDB) {
+              await fetch("/api/users", {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: selectedUser.id }),
+              });
+            }
             setSelectedUser(null);
             setInputValue("");
           }

@@ -17,5 +17,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     res.json(result);
+  } else if (req.method === "DELETE") {
+    const result = await prisma.user.delete({
+      where: { id: req.body["id"] },
+    });
+    res.json(result);
   }
 };
