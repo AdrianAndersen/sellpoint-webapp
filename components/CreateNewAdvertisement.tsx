@@ -3,11 +3,17 @@ import { Button, TextField } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useGlobalState } from "./GlobalStateProvider";
 import { getUniqueId } from "../lib/utils";
+import { Advertisement } from "./Types";
+import Link from "next/link";
 
-const CreateNewAdvertisement = () => {
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
-  const [imageURL, setImageURL] = useState("");
+const CreateNewAdvertisement = ({
+  initialAdvertisement,
+}: {
+  initialAdvertisement?: Advertisement;
+}) => {
+  const [title, setTitle] = useState(initialAdvertisement?.title);
+  const [link, setLink] = useState(initialAdvertisement?.link);
+  const [imageURL, setImageURL] = useState(initialAdvertisement?.imageURL);
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   return (
@@ -39,19 +45,32 @@ const CreateNewAdvertisement = () => {
         onChange={(evt) => setImageURL(evt.target.value)}
       />
       <div className="flex flex-row justify-end space-x-4 my-8">
-        <Button variant="contained" color="secondary">
-          Cancel
-        </Button>
+        <Link href="/">
+          <Button variant="contained" color="secondary">
+            Cancel
+          </Button>
+        </Link>
         <Button
           data-cy="submit"
           variant="contained"
           color="primary"
           onClick={(e) => {
             e.preventDefault();
+            let id;
+            if (initialAdvertisement) {
+              dispatch({
+                type: "REMOVE_ADVERTISEMENT",
+                payload: initialAdvertisement.id,
+              });
+              id = initialAdvertisement.id;
+            } else {
+              id = getUniqueId(state.users.map((user) => user.id));
+            }
+
             dispatch({
               type: "ADD_ADVERTISEMENT",
               payload: {
-                id: getUniqueId(state.advertisements.map((ad) => ad.id)),
+                id: id,
                 title: title,
                 link: link,
                 imageURL: imageURL,

@@ -2,11 +2,15 @@ import { Button } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "./GlobalStateProvider";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Slideshow = () => {
   const { state, dispatch } = useGlobalState();
   const [index, setIndex] = useState(0);
   const currentUser = state.users.find((user) => user.id === state.currentUser);
+
+  const router = useRouter();
+
   useEffect(() => {
     const interval = setTimeout(() => {
       setIndex((index + 1) % state.advertisements.length);
@@ -14,6 +18,7 @@ const Slideshow = () => {
 
     return () => clearTimeout(interval);
   }, [index, state.advertisements]);
+
   return (
     <Link href={state.advertisements[index].link}>
       <div
@@ -45,6 +50,23 @@ const Slideshow = () => {
             }}
           >
             X
+          </Button>
+        )}
+
+        {(state.currentUser === state.advertisements[index].owner ||
+          (currentUser && currentUser.role === "admin")) && (
+          <Button
+            data-cy="editAdBtn"
+            variant="contained"
+            color="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(
+                "/edit-advertisement/" + state.advertisements[index].id
+              );
+            }}
+          >
+            Edit
           </Button>
         )}
       </div>
