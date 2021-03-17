@@ -26,6 +26,17 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       categories: ["Kjøretøy"],
       owner: "3",
     },
+    {
+      id: "3",
+      title: "Volvo 240",
+      imageURL:
+        "https://upload.wikimedia.org/wikipedia/commons/a/ab/1990_volvo_240dl_wagon_4.jpg",
+      description:
+        "Ei knakanes fin Volvo 240. Den er det stikk motsatte av bæljåte, og selges for en rimelig pris!",
+      price: 33690,
+      categories: ["Kjøretøy"],
+      owner: "1",
+    },
   ];
   res.statusCode = 200;
   res.json(listings);

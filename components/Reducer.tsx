@@ -10,6 +10,11 @@ const Reducer = (state: GlobalState, action: DispatchObject) => {
         users: state.users.concat(action.payload),
         currentUser: action.payload.id,
       };
+    case "REMOVE_USER":
+      return {
+        ...state,
+        users: state.users.filter((user) => user.id !== action.payload),
+      };
     case "SET_CURRENT_USER":
       return {
         ...state,

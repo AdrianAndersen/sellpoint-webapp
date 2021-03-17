@@ -11,6 +11,13 @@ const NavButtons = () => {
   const router = useRouter();
   return (
     <div className="w-full flex flex-row justify-end">
+      {currentUser && currentUser.role === "admin" && (
+        <Link href="/admin">
+          <Button color="inherit">
+            <Typography data-cy="navAdminBtn">Admin</Typography>
+          </Button>
+        </Link>
+      )}
       {currentUser && currentUser.role !== "private" && (
         <Link href="/new-ad">
           <Button color="inherit">
