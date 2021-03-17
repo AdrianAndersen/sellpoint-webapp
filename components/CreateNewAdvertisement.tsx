@@ -61,7 +61,22 @@ const CreateNewAdvertisement = ({
               imageURL: imageURL,
               owner: state.currentUser,
             };
+            if (initialAdvertisement) {
+              dispatch({
+                type: "REMOVE_ADVERTISEMENT",
+                payload: initialAdvertisement.id,
+              });
+            }
             if (state.usingDB) {
+              if (initialAdvertisement) {
+                await fetch("/api/advertisements", {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ id: initialAdvertisement.id }),
+                });
+              }
               const response = await fetch("/api/advertisements", {
                 method: "POST",
                 headers: {

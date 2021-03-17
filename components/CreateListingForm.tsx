@@ -130,7 +130,22 @@ const CreateListingForm = ({
               owner: state.currentUser,
               categories: selectedCategories,
             };
+            if (initialListing) {
+              dispatch({
+                type: "REMOVE_LISTING",
+                payload: initialListing.id,
+              });
+            }
             if (state.usingDB) {
+              if (initialListing) {
+                await fetch("/api/listings", {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ id: initialListing.id }),
+                });
+              }
               const response = await fetch("/api/listings", {
                 method: "POST",
                 headers: {
