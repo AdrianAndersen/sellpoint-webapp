@@ -50,6 +50,7 @@ export type GlobalState = {
 export type DispatchAction =
   | "SET_STATE"
   | "ADD_USER"
+  | "REMOVE_USER"
   | "SET_CURRENT_USER"
   | "SET_LISTINGS"
   | "ADD_LISTING"
