@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import validateUser from "./UserValidator";
 import { User } from "../Types";
-import { getUniqueId } from "../../lib/utils";
 import { useGlobalState } from "../GlobalStateProvider";
 
 const useStyles = makeStyles((theme) => ({
@@ -131,17 +130,34 @@ export default function SignUpPerson() {
             </Grid>
             <Button
               data-cy="signUpPrivateSubmit"
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.preventDefault();
                 if (validateUser(user)) {
-                  dispatch({
-                    type: "ADD_USER",
-                    payload: {
-                      ...user,
-                      id: getUniqueId(state.users.map((user) => user.id)),
-                    },
-                  });
-                  router.push("/");
+                  if (state.usingDB) {
+                    const response = await fetch("/api/users", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(user),
+                    }).then((response) => response.json());
+                    if (response) {
+                      dispatch({
+                        type: "ADD_USER",
+                        payload: { id: response.id, ...user },
+                      });
+                      router.push("/");
+                    }
+                  } else {
+                    dispatch({
+                      type: "ADD_USER",
+                      payload: {
+                        id: Math.floor(Math.random() * Math.floor(10000000)),
+                        ...user,
+                      },
+                    });
+                    router.push("/");
+                  }
                 } else alert("Du må fylle ut alle feltene!");
               }}
               type="submit"

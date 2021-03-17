@@ -9,7 +9,7 @@ const EditAdvertisementPage = () => {
   const { id } = router.query;
   const { state } = useGlobalState();
   const advertisement = state.advertisements.find(
-    (advertisement) => advertisement.id === id
+    (advertisement) => advertisement.id === Number(id)
   );
   return (
     <div className="min-h-screen flex flex-col items-center">

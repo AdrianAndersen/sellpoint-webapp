@@ -15,28 +15,12 @@ import StateSWR from "../components/LoadingScreen/StateSWR";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const multiFetcher = (...urls: string[]) =>
-  Promise.all(urls.map((url) => fetcher(url)));
-
 function MyApp({ Component, pageProps }: AppProps) {
-  const { data, error } = useSWR(
-    ["/api/users", "/api/listings", "/api/categories", "/api/advertisements"],
-    multiFetcher
-  );
+  const { data, error } = useSWR("/api/all", fetcher);
   if (error) return <StateSWR error={true} />;
   if (!data) return <StateSWR />;
-
   return (
-    <GlobalStateProvider
-      initialState={{
-        currentUser: undefined,
-        users: data[0],
-        listings: data[1],
-        categories: data[2],
-        advertisements: data[3],
-        error: null,
-      }}
-    >
+    <GlobalStateProvider initialState={data}>
       <Head>
         <title>Sellpoint</title>
         <link rel="icon" href="/favicon.ico" />

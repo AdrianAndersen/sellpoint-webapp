@@ -66,18 +66,15 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                 </Typography>
                 <Typography gutterBottom variant="button" component="h2">
                   Avstand:{" "}
-                  {() => {
-                    const owner = state.users.find(
-                      (user) => user.id === listing.owner
-                    );
-                    if (owner && currentUser) {
-                      return getPrettyDistance(
-                        currentUser.location,
-                        owner.location
-                      );
-                    }
-                    return "Du må logge inn for å se avstand!";
-                  }}
+                  {currentUser &&
+                    state.users.find((user) => user.id === listing.owner) &&
+                    getPrettyDistance(
+                      currentUser.location,
+                      // @ts-ignore
+                      state.users.find((user) => user.id === listing.owner)
+                        .location
+                    )}
+                  {!currentUser && <>Du må logge inn for å se avstand!</>}
                 </Typography>
                 <Typography variant="body1">
                   {listing.description.substr(0, 50) + "..."}
@@ -85,7 +82,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
               </CardContent>
               <CardActions>
                 <Link href={"/listings/" + listing.id}>
-                  <Button>Se mer</Button>
+                  <Button data-cy="viewListing">Se mer</Button>
                 </Link>
                 {currentUser && currentUser.role === "admin" && (
                   <>
@@ -94,11 +91,23 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                     </Link>
                     <Button
                       color="secondary"
-                      onClick={() => {
-                        dispatch({
-                          type: "REMOVE_LISTING",
-                          payload: listing.id,
-                        });
+                      onClick={async () => {
+                        let response;
+                        if (state.usingDB) {
+                          response = await fetch("/api/listings", {
+                            method: "DELETE",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ id: listing.id }),
+                          }).then((response) => response.json());
+                        }
+                        if (response || !state.usingDB) {
+                          dispatch({
+                            type: "REMOVE_LISTING",
+                            payload: listing.id,
+                          });
+                        }
                         forceUpdate();
                       }}
                     >

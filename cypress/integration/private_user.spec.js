@@ -15,6 +15,7 @@ describe("Som privatbruker vil jeg kunne", () => {
       "https://upload.wikimedia.org/wikipedia/commons/a/ab/1990_volvo_240dl_wagon_4.jpg"
     );
     cy.getBySel("submit").click();
+    cy.getBySel("viewListing").eq(3).click();
 
     cy.getBySel("title").should("contain", "Volvo 240");
     cy.getBySel("price").should("contain", "20000");

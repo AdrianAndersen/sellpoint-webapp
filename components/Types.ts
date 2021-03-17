@@ -5,7 +5,7 @@ export type LatLng = {
   lat: number;
 };
 
-export type ID = string;
+export type ID = number;
 
 export type User = {
   id: ID;
@@ -38,13 +38,12 @@ export type Advertisement = {
 };
 
 export type GlobalState = {
-  currentUser?: string;
+  currentUser?: ID;
+  usingDB: boolean;
   users: User[];
   listings: Listing[];
   categories: Category[];
   advertisements: Advertisement[];
-  status?: any;
-  error?: any;
 };
 
 export type DispatchAction =
@@ -57,8 +56,7 @@ export type DispatchAction =
   | "REMOVE_LISTING"
   | "ADD_CATEGORY"
   | "ADD_ADVERTISEMENT"
-  | "REMOVE_ADVERTISEMENT"
-  | "SET_ERROR";
+  | "REMOVE_ADVERTISEMENT";
 
 export type DispatchObject = {
   type: DispatchAction;

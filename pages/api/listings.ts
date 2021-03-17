@@ -1,43 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Listing } from "../../components/Types";
+import prisma from "../../lib/prisma";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  const listings: Listing[] = [
-    {
-      id: "1",
-      title: "Sykkel",
-      imageURL:
-        "https://images-na.ssl-images-amazon.com/images/I/61OXtQ80V3L.jpg",
-      description:
-        "Rimelig Mountain bike. Dette er den rimeligste sykkelen vi har i sortimentet. Til tross for prisen er denne utstyrt med 21 gir, Dempere foran og skivebremser.",
-      price: 600,
-      categories: ["Sykkel"],
-      owner: "1",
-    },
-    {
-      id: "2",
-      title: "Lamborghini Gallardo",
-      imageURL:
-        "https://upload.wikimedia.org/wikipedia/commons/0/0c/Orange_Lamborghini_Gallardo_LP560_fl.JPG",
-      description: "LP500-4 / Capristo Eksos / Skinn / PDC / Navi /",
-      price: 999000,
-      categories: ["Kjøretøy"],
-      owner: "3",
-    },
-    {
-      id: "3",
-      title: "Volvo 240",
-      imageURL:
-        "https://upload.wikimedia.org/wikipedia/commons/a/ab/1990_volvo_240dl_wagon_4.jpg",
-      description:
-        "Ei knakanes fin Volvo 240. Den er det stikk motsatte av bæljåte, og selges for en rimelig pris!",
-      price: 33690,
-      categories: ["Kjøretøy"],
-      owner: "1",
-    },
-  ];
-  res.statusCode = 200;
-  res.json(listings);
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === "POST") {
+    const result = await prisma.listing.create({
+      data: {
+        title: req.body["title"],
+        imageURL: req.body["imageURL"],
+        description: req.body["description"],
+        price: req.body["price"],
+        owner: { connect: { id: req.body["owner"] } },
+        categories: {
+          connect: req.body["categories"].map((cat: string) => ({ name: cat })),
+        },
+      },
+    });
+    res.json(result);
+  } else if (req.method === "DELETE") {
+    const result = await prisma.listing.delete({
+      where: { id: req.body["id"] },
+    });
+    res.json(result);
+  }
 };

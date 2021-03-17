@@ -7,7 +7,7 @@ const Listings = () => {
   const router = useRouter();
   const { id } = router.query;
   const { state } = useGlobalState();
-  const listing = state.listings.find((listing) => listing.id === id);
+  const listing = state.listings.find((listing) => listing.id === Number(id));
   if (!listing) {
     return <p></p>;
   }

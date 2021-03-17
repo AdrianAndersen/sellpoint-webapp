@@ -40,13 +40,26 @@ const Slideshow = () => {
           <Button
             data-cy="deleteAdBtn"
             color="secondary"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              dispatch({
-                type: "REMOVE_ADVERTISEMENT",
-                payload: state.advertisements[index].id,
-              });
-              setIndex((index + 1) % state.advertisements.length);
+              let response;
+              if (state.usingDB) {
+                response = await fetch("/api/advertisements", {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ id: state.advertisements[index].id }),
+                }).then((response) => response.json());
+              }
+
+              if (response || !state.usingDB) {
+                dispatch({
+                  type: "REMOVE_ADVERTISEMENT",
+                  payload: state.advertisements[index].id,
+                });
+                setIndex((index + 1) % state.advertisements.length);
+              }
             }}
           >
             X

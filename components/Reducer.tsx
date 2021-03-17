@@ -54,11 +54,6 @@ const Reducer = (state: GlobalState, action: DispatchObject) => {
           (advertisement) => advertisement.id !== action.payload
         ),
       };
-    case "SET_ERROR":
-      return {
-        ...state,
-        error: action.payload,
-      };
     default:
       return state;
   }

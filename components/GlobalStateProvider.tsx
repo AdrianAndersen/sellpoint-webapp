@@ -15,11 +15,11 @@ const GlobalStateContext = createContext({
 
 const emptyState: GlobalState = {
   currentUser: undefined,
+  usingDB: false,
   users: [],
   listings: [],
   categories: [],
   advertisements: [],
-  error: null,
 };
 
 const GlobalStateProvider = ({

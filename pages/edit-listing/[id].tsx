@@ -8,7 +8,7 @@ const EditListingPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { state } = useGlobalState();
-  const listing = state.listings.find((listing) => listing.id === id);
+  const listing = state.listings.find((listing) => listing.id === Number(id));
   return (
     <div className="min-h-screen flex flex-col items-center">
       {listing && listing.title && (
