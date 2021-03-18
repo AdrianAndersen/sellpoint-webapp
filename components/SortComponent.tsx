@@ -30,8 +30,8 @@ const SortComponent = () => {
       let locA: LatLng;
       let locB: LatLng;
       let locCurrent: LatLng;
-      const userA = state.users.find((user) => user.id === a.id);
-      const userB = state.users.find((user) => user.id === b.id);
+      const userA = state.users.find((user) => user.id === a.owner);
+      const userB = state.users.find((user) => user.id === b.owner);
 
       if (userA && userB && currentUser) {
         locA = userA.location;
@@ -40,6 +40,7 @@ const SortComponent = () => {
       } else {
         return 0;
       }
+
       return x
         ? getExactDistance(locCurrent, locA) -
             getExactDistance(locCurrent, locB)
