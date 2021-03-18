@@ -63,9 +63,7 @@ const CreateNewAdvertisement = ({
               owner: state.currentUser,
             };
 
-            if(validateAdvertisement(advertisement)){
-
-              
+            if (validateAdvertisement(advertisement)) {
               if (initialAdvertisement) {
                 dispatch({
                   type: "REMOVE_ADVERTISEMENT",
@@ -106,10 +104,10 @@ const CreateNewAdvertisement = ({
                 });
                 router.push("/");
               }
+            } else {
+              alert("Du må fylle ut alle feltene!");
             }
-
           }}
-
         >
           Lag reklame
         </Button>

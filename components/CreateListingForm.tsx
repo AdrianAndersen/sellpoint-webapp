@@ -131,9 +131,7 @@ const CreateListingForm = ({
               owner: state.currentUser,
               categories: selectedCategories,
             };
-            if (validateListing(newListing)){
-                
-                
+            if (validateListing(newListing)) {
               if (initialListing) {
                 dispatch({
                   type: "REMOVE_LISTING",
@@ -174,8 +172,9 @@ const CreateListingForm = ({
                 });
                 router.push("/");
               }
+            } else {
+              alert("Du må fylle ut alle feltene!");
             }
-
           }}
           variant="contained"
           color="primary"
