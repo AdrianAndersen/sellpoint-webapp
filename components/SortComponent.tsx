@@ -30,23 +30,26 @@ const SortComponent = () => {
       let locA: LatLng;
       let locB: LatLng;
       let locCurrent: LatLng;
-      const userA = state.users.find((user) => user.id === a.id);
-      const userB = state.users.find((user) => user.id === b.id);
+      const userA = state.users.find((user) => user.id === a.owner);
+      const userB = state.users.find((user) => user.id === b.owner);
 
       if (userA && userB && currentUser) {
         locA = userA.location;
         locB = userB.location;
         locCurrent = currentUser.location;
+        console.log("test");
+        console.log(userA, userB);
       } else {
         return 0;
       }
+
       return x
         ? getExactDistance(locCurrent, locA) -
             getExactDistance(locCurrent, locB)
         : getExactDistance(locCurrent, locB) -
             getExactDistance(locCurrent, locA);
     });
-
+    console.log(state.listings);
     dispatch({ type: "SET_LISTINGS", payload: state.listings });
   };
 
