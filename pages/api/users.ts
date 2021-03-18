@@ -7,6 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const result = await prisma.user.create({
       data: {
+        id: req.body["id"],
         name: req.body["name"],
         username: req.body["username"],
         password: req.body["password"],
