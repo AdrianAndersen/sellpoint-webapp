@@ -126,6 +126,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                         </IconButton>
                       </Link>
                       <IconButton
+                        data-cy="deleteListing"
                         color="secondary"
                         onClick={async () => {
                           let response;
