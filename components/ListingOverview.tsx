@@ -34,9 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
   actionWrapper: {
     display: "flex",
-    flex: "wrap"
-
-  }
+    flex: "wrap",
+  },
 }));
 
 const ListingOverview = ({ categories }: { categories: Category[] }) => {
@@ -102,7 +101,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                   {listing.description.substr(0, 50) + "..."}
                 </Typography>
               </CardContent>
-              <CardActions className ={classes.actionWrapper}>
+              <CardActions className="flex flex-wrap">
                 <Link href={"/listings/" + listing.id}>
                   <Button data-cy="viewListing">Se mer</Button>
                 </Link>
@@ -141,8 +140,10 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                   (currentUser.id === listing.owner ||
                     currentUser.role == "admin") && (
                     <FormControlLabel
+                      className="pl-0"
                       control={
                         <Checkbox
+                          className=" pl-0"
                           checked={listing.sold}
                           onChange={(e) => handleSold(e, listing)}
                           name="sold"
