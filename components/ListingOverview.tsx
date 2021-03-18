@@ -9,13 +9,15 @@ import {
   Grid,
   makeStyles,
   Typography,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
 import Link from "next/link";
 import { useReducer } from "react";
 import { useGlobalState } from "./GlobalStateProvider";
 import moment from "moment";
 import { getPrettyDistance } from "./GoogleMaps/GoogleMapsComponent";
-import { Category } from "./Types";
+import { Category, Listing } from "./Types";
 import SortComponent from "./SortComponent";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +29,14 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "56.25%", // 16:9
   },
+  sold: {
+    opacity: 0.5,
+  },
+  actionWrapper: {
+    display: "flex",
+    flex: "wrap"
+
+  }
 }));
 
 const ListingOverview = ({ categories }: { categories: Category[] }) => {
@@ -34,6 +44,15 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
   const { state, dispatch } = useGlobalState();
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const handleSold = (e: any, listing: Listing) => {
+    listing.sold = e.target.checked;
+    dispatch({
+      type: "SET_LISTINGS",
+      payload: state.listings,
+    });
+  };
+
   return (
     <>
       <SortComponent />
@@ -53,10 +72,13 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
               )
           )
           .map((listing) => (
-            <Card className={classes.card} key={listing.id}>
+            <Card
+              className={`${classes.card} ${listing.sold ? classes.sold : ""}`}
+              key={listing.id}
+            >
               <CardHeader
                 avatar={<Avatar></Avatar>}
-                title={listing.title}
+                title={listing.title + (listing.sold ? " SOLGT" : "")}
                 subheader={moment().format("DD/MM/YYYY")}
               />
               <CardMedia className={classes.media} image={listing.imageURL} />
@@ -80,7 +102,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                   {listing.description.substr(0, 50) + "..."}
                 </Typography>
               </CardContent>
-              <CardActions>
+              <CardActions className ={classes.actionWrapper}>
                 <Link href={"/listings/" + listing.id}>
                   <Button data-cy="viewListing">Se mer</Button>
                 </Link>
@@ -115,6 +137,21 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                     </Button>
                   </>
                 )}
+                {currentUser &&
+                  (currentUser.id === listing.owner ||
+                    currentUser.role == "admin") && (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={listing.sold}
+                          onChange={(e) => handleSold(e, listing)}
+                          name="sold"
+                          color="primary"
+                        />
+                      }
+                      label={listing.sold ? "Solgt" : "Marker som solgt"}
+                    />
+                  )}
               </CardActions>
             </Card>
           ))}

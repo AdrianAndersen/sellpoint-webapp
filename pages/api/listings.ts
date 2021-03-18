@@ -15,6 +15,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         categories: {
           connect: req.body["categories"].map((cat: string) => ({ name: cat })),
         },
+        sold: false,
       },
     });
     res.json(result);
