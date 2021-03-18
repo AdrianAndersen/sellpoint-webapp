@@ -116,39 +116,41 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                 <Link href={"/listings/" + listing.id}>
                   <Button data-cy="viewListing">Se mer</Button>
                 </Link>
-                {currentUser && currentUser.role === "admin" && (
-                  <>
-                    <Link href={"/edit-listing/" + listing.id}>
-                      <IconButton color="secondary">
-                        <Edit />
+                {currentUser &&
+                  (currentUser.role === "admin" ||
+                    currentUser.id === listing.owner) && (
+                    <>
+                      <Link href={"/edit-listing/" + listing.id}>
+                        <IconButton color="secondary">
+                          <Edit />
+                        </IconButton>
+                      </Link>
+                      <IconButton
+                        color="secondary"
+                        onClick={async () => {
+                          let response;
+                          if (state.usingDB) {
+                            response = await fetch("/api/listings", {
+                              method: "DELETE",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ id: listing.id }),
+                            }).then((response) => response.json());
+                          }
+                          if (response || !state.usingDB) {
+                            dispatch({
+                              type: "REMOVE_LISTING",
+                              payload: listing.id,
+                            });
+                          }
+                          forceUpdate();
+                        }}
+                      >
+                        <Delete />
                       </IconButton>
-                    </Link>
-                    <IconButton
-                      color="secondary"
-                      onClick={async () => {
-                        let response;
-                        if (state.usingDB) {
-                          response = await fetch("/api/listings", {
-                            method: "DELETE",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ id: listing.id }),
-                          }).then((response) => response.json());
-                        }
-                        if (response || !state.usingDB) {
-                          dispatch({
-                            type: "REMOVE_LISTING",
-                            payload: listing.id,
-                          });
-                        }
-                        forceUpdate();
-                      }}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </>
-                )}
+                    </>
+                  )}
                 {currentUser &&
                   (currentUser.id === listing.owner ||
                     currentUser.role == "admin") && (
