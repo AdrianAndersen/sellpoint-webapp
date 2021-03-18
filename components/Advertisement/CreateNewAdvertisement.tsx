@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import { useRouter } from "next/router";
-import { useGlobalState } from "./GlobalStateProvider";
-import { Advertisement } from "./Types";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { Advertisement } from "../../lib/Types";
 import Link from "next/link";
-import validateAdvertisement from "./SignUpComponents/AdvertisementValidator";
+import validateAdvertisement from "../Validators/AdvertisementValidator";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,

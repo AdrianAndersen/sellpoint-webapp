@@ -1,4 +1,4 @@
-import { User } from "../Types";
+import { User } from "../../lib/Types";
 
 const validateUser = (user: Partial<User>): boolean => {
   return (

@@ -2,8 +2,8 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { Delete } from "@material-ui/icons";
 import { useState } from "react";
-import { useGlobalState } from "../GlobalStateProvider";
-import { User } from "../Types";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { User } from "../../lib/Types";
 
 const UserManager = () => {
   const { state, dispatch } = useGlobalState();

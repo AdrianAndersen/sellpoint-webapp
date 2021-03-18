@@ -1,4 +1,4 @@
-import { Advertisement } from "../Types";
+import { Advertisement } from "../../lib/Types";
 
 const validateAdvertisement = (
   advertisement: Partial<Advertisement>

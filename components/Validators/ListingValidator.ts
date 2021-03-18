@@ -1,4 +1,4 @@
-import { Listing } from "../Types";
+import { Listing } from "../../lib/Types";
 
 const validateListing = (listing: Partial<Listing>): boolean => {
   return (

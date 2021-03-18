@@ -1,4 +1,4 @@
-import { DispatchObject, GlobalState } from "./Types";
+import { DispatchObject, GlobalState } from "../../lib/Types";
 
 const Reducer = (state: GlobalState, action: DispatchObject) => {
   switch (action.type) {

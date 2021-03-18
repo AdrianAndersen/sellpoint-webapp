@@ -8,9 +8,9 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { useGlobalState } from "./GlobalStateProvider";
-import GoogleMapsComponent from "../components/GoogleMaps/GoogleMapsComponent";
-import { Listing } from "./Types";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
+import { Listing } from "../../lib/Types";
 
 const useStyles = makeStyles(() => ({
   price: {

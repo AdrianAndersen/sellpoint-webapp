@@ -6,7 +6,7 @@ import {
   LatLng,
   Listing,
   User,
-} from "../../components/Types";
+} from "../../lib/Types";
 import prisma from "../../lib/prisma";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

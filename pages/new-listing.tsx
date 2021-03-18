@@ -1,5 +1,5 @@
 import { Card, Typography } from "@material-ui/core";
-import CreateListingForm from "../components/CreateListingForm";
+import CreateListingForm from "../components/Listing/CreateListingForm";
 import Head from "next/head";
 
 const CreateListingPage = () => {

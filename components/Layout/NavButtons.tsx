@@ -3,7 +3,7 @@ import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { useRouter } from "next/router";
-import { useGlobalState } from "./GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 
 const NavButtons = () => {
   const { state, dispatch } = useGlobalState();

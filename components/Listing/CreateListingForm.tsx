@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, TextField } from "@material-ui/core";
 import Link from "next/link";
-import { useGlobalState } from "./GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { useRouter } from "next/router";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -12,8 +12,8 @@ import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Listing } from "./Types";
-import validateListing from "./SignUpComponents/ListingValidator";
+import { Listing } from "../../lib/Types";
+import validateListing from "../Validators/ListingValidator";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

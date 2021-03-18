@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, createStyles, makeStyles, TextField } from "@material-ui/core";
-import { useGlobalState } from "./GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { AddBox } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) =>

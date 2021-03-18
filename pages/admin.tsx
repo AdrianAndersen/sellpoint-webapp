@@ -1,7 +1,7 @@
 import { Card, Typography } from "@material-ui/core";
 import Head from "next/head";
-import CreateNewCategory from "../components/CreateNewCategory";
-import UserManager from "../components/UserManager/UserManager";
+import CreateNewCategory from "../components/Listing/CreateNewCategory";
+import UserManager from "../components/User/UserManager";
 
 const AdminPage = () => {
   return (

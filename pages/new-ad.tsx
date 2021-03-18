@@ -1,5 +1,5 @@
 import { Card, Typography } from "@material-ui/core";
-import CreateNewAdvertisement from "../components/CreateNewAdvertisement";
+import CreateNewAdvertisement from "../components/Advertisement/CreateNewAdvertisement";
 import Head from "next/head";
 
 const CreateAdvertisementPage = () => {
