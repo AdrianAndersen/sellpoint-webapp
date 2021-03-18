@@ -28,6 +28,20 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("listingOverview").should("contain", "20000");
   });
 
+  it("redigere annonsene mine (P3)", () => {
+    cy.getBySel("homeBtn").click();
+
+    cy.getBySel("editListing").eq(0).click();
+    cy.get("input[name=title]").type(" veldig fin");
+    cy.getBySel("submit").click();
+
+    cy.getBySel("listingTitle").should("contain", "Sykkel veldig fin");
+  });
+
+  it("slette annonsene mine (P3)", () => {
+    cy.getBySel("deleteListing");
+  });
+
   it("markere annonsen min som solgt (P5)", () => {
     cy.logout();
     cy.get("input[name=sold]").should("not.exist");

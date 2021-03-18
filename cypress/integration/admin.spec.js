@@ -23,6 +23,14 @@ describe("Som en admin vil jeg kunne", () => {
     cy.getBySel("categoryButtons").should("contain", "Elsykkel");
   });
 
+  it("slette reklamer (A3)", () => {
+    cy.getBySel("deleteAdBtn").click();
+    cy.getBySel("deleteAdBtn").click();
+    cy.getBySel("deleteAdBtn").click();
+
+    cy.getBySel("deleteAdBtn").should("not.exist");
+  });
+
   it("slette brukere (A4)", () => {
     cy.login("admin", "admin");
 

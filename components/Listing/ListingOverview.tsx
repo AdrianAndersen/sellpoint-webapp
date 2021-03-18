@@ -133,7 +133,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                     currentUser.id === listing.owner) && (
                     <>
                       <Link href={"/edit-listing/" + listing.id}>
-                        <IconButton color="secondary">
+                        <IconButton data-cy="editListing" color="secondary">
                           <Edit />
                         </IconButton>
                       </Link>
