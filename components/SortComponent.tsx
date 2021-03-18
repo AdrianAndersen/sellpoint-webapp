@@ -37,7 +37,6 @@ const SortComponent = () => {
         locA = userA.location;
         locB = userB.location;
         locCurrent = currentUser.location;
-        
       } else {
         return 0;
       }
@@ -48,7 +47,7 @@ const SortComponent = () => {
         : getExactDistance(locCurrent, locB) -
             getExactDistance(locCurrent, locA);
     });
-    
+
     dispatch({ type: "SET_LISTINGS", payload: state.listings });
   };
 
