@@ -5,7 +5,7 @@ import {
   ReactNode,
   useReducer,
 } from "react";
-import { GlobalState, DispatchObject } from "./Types";
+import { GlobalState, DispatchObject } from "../../lib/Types";
 import Reducer from "./Reducer";
 
 const GlobalStateContext = createContext({

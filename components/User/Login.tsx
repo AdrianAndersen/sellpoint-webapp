@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import Link from "next/link";
-import { useGlobalState } from "../GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme) => ({

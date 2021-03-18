@@ -8,10 +8,10 @@ import Link from "next/link";
 import Head from "next/head";
 import Container from "@material-ui/core/Container";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import NavButtons from "../components/NavButtons";
+import NavButtons from "../components/Layout/NavButtons";
 import useSWR from "swr";
-import GlobalStateProvider from "../components/GlobalStateProvider";
-import StateSWR from "../components/LoadingScreen/StateSWR";
+import GlobalStateProvider from "../components/StateManagement/GlobalStateProvider";
+import StateSWR from "../components/Layout/StateSWR";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

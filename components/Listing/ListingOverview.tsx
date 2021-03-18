@@ -16,10 +16,10 @@ import {
 import { Edit, Delete } from "@material-ui/icons";
 import Link from "next/link";
 import { useReducer } from "react";
-import { useGlobalState } from "./GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
-import { getPrettyDistance } from "./GoogleMaps/GoogleMapsComponent";
-import { Category, Listing } from "./Types";
+import { getPrettyDistance } from "../GoogleMaps/GoogleMapsComponent";
+import { Category, Listing } from "../../lib/Types";
 import SortComponent from "./SortComponent";
 
 const useStyles = makeStyles((theme) => ({

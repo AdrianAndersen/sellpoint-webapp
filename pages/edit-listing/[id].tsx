@@ -1,8 +1,8 @@
 import { Typography } from "@material-ui/core";
 import { useRouter } from "next/dist/client/router";
-import CreateListingForm from "../../components/CreateListingForm";
+import CreateListingForm from "../../components/Listing/CreateListingForm";
 import Head from "next/head";
-import { useGlobalState } from "../../components/GlobalStateProvider";
+import { useGlobalState } from "../../components/StateManagement/GlobalStateProvider";
 
 const EditListingPage = () => {
   const router = useRouter();

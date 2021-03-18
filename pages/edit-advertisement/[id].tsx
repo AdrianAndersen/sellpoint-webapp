@@ -1,8 +1,8 @@
 import { Typography } from "@material-ui/core";
 import { useRouter } from "next/dist/client/router";
-import CreateNewAdvertisement from "../../components/CreateNewAdvertisement";
+import CreateNewAdvertisement from "../../components/Advertisement/CreateNewAdvertisement";
 import Head from "next/head";
-import { useGlobalState } from "../../components/GlobalStateProvider";
+import { useGlobalState } from "../../components/StateManagement/GlobalStateProvider";
 
 const EditAdvertisementPage = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { FormControlLabel, Switch } from "@material-ui/core";
 import { useState } from "react";
-import SignUpCompany from "../components/SignUpComponents/SignUpCompany";
-import SignUpUser from "../components/SignUpComponents/SignUppageUser";
+import SignUpCompany from "../components/User/SignUpCompany";
+import SignUpUser from "../components/User/SignUppageUser";
 import Head from "next/head";
 
 const LoginPage = () => {

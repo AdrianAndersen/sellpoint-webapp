@@ -2,7 +2,7 @@ import { SetStateAction, Dispatch, useCallback, memo } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
-import { LatLng, User } from "../Types";
+import { LatLng, User } from "../../lib/Types";
 
 const containerStyle = {
   width: "100%",

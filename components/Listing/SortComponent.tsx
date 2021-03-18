@@ -4,9 +4,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
-import { useGlobalState } from "./GlobalStateProvider";
-import { getExactDistance } from "./GoogleMaps/GoogleMapsComponent";
-import { LatLng } from "./Types";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { getExactDistance } from "../GoogleMaps/GoogleMapsComponent";
+import { LatLng } from "../../lib/Types";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {

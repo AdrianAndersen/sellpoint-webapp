@@ -1,6 +1,6 @@
 import { IconButton } from "@material-ui/core";
 import { useState, useEffect } from "react";
-import { useGlobalState } from "./GlobalStateProvider";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import DeleteIcon from "@material-ui/icons/Delete";

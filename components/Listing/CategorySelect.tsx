@@ -1,7 +1,7 @@
 import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { useGlobalState } from "../GlobalStateProvider";
-import { Category } from "../Types";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { Category } from "../../lib/Types";
 import { Dispatch, SetStateAction } from "react";
 
 const useStyles = makeStyles(() =>

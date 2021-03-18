@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import ViewListing from "../../components/ViewListing";
-import { useGlobalState } from "../../components/GlobalStateProvider";
+import ViewListing from "../../components/Listing/ViewListing";
+import { useGlobalState } from "../../components/StateManagement/GlobalStateProvider";
 import Head from "next/head";
 
 const Listings = () => {
