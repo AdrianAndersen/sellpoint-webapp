@@ -1,8 +1,10 @@
-import { Button } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "./GlobalStateProvider";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 const Slideshow = () => {
   const { state, dispatch } = useGlobalState();
@@ -37,7 +39,7 @@ const Slideshow = () => {
       >
         {(state.currentUser === state.advertisements[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
-          <Button
+          <IconButton
             data-cy="deleteAdBtn"
             color="secondary"
             onClick={async (e) => {
@@ -58,19 +60,18 @@ const Slideshow = () => {
                   type: "REMOVE_ADVERTISEMENT",
                   payload: state.advertisements[index].id,
                 });
-                setIndex((index + 1) % state.advertisements.length);
+                setIndex(0);
               }
             }}
           >
-            X
-          </Button>
+            <DeleteIcon />
+          </IconButton>
         )}
 
         {(state.currentUser === state.advertisements[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
-          <Button
+          <IconButton
             data-cy="editAdBtn"
-            variant="contained"
             color="secondary"
             onClick={(e) => {
               e.preventDefault();
@@ -79,8 +80,8 @@ const Slideshow = () => {
               );
             }}
           >
-            Edit
-          </Button>
+            <EditIcon />
+          </IconButton>
         )}
       </div>
     </Link>
