@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) =>
 
 const CreateNewCategory = () => {
   const [category, setCategory] = useState("");
-  const { dispatch } = useGlobalState();
+  const { state, dispatch } = useGlobalState();
   const classes = useStyles();
 
   return (
@@ -34,13 +34,22 @@ const CreateNewCategory = () => {
         color="secondary"
         style={{ height: 50, width: 100 }}
         startIcon={<AddBox />}
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
           if (category !== "") {
             dispatch({
               type: "ADD_CATEGORY",
               payload: category,
             });
+            if (state.usingDB) {
+              await fetch("/api/advertisements", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name: category }),
+              });
+            }
             setCategory("");
           }
         }}
