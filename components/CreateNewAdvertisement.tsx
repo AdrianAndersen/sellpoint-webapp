@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useGlobalState } from "./GlobalStateProvider";
 import { Advertisement } from "./Types";
 import Link from "next/link";
+import validateAdvertisement from "./SignUpComponents/AdvertisementValidator";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,
@@ -61,47 +62,54 @@ const CreateNewAdvertisement = ({
               imageURL: imageURL,
               owner: state.currentUser,
             };
-            if (initialAdvertisement) {
-              dispatch({
-                type: "REMOVE_ADVERTISEMENT",
-                payload: initialAdvertisement.id,
-              });
-            }
-            if (state.usingDB) {
+
+            if(validateAdvertisement(advertisement)){
+
+              
               if (initialAdvertisement) {
-                await fetch("/api/advertisements", {
-                  method: "DELETE",
+                dispatch({
+                  type: "REMOVE_ADVERTISEMENT",
+                  payload: initialAdvertisement.id,
+                });
+              }
+              if (state.usingDB) {
+                if (initialAdvertisement) {
+                  await fetch("/api/advertisements", {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ id: initialAdvertisement.id }),
+                  });
+                }
+                const response = await fetch("/api/advertisements", {
+                  method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  body: JSON.stringify({ id: initialAdvertisement.id }),
-                });
-              }
-              const response = await fetch("/api/advertisements", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(advertisement),
-              }).then((response) => response.json());
-              if (response) {
+                  body: JSON.stringify(advertisement),
+                }).then((response) => response.json());
+                if (response) {
+                  dispatch({
+                    type: "ADD_ADVERTISEMENT",
+                    payload: { id: response.id, ...advertisement },
+                  });
+                  router.push("/");
+                }
+              } else {
                 dispatch({
                   type: "ADD_ADVERTISEMENT",
-                  payload: { id: response.id, ...advertisement },
+                  payload: {
+                    id: Math.floor(Math.random() * Math.floor(10000000)),
+                    ...advertisement,
+                  },
                 });
                 router.push("/");
               }
-            } else {
-              dispatch({
-                type: "ADD_ADVERTISEMENT",
-                payload: {
-                  id: Math.floor(Math.random() * Math.floor(10000000)),
-                  ...advertisement,
-                },
-              });
-              router.push("/");
             }
+
           }}
+
         >
           Lag reklame
         </Button>
