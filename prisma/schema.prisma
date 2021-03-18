@@ -43,6 +43,7 @@ model Listing {
   categories  Category[]
   ownerId     Int
   owner       User       @relation(fields: [ownerId], references: [id])
+  sold        Boolean    @default(false)
 }
 
 model Advertisement {

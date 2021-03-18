@@ -25,6 +25,7 @@ export type Listing = {
   price: number;
   categories: Category[];
   owner: ID;
+  sold: boolean;
 };
 
 export type Category = string;

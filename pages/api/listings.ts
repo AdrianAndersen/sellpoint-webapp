@@ -23,5 +23,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id: req.body["id"] },
     });
     res.json(result);
+  } else if (req.method === "PATCH") {
+    const result = await prisma.listing.update({
+      where: {
+        id: req.body["id"],
+      },
+      data: {
+        sold: req.body["sold"],
+      },
+    });
+    return result;
   }
 };
