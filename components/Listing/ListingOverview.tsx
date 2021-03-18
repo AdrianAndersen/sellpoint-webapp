@@ -87,16 +87,27 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
               key={listing.id}
             >
               <CardHeader
+                data-cy="listingTitle"
                 avatar={<Avatar></Avatar>}
                 title={listing.title + (listing.sold ? " SOLGT" : "")}
                 subheader={moment().format("DD/MM/YYYY")}
               />
               <CardMedia className={classes.media} image={listing.imageURL} />
               <CardContent>
-                <Typography gutterBottom variant="button" component="h2">
+                <Typography
+                  gutterBottom
+                  variant="button"
+                  component="h2"
+                  data-cy="priceOverview"
+                >
                   {listing.price} kr
                 </Typography>
-                <Typography gutterBottom variant="button" component="h2">
+                <Typography
+                  gutterBottom
+                  variant="button"
+                  component="h2"
+                  data-cy="distanceOverview"
+                >
                   Avstand:{" "}
                   {currentUser &&
                     state.users.find((user) => user.id === listing.owner) &&
@@ -159,6 +170,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                       className="pl-0"
                       control={
                         <Checkbox
+                          data-cy="soldCheckBox"
                           className=" pl-0"
                           checked={listing.sold}
                           onChange={(e) => handleSold(e, listing)}
