@@ -42,7 +42,7 @@ const CreateNewCategory = () => {
               payload: category,
             });
             if (state.usingDB) {
-              await fetch("/api/advertisements", {
+              await fetch("/api/categories", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
