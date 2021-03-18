@@ -1,5 +1,6 @@
 import { Card, Typography } from "@material-ui/core";
 import Head from "next/head";
+import CreateNewCategory from "../components/CreateNewCategory";
 import UserManager from "../components/UserManager/UserManager";
 
 const AdminPage = () => {
@@ -14,6 +15,7 @@ const AdminPage = () => {
         </Typography>
         <div className="p-4">
           <UserManager />
+          <CreateNewCategory />
         </div>
       </Card>
     </>

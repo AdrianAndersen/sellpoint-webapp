@@ -1,6 +1,7 @@
 import {
   Avatar,
   Button,
+  IconButton,
   Card,
   CardActions,
   CardContent,
@@ -10,6 +11,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import { Edit, Delete } from "@material-ui/icons";
 import Link from "next/link";
 import { useReducer } from "react";
 import { useGlobalState } from "./GlobalStateProvider";
@@ -87,9 +89,11 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                 {currentUser && currentUser.role === "admin" && (
                   <>
                     <Link href={"/edit-listing/" + listing.id}>
-                      <Button color="secondary">Endre</Button>
+                      <IconButton color="secondary">
+                        <Edit />
+                      </IconButton>
                     </Link>
-                    <Button
+                    <IconButton
                       color="secondary"
                       onClick={async () => {
                         let response;
@@ -111,8 +115,8 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                         forceUpdate();
                       }}
                     >
-                      Slett
-                    </Button>
+                      <Delete />
+                    </IconButton>
                   </>
                 )}
               </CardActions>

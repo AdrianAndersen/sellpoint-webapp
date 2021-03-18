@@ -1,5 +1,6 @@
 import { Button, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
+import { Delete } from "@material-ui/icons";
 import { useState } from "react";
 import { useGlobalState } from "../GlobalStateProvider";
 import { User } from "../Types";
@@ -21,7 +22,7 @@ const UserManager = () => {
   }
 
   return (
-    <div className="w-full flex flex-row">
+    <div className="w-full flex flex-row items-center">
       <Autocomplete
         className="mr-4"
         value={selectedUser}
@@ -45,6 +46,8 @@ const UserManager = () => {
         data-cy="deleteUserBtn"
         variant="contained"
         color="secondary"
+        style={{ height: 50, width: 100 }}
+        startIcon={<Delete />}
         onClick={async (e) => {
           e.preventDefault();
           if (selectedUser) {
@@ -106,7 +109,7 @@ const UserManager = () => {
           }
         }}
       >
-        Delete
+        Slett
       </Button>
     </div>
   );
