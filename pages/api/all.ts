@@ -54,6 +54,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           price: 600,
           categories: ["Sykkel"],
           owner: 1,
+          sold: false,
         },
         {
           id: 2,
@@ -64,6 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           price: 999000,
           categories: ["Kjøretøy"],
           owner: 3,
+          sold: false,
         },
         {
           id: 3,
@@ -75,6 +77,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           price: 33690,
           categories: ["Kjøretøy"],
           owner: 1,
+          sold: false,
         },
       ],
       categories: [

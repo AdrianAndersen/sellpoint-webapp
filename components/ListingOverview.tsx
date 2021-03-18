@@ -44,12 +44,21 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
-  const handleSold = (e: any, listing: Listing) => {
+  const handleSold = async (e: any, listing: Listing) => {
     listing.sold = e.target.checked;
     dispatch({
       type: "SET_LISTINGS",
       payload: state.listings,
     });
+    if (state.usingDB) {
+      await fetch("/api/listings", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: listing.id, sold: listing.sold }),
+      });
+    }
   };
 
   return (
