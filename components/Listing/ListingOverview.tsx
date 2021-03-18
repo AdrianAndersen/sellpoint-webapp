@@ -47,7 +47,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleSold = async (e: any, listing: Listing) => {
-    listing.sold = e.target.checked;
+    listing.sold = e.target.checked ? true : false;
     dispatch({
       type: "SET_LISTINGS",
       payload: state.listings,
