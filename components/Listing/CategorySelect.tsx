@@ -25,6 +25,7 @@ const CategorySelect = ({
   return (
     <>
       <ToggleButtonGroup
+        data-cy="categoryButtons"
         classes={{
           root: classes.root,
         }}

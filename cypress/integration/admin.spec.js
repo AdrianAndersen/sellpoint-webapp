@@ -11,6 +11,16 @@ describe("Som en admin vil jeg kunne", () => {
     cy.getBySel("listingOverview").should("not.contain", "Sykkel");
   });
 
+  it("legge inn kategorier (A2)", () => {
+    cy.login("admin", "admin");
+
+    cy.getBySel("navAdminBtn").click();
+    cy.getBySel("newCategoryField").type("Elsykkel");
+    cy.getBySel("newCategoryBtn").click();
+    cy.getBySel("homeBtn").click();
+    cy.getBySel("categoryButtons").should("contain", "Elsykkel");
+  });
+
   it("slette brukere (A4)", () => {
     cy.login("admin", "admin");
 

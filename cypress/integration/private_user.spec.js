@@ -27,4 +27,17 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("listingOverview").should("contain", "Volvo 240");
     cy.getBySel("listingOverview").should("contain", "20000");
   });
+
+  it("markere annonsen min som solgt (P5)", () => {
+    cy.logout();
+    cy.get("input[name=sold]").should("not.exist");
+    cy.login("ola", "ola");
+
+    cy.get("input[name=sold]").should("have.length", 3);
+    cy.get("input[name=sold]").eq(0).should("not.be.checked");
+    cy.get("input[name=sold]").eq(0).check();
+    cy.get("input[name=sold]").eq(0).should("be.checked");
+    cy.get("input[name=sold]").eq(0).uncheck();
+    cy.get("input[name=sold]").eq(0).should("not.be.checked");
+  });
 });

@@ -51,31 +51,36 @@ const SortComponent = () => {
     dispatch({ type: "SET_LISTINGS", payload: state.listings });
   };
 
-  const handleChange = (event: any) => {
-    const selectValue = event.target.value;
-
-    setSelect(selectValue);
-    if (selectValue === "high") {
+  const sortBy = (param: string) => {
+    if (param === select) return;
+    setSelect(param);
+    if (param === "high") {
       state.listings.sort((a, b) => b.price - a.price);
       dispatch({ type: "SET_LISTINGS", payload: state.listings });
-    } else if (selectValue === "low") {
+    } else if (param === "low") {
       state.listings.sort((a, b) => a.price - b.price);
       dispatch({ type: "SET_LISTINGS", payload: state.listings });
-    } else if (selectValue === "dist_low") {
+    } else if (param === "dist_low") {
       sortDistance(true);
 
       dispatch({ type: "SET_LISTINGS", payload: state.listings });
-    } else if (selectValue == "dist_high") {
+    } else if (param == "dist_high") {
       sortDistance(false);
 
       dispatch({ type: "SET_LISTINGS", payload: state.listings });
     }
   };
 
+  const handleChange = (event: any) => {
+    const selectValue = event.target.value;
+    sortBy(selectValue);
+  };
+
   return (
     <FormControl className={classes.formControl}>
       <InputLabel id="demo-simple-select-helper-label">Sort By</InputLabel>
       <Select
+        data-cy="selSort"
         labelId="demo-simple-select-helper-label"
         id="demo-simple-select-helper"
         value={select}
