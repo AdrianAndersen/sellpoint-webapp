@@ -1,10 +1,13 @@
+import { info, warning } from "./toasts";
 import { GlobalState } from "./Types";
 
 export const emptyDB = async () => {
+  info("Attempting to reset database. Please stand by...");
   await fetch("/api/reset_db");
 };
 
 const populateDB = async (data: GlobalState) => {
+  info("Attempting to populate database. Please stand by...");
   let { listings, advertisements, users, categories } = data;
   emptyDB();
 
@@ -52,6 +55,9 @@ const populateDB = async (data: GlobalState) => {
         },
         body: JSON.stringify(advertisement),
       })
+  );
+  warning(
+    "All requests sent. Please wait a few seconds, then reload the page to see the result."
   );
 };
 

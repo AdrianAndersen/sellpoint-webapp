@@ -12,6 +12,8 @@ import NavButtons from "../components/Layout/NavButtons";
 import useSWR from "swr";
 import GlobalStateProvider from "../components/StateManagement/GlobalStateProvider";
 import StateSWR from "../components/Layout/StateSWR";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -83,6 +85,17 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Container>
         </footer>
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </GlobalStateProvider>
   );
 }

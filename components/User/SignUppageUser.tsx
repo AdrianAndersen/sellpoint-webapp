@@ -15,6 +15,7 @@ import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import validateUser from "../Validators/UserValidator";
 import { User } from "../../lib/Types";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { error } from "../../lib/toasts";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -158,7 +159,7 @@ export default function SignUpPerson() {
                     });
                     router.push("/");
                   }
-                } else alert("Du må fylle ut alle feltene!");
+                } else error("Du må fylle ut alle feltene!");
               }}
               type="submit"
               fullWidth
