@@ -32,30 +32,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return userObj as User;
     });
 
-    const listings = listingData.map(
-      (listing: { ownerId?: number; categories?: { name: string }[] }) => {
-        const listingObj = {
-          ...listing,
-          categories: (listing.categories || []).map((cat) => cat.name),
-          owner: listing.ownerId,
-        };
-        delete listingObj.ownerId;
-        return listingObj as Listing;
-      }
-    );
+    const listings = listingData.map((listing: any) => {
+      const listingObj = {
+        ...listing,
+        categories: (listing.categories || []).map(
+          (cat: { name: string }) => cat.name
+        ),
+        owner: listing.ownerId,
+      };
+      delete listingObj.ownerId;
+      return listingObj as Listing;
+    });
 
     const categories = categoryData.map((category) => category.name);
 
-    const advertisements = advertisementData.map(
-      (advertisement: { ownerId?: number }) => {
-        const advertisementObj = {
-          ...advertisement,
-          owner: advertisement.ownerId,
-        };
-        delete advertisementObj.ownerId;
-        return advertisementObj as Advertisement;
-      }
-    );
+    const advertisements = advertisementData.map((advertisement: any) => {
+      const advertisementObj = {
+        ...advertisement,
+        owner: advertisement.ownerId,
+      };
+      delete advertisementObj.ownerId;
+      return advertisementObj as Advertisement;
+    });
 
     const globalState: GlobalState = {
       currentUser: undefined,

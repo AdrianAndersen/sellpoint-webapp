@@ -82,6 +82,19 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <GitHubIcon className="ml-1" />
               </Button>
             </Link>
+            <Typography
+              data-cy="dbStatus"
+              variant="body2"
+              className="p-2 rounded-lg"
+            >
+              DB:
+              <Link href="/database">
+                <b className="cursor-pointer">
+                  {" "}
+                  {data.usingDB ? "Connected 🚀" : "OFFLINE 🔌"}
+                </b>
+              </Link>
+            </Typography>
           </Container>
         </footer>
       </div>

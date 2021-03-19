@@ -1,4 +1,10 @@
 {
   "projectId": "s4pa6r",
-  "baseUrl": "http://localhost:3000"
+  "baseUrl": "http://localhost:3000",
+  "testFiles": [
+    "user.spec.js",
+    "private_user.spec.js",
+    "company_user.spec.js",
+    "admin.spec.js"
+  ]
 }

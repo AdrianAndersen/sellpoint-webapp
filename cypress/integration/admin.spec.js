@@ -6,6 +6,8 @@ describe("Som en admin vil jeg kunne", () => {
   it("slette annonser (A1)", () => {
     cy.login("admin", "admin");
 
+    cy.getBySel("selSort").click();
+    cy.get("[data-value=low]").click();
     cy.getBySel("listingOverview").should("contain", "Sykkel");
     cy.getBySel("deleteListing").eq(0).click();
     cy.getBySel("listingOverview").should("not.contain", "Sykkel");
