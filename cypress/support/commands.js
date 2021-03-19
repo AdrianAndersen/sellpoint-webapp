@@ -31,7 +31,6 @@ Cypress.Commands.add("getBySel", (selector, ...args) => {
 
 Cypress.Commands.add("login", (username, password) => {
   cy.logout();
-  cy.log("Ready to log in");
   cy.getBySel("loginBtn").click();
   cy.get("input[name=email]").type(username);
   cy.get("input[name=password]").type(password + "{enter}");
