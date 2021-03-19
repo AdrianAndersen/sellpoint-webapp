@@ -28,12 +28,30 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("listingOverview").should("contain", "20000");
   });
 
+  it("redigere annonsene mine (P3)", () => {
+    cy.getBySel("homeBtn").click();
+
+    cy.getBySel("editListing").eq(0).click();
+    cy.get("input[name=title]").type(" veldig fin");
+    cy.getBySel("submit").click();
+
+    cy.getBySel("listingTitle").should("contain", "Sykkel veldig fin");
+  });
+
+  it("slette annonsene mine (P3)", () => {
+    cy.getBySel("deleteListing").eq(0).click();
+    cy.getBySel("listingTitle")
+      .eq(0)
+      .should("not.contain", "Sykkel veldig fin");
+    cy.getBySel("deleteListing").should("have.length", 2);
+  });
+
   it("markere annonsen min som solgt (P5)", () => {
     cy.logout();
     cy.get("input[name=sold]").should("not.exist");
     cy.login("ola", "ola");
 
-    cy.get("input[name=sold]").should("have.length", 3);
+    cy.get("input[name=sold]").should("have.length", 2);
     cy.get("input[name=sold]").eq(0).should("not.be.checked");
     cy.get("input[name=sold]").eq(0).check();
     cy.get("input[name=sold]").eq(0).should("be.checked");
