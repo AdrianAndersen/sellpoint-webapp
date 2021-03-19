@@ -39,49 +39,49 @@ const Slideshow = () => {
       >
         {(state.currentUser === state.advertisements[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
-          <IconButton
-            data-cy="deleteAdBtn"
-            color="secondary"
-            onClick={async (e) => {
-              e.preventDefault();
-              let response;
-              if (state.usingDB) {
-                response = await fetch("/api/advertisements", {
-                  method: "DELETE",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ id: state.advertisements[index].id }),
-                }).then((response) => response.json());
-              }
+          <span className="inline-block bg-gray-50 m-2 p-1 rounded">
+            <IconButton
+              data-cy="editAdBtn"
+              color="secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push(
+                  "/edit-advertisement/" + state.advertisements[index].id
+                );
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              data-cy="deleteAdBtn"
+              color="secondary"
+              onClick={async (e) => {
+                e.preventDefault();
+                let response;
+                if (state.usingDB) {
+                  response = await fetch("/api/advertisements", {
+                    method: "DELETE",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      id: state.advertisements[index].id,
+                    }),
+                  }).then((response) => response.json());
+                }
 
-              if (response || !state.usingDB) {
-                dispatch({
-                  type: "REMOVE_ADVERTISEMENT",
-                  payload: state.advertisements[index].id,
-                });
-                setIndex(0);
-              }
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
-
-        {(state.currentUser === state.advertisements[index].owner ||
-          (currentUser && currentUser.role === "admin")) && (
-          <IconButton
-            data-cy="editAdBtn"
-            color="secondary"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push(
-                "/edit-advertisement/" + state.advertisements[index].id
-              );
-            }}
-          >
-            <EditIcon />
-          </IconButton>
+                if (response || !state.usingDB) {
+                  dispatch({
+                    type: "REMOVE_ADVERTISEMENT",
+                    payload: state.advertisements[index].id,
+                  });
+                  setIndex(0);
+                }
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </span>
         )}
       </div>
     </Link>

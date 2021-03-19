@@ -117,7 +117,7 @@ const CreateListingForm = ({
       <div className="flex flex-row justify-end space-x-4 my-8">
         <Link href="/">
           <Button variant="contained" color="secondary">
-            Cancel
+            Avbryt
           </Button>
         </Link>
         <Button

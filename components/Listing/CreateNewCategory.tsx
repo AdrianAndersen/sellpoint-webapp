@@ -56,7 +56,7 @@ const CreateNewCategory = () => {
           }
         }}
       >
-        NY
+        Ny
       </Button>
     </div>
   );
