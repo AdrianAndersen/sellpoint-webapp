@@ -1,6 +1,7 @@
 describe("Som en privatperson / bedrift vil jeg kunne", () => {
   before(() => {
     cy.visit("/");
+    cy.resetdb();
   });
   beforeEach(() => {
     cy.logout();

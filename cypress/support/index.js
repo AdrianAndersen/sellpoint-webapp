@@ -14,6 +14,9 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
+Cypress.Commands.overwrite("log", (subject, message) =>
+  cy.task("log", message)
+);
 import "./commands";
 
 // Alternatively you can use CommonJS syntax:

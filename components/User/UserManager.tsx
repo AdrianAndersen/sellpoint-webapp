@@ -67,7 +67,7 @@ const UserManager = () => {
                       headers: {
                         "Content-Type": "application/json",
                       },
-                      body: JSON.stringify({ id: selectedUser.id }),
+                      body: JSON.stringify({ id: listing.id }),
                     });
                   }
                 });
@@ -87,16 +87,11 @@ const UserManager = () => {
                       headers: {
                         "Content-Type": "application/json",
                       },
-                      body: JSON.stringify({ id: selectedUser.id }),
+                      body: JSON.stringify({ id: ad.id }),
                     });
                   }
                 });
             }
-
-            dispatch({
-              type: "REMOVE_USER",
-              payload: selectedUser.id,
-            });
             if (state.usingDB) {
               await fetch("/api/users", {
                 method: "DELETE",
@@ -106,6 +101,10 @@ const UserManager = () => {
                 body: JSON.stringify({ id: selectedUser.id }),
               });
             }
+            dispatch({
+              type: "REMOVE_USER",
+              payload: selectedUser.id,
+            });
             setSelectedUser(null);
             setInputValue("");
           }
