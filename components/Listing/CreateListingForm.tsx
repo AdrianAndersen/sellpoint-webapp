@@ -14,6 +14,7 @@ import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Listing } from "../../lib/Types";
 import validateListing from "../Validators/ListingValidator";
+import { error } from "../../lib/toasts";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -173,7 +174,7 @@ const CreateListingForm = ({
                 router.push("/");
               }
             } else {
-              alert("Du må fylle ut alle feltene!");
+              error("Du må fylle ut alle feltene!");
             }
           }}
           variant="contained"

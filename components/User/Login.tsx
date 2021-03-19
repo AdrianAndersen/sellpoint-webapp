@@ -13,6 +13,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { useRouter } from "next/router";
+import { error } from "../../lib/toasts";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -98,7 +99,7 @@ export default function SignInSide() {
                 router.push("/");
                 dispatch({ type: "SET_CURRENT_USER", payload: userId });
               } else {
-                alert("Feil passord!");
+                error("Feil passord!");
               }
             }}
           >

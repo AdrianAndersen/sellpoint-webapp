@@ -21,6 +21,7 @@ import moment from "moment";
 import { getPrettyDistance } from "../GoogleMaps/GoogleMapsComponent";
 import { Category, Listing } from "../../lib/Types";
 import SortComponent from "./SortComponent";
+import { error } from "../../lib/toasts";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -144,7 +145,7 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                               type: "REMOVE_LISTING",
                               payload: listing.id,
                             });
-                          }
+                          } else error("Fjerning av annonsen feilet!");
                           forceUpdate();
                         }}
                       >

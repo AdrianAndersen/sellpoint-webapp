@@ -5,6 +5,7 @@ import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { Advertisement } from "../../lib/Types";
 import Link from "next/link";
 import validateAdvertisement from "../Validators/AdvertisementValidator";
+import { error } from "../../lib/toasts";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,
@@ -105,7 +106,7 @@ const CreateNewAdvertisement = ({
                 router.push("/");
               }
             } else {
-              alert("Du må fylle ut alle feltene!");
+              error("Du må fylle ut alle feltene!");
             }
           }}
         >

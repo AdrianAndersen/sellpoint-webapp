@@ -4,6 +4,7 @@ import { Delete } from "@material-ui/icons";
 import { useState } from "react";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { User } from "../../lib/Types";
+import { error } from "../../lib/toasts";
 
 const UserManager = () => {
   const { state, dispatch } = useGlobalState();
@@ -12,6 +13,7 @@ const UserManager = () => {
 
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   if (currentUser?.role !== "admin") {
+    error("Du har ikke rettigheter til å se brukere.");
     return (
       <div>
         <Typography color="error">
