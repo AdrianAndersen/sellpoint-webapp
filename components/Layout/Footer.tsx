@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const Footer = ({ data }: { data: any }) => {
+const Footer = ({ usingDB }: { usingDB: boolean }) => {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ const Footer = ({ data }: { data: any }) => {
           <Link href="/database">
             <b className="cursor-pointer">
               {" "}
-              {data.usingDB ? "Connected 🚀" : "OFFLINE 🔌"}
+              {usingDB ? "Connected 🚀" : "OFFLINE 🔌"}
             </b>
           </Link>
         </Typography>
