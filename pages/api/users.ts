@@ -19,9 +19,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
     res.json(result);
   } else if (req.method === "DELETE") {
-    const result = await prisma.user.delete({
-      where: { id: req.body["id"] },
+    for (const listing of req.body["listings"]) {
+      await prisma.listing.delete({
+        where: { id: listing },
+      });
+    }
+
+    for (const ad of req.body["ads"]) {
+      await prisma.advertisement.delete({
+        where: { id: ad },
+      });
+    }
+    await prisma.user.delete({
+      where: { id: req.body["userId"] },
     });
-    res.json(result);
+    res.json(200);
   }
 };

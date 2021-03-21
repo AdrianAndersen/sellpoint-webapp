@@ -1,6 +1,8 @@
 describe("Som bedrift vil jeg kunne", () => {
   before(() => {
+    cy.intercept("/api/*").as("loadPage");
     cy.visit("/");
+    cy.wait("@loadPage");
     cy.login("erna", "erna");
   });
 

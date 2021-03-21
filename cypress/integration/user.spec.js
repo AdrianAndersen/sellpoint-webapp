@@ -1,7 +1,9 @@
 describe("Som en privatperson / bedrift vil jeg kunne", () => {
   before(() => {
+    cy.intercept("/api/*").as("loadPage");
     cy.visit("/");
-    cy.resetdb();
+    cy.wait("@loadPage");
+    cy.setupDB();
   });
   beforeEach(() => {
     cy.logout();
