@@ -22,7 +22,9 @@ describe("Som en admin vil jeg kunne", () => {
     cy.getBySel("newCategoryField").type("Elsykkel");
     cy.getBySel("newCategoryBtn").click();
     cy.getBySel("homeBtn").click();
-    cy.getBySel("categoryButtons").should("contain", "Elsykkel");
+    cy.getBySel("categorySelect").click();
+    cy.get("[data-value=Elsykkel]").should("exist");
+    cy.get("body").type("{esc}"); // Hide the select menu
   });
 
   it("slette reklamer (A3)", () => {

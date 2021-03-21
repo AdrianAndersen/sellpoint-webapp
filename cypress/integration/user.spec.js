@@ -117,21 +117,25 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
 
   it("filtrere annonser etter kategorier (U8)", () => {
     cy.getBySel("listingTitle").should("have.length", 3);
-    cy.getBySel("categoryButtons").contains("Kjøretøy").click();
+    cy.getBySel("categorySelect").click();
+
+    cy.get("[data-value=Kjøretøy]").click();
     cy.getBySel("listingTitle").should("contain", "Volvo");
     cy.getBySel("listingTitle").should("contain", "Lambo");
     cy.getBySel("listingTitle").should("not.contain", "Sykkel");
 
-    cy.getBySel("categoryButtons").contains("Sykkel").click();
+    cy.get("[data-value=Sykkel]").click();
     cy.getBySel("listingTitle").should("have.length", 3);
 
-    cy.getBySel("categoryButtons").contains("Kjøretøy").click();
-    cy.getBySel("categoryButtons").contains("Sykkel").click();
+    cy.get("[data-value=Kjøretøy]").click();
+    cy.get("[data-value=Sykkel]").click();
     cy.getBySel("listingTitle").should("have.length", 3);
 
-    cy.getBySel("categoryButtons").contains("Hage").click();
+    cy.get("[data-value=Hage]").click();
     cy.getBySel("listingTitle").should("not.exist");
 
-    cy.getBySel("categoryButtons").contains("Hage").click();
+    cy.get("[data-value=Hage]").click();
+
+    cy.get("body").type("{esc}"); // Hide the select menu
   });
 });

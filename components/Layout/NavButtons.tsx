@@ -10,7 +10,7 @@ const NavButtons = () => {
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   const router = useRouter();
   return (
-    <div className="w-full flex flex-row justify-end">
+    <div className="flex flex-row justify-end">
       {currentUser && currentUser.role === "admin" && (
         <Link href="/admin">
           <Button color="inherit">

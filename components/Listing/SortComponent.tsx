@@ -3,20 +3,25 @@ import { useState } from "react";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import { makeStyles } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { getExactDistance } from "../GoogleMaps/GoogleMapsComponent";
 import { LatLng } from "../../lib/Types";
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    formControl: {
+      minWidth: 150,
+      margin: theme.spacing(1),
+    },
+    select: {
+      backgroundColor: "#ffffff",
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  })
+);
 
 const SortComponent = () => {
   const { state, dispatch } = useGlobalState();
@@ -77,25 +82,27 @@ const SortComponent = () => {
   };
 
   return (
-    <FormControl className={classes.formControl}>
-      <InputLabel id="demo-simple-select-helper-label">Sort By</InputLabel>
+    <FormControl variant="outlined" className={classes.formControl}>
+      <InputLabel id="demo-simple-select-helper-label">Sortér etter</InputLabel>
       <Select
         data-cy="selSort"
         labelId="demo-simple-select-helper-label"
+        label="Sortér etter"
         id="demo-simple-select-helper"
         value={select}
         onChange={handleChange}
+        classes={{ root: classes.select }}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>Ingen</em>
         </MenuItem>
-        <MenuItem value={"low"}>Lowest Price </MenuItem>
-        <MenuItem value={"high"}>Highest Price</MenuItem>
+        <MenuItem value={"low"}>Lavest pris</MenuItem>
+        <MenuItem value={"high"}>Høyest pris</MenuItem>
         {state.currentUser && (
-          <MenuItem value={"dist_low"}>Lowest distance</MenuItem>
+          <MenuItem value={"dist_low"}>Lavest avstand</MenuItem>
         )}
         {state.currentUser && (
-          <MenuItem value={"dist_high"}>Highest distance</MenuItem>
+          <MenuItem value={"dist_high"}>Høyest avstand</MenuItem>
         )}
       </Select>
     </FormControl>
