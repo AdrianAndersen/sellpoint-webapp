@@ -22,6 +22,7 @@ const NavBar = ({ loading = false }: { loading?: boolean }) => {
             ></div>
           </Button>
         </Link>
+        <div style={{ flexGrow: 1 }}></div>
         {!loading && <NavButtons />}
       </Toolbar>
     </AppBar>

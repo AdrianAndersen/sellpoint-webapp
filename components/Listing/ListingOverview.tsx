@@ -15,15 +15,24 @@ import {
 } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
 import Link from "next/link";
-import { useReducer } from "react";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
 import { getPrettyDistance } from "../GoogleMaps/GoogleMapsComponent";
 import { Category, Listing } from "../../lib/Types";
 import SortComponent from "./SortComponent";
 import { error } from "../../lib/toasts";
+import CategorySelect from "./CategorySelect";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
+  filterControls: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
   card: {
     margin: theme.spacing(1),
     width: 275,
@@ -41,11 +50,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListingOverview = ({ categories }: { categories: Category[] }) => {
+const ListingOverview = () => {
   const classes = useStyles();
   const { state, dispatch } = useGlobalState();
   const currentUser = state.users.find((user) => user.id === state.currentUser);
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
   const handleSold = async (e: any, listing: Listing) => {
     listing.sold = e.target.checked ? true : false;
@@ -66,7 +76,13 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
 
   return (
     <>
-      <SortComponent />
+      <div className={classes.filterControls}>
+        <CategorySelect
+          selected={selectedCategories}
+          setSelected={setSelectedCategories}
+        />
+        <SortComponent />
+      </div>
       <Grid
         data-cy="listingOverview"
         container
@@ -77,9 +93,9 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
         {state.listings
           .filter(
             (listing) =>
-              categories.length == 0 ||
+              selectedCategories.length == 0 ||
               listing.categories.some((category) =>
-                categories.includes(category)
+                selectedCategories.includes(category)
               )
           )
           .map((listing) => (
@@ -157,7 +173,6 @@ const ListingOverview = ({ categories }: { categories: Category[] }) => {
                               payload: listing.id,
                             });
                           } else error("Fjerning av annonsen feilet!");
-                          forceUpdate();
                         }}
                       >
                         <Delete />
