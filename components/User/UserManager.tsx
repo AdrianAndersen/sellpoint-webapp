@@ -61,15 +61,6 @@ const UserManager = () => {
                     type: "REMOVE_LISTING",
                     payload: listing.id,
                   });
-                  if (state.usingDB) {
-                    await fetch("/api/listings", {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ id: listing.id }),
-                    });
-                  }
                 });
             }
 
@@ -81,24 +72,25 @@ const UserManager = () => {
                     type: "REMOVE_ADVERTISEMENT",
                     payload: ad.id,
                   });
-                  if (state.usingDB) {
-                    await fetch("/api/advertisements", {
-                      method: "DELETE",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ id: ad.id }),
-                    });
-                  }
                 });
             }
             if (state.usingDB) {
+              const userListings = state.listings
+                .filter((listing) => listing.owner === currentUser.id)
+                .map((listing) => listing.id);
+              const userAds = state.advertisements
+                .filter((ad) => ad.owner === currentUser.id)
+                .map((ad) => ad.id);
               await fetch("/api/users", {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id: selectedUser.id }),
+                body: JSON.stringify({
+                  userId: currentUser.id,
+                  ads: userAds,
+                  listings: userListings,
+                }),
               });
             }
             dispatch({

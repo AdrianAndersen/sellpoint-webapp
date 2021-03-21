@@ -48,27 +48,35 @@ Cypress.Commands.add("logout", () => {
     });
 });
 
-Cypress.Commands.add("resetdb", () => {
+Cypress.Commands.add("runIfDB", (command) => {
   // eslint-disable-next-line promise/catch-or-return
   cy.getBySel("dbStatus")
     .invoke("text")
+    // eslint-disable-next-line promise/always-return
     .then((btn) => {
       // eslint-disable-next-line promise/always-return
       if (btn.includes("Connected")) {
-        cy.log("Database connection detected, initializing...");
-        cy.visit("/database");
-        cy.log("Reseting Database...");
-        cy.getBySel("emptyDB").click();
-        cy.wait(7000);
-        cy.log("Loading users and categories...");
-        cy.getBySel("loadUsers").click();
-        cy.wait(7000);
-        cy.log("Loading listings and advertisements...");
-        cy.getBySel("loadItems").click();
-        cy.wait(7000);
-        cy.visit("/");
-      } else {
-        cy.log("No database detected, using offline mode...");
+        command();
       }
     });
+});
+
+Cypress.Commands.add("interceptDB", () => {
+  cy.runIfDB(() => cy.intercept("/api/*").as("waitDB"));
+});
+
+Cypress.Commands.add("waitDB", () => {
+  cy.runIfDB(() => cy.wait("@waitDB"));
+});
+
+Cypress.Commands.add("setupDB", () => {
+  cy.runIfDB(() => {
+    cy.log("Database connection detected, initializing...");
+    cy.intercept("/api/*").as("loadPage");
+    cy.visit("/database");
+    cy.wait("@loadPage");
+    cy.interceptDB();
+    cy.getBySel("loadTestData").click();
+    cy.waitDB();
+  });
 });

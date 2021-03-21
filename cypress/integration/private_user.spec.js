@@ -1,6 +1,8 @@
 describe("Som privatbruker vil jeg kunne", () => {
   before(() => {
+    cy.intercept("/api/*").as("loadPage");
     cy.visit("/");
+    cy.wait("@loadPage");
   });
 
   it("legge ut en annonse med bilde og tekst (P1)", () => {

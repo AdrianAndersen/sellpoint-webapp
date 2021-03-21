@@ -2,11 +2,17 @@ import { Button, Card, Typography } from "@material-ui/core";
 import { demoData, testData } from "../lib/fixtures";
 import { info, success } from "../lib/toasts";
 import Head from "next/head";
-import { Advertisement, Category, Listing, User } from "../lib/Types";
-import { useGlobalState } from "../components/StateManagement/GlobalStateProvider";
+import { GlobalState } from "../lib/Types";
+import {
+  useGlobalState,
+  emptyState,
+} from "../components/StateManagement/GlobalStateProvider";
+import { useRouter } from "next/router";
 
 const DatabaseManager = () => {
-  const { state } = useGlobalState();
+  const { state, dispatch } = useGlobalState();
+  const router = useRouter();
+
   if (!state.usingDB)
     return (
       <Typography data-cy="databaseHeader" className="text-center" variant="h2">
@@ -15,62 +21,24 @@ const DatabaseManager = () => {
     );
 
   const emptyDB = async () => {
-    info("Tømmer database. Vennligst vent...");
+    info("Tømmer databasen. Vennligst vent...");
     await fetch("/api/reset_db");
-    setTimeout(() => success("Databasen ble tømt!"), 2000);
+    success("Databasen ble tømt!");
+    dispatch({ type: "SET_STATE", payload: emptyState });
+    router.push("/");
   };
 
-  const loadUsers = async (users: User[]) => {
-    users.forEach(
-      async (user) =>
-        await fetch("/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-    );
-  };
-
-  const loadCategories = async (categories: Category[]) => {
-    categories = categories.map((cat) => ({ name: cat })) as any;
-
-    categories.forEach(
-      async (category) =>
-        await fetch("/api/categories", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(category),
-        })
-    );
-  };
-
-  const loadListings = async (listings: Listing[]) => {
-    listings.forEach(
-      async (listing) =>
-        await fetch("/api/listings", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(listing),
-        })
-    );
-  };
-  const loadAdvertisements = async (advertisements: Advertisement[]) => {
-    advertisements.forEach(
-      async (advertisement) =>
-        await fetch("/api/advertisements", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(advertisement),
-        })
-    );
+  const loadData = async (data: GlobalState) => {
+    await fetch("/api/all", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    success("Databasen ble oppdatert!");
+    dispatch({ type: "SET_STATE", payload: { ...data, usingDB: true } });
+    router.push("/");
   };
   return (
     <>
@@ -78,73 +46,29 @@ const DatabaseManager = () => {
         <title>Databaseverktøy | Sellpoint</title>
       </Head>
       <Card className="flex flex-wrap justify-center">
-        <Typography
-          data-cy="databaseHeader"
-          className="w-full text-center"
-          variant="h3"
-        >
+        <Typography className="w-full text-center" variant="h3">
           Databaseverktøy
         </Typography>
-        <p>
-          Tøm først databasen. Velg deretter enten test- eller demo-data. Gi
-          hver operasjon god tid{" "}
-          <span aria-label="Snail Emoji" role="img">
-            🐌
-          </span>
-        </p>
-        <Button data-cy="emptyDB" className="w-full" onClick={() => emptyDB()}>
+        <Button className="w-full" onClick={() => emptyDB()}>
           Tøm Database
         </Button>
-        <div className="text-center flex flex-col bg-red-100 m-10 p-5">
-          <Typography variant="h5">Test-data</Typography>
-          <Button
-            data-cy="loadUsers"
-            onClick={() => {
-              info("Laster inn brukere og kategorier. Vennligst vent...");
-              loadUsers(testData.users);
-              loadCategories(testData.categories);
-              setTimeout(
-                () => success("Brukere og kategorier ble lastet inn!"),
-                2000
-              );
-            }}
-          >
-            1. Last inn brukere og kategorier
-          </Button>
-          <Button
-            data-cy="loadItems"
-            onClick={() => {
-              info("Laster inn annonser og reklamer. Vennligst vent...");
-              loadAdvertisements(testData.advertisements);
-              loadListings(testData.listings);
-              setTimeout(
-                () => success("Annonser og reklamer ble lastet inn!"),
-                2000
-              );
-            }}
-          >
-            2. Last inn reklamer og annonser
-          </Button>
-        </div>
-        <div className="text-center flex flex-col bg-green-100 m-10 p-5">
-          <Typography variant="h5">Demo-data</Typography>
-          <Button
-            onClick={() => {
-              loadUsers(demoData.users);
-              loadCategories(demoData.categories);
-            }}
-          >
-            1. Last inn brukere og kategorier
-          </Button>
-          <Button
-            onClick={() => {
-              loadAdvertisements(demoData.advertisements);
-              loadListings(demoData.listings);
-            }}
-          >
-            2. Last inn reklamer og annonser
-          </Button>
-        </div>
+        <Button
+          data-cy="loadTestData"
+          onClick={() => {
+            info("Laster inn test-data. Vennligst vent...");
+            loadData(testData);
+          }}
+        >
+          Last inn test-data
+        </Button>
+        <Button
+          onClick={() => {
+            info("Laster inn demo-data. Vennligst vent...");
+            loadData(demoData);
+          }}
+        >
+          Last inn demo-data
+        </Button>
       </Card>
     </>
   );

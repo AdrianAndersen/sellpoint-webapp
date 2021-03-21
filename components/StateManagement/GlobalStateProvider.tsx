@@ -13,9 +13,9 @@ const GlobalStateContext = createContext({
   dispatch: {} as Dispatch<DispatchObject>,
 });
 
-const emptyState: GlobalState = {
+export const emptyState: GlobalState = {
   currentUser: undefined,
-  usingDB: false,
+  usingDB: true,
   users: [],
   listings: [],
   categories: [],

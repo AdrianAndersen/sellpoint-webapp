@@ -1,6 +1,8 @@
 describe("Som en admin vil jeg kunne", () => {
   before(() => {
+    cy.intercept("/api/*").as("loadPage");
     cy.visit("/");
+    cy.wait("@loadPage");
   });
 
   it("slette annonser (A1)", () => {
@@ -24,9 +26,15 @@ describe("Som en admin vil jeg kunne", () => {
   });
 
   it("slette reklamer (A3)", () => {
+    cy.interceptDB();
     cy.getBySel("deleteAdBtn").click();
+    cy.waitDB();
+    cy.interceptDB();
     cy.getBySel("deleteAdBtn").click();
+    cy.waitDB();
+    cy.interceptDB();
     cy.getBySel("deleteAdBtn").click();
+    cy.waitDB();
 
     cy.getBySel("deleteAdBtn").should("not.exist");
   });
