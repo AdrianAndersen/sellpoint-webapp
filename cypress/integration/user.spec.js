@@ -163,4 +163,32 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
 
     cy.get("body").type("{esc}"); // Hide the select menu
   });
+
+  it("redigere opplysningene jeg har oppgitt i profilen min (U9)", () => {
+    cy.login("lars", "batteryhorsestaple");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("editUserBtn").click();
+    cy.get("input[name=name]").clear().type("Espen Cogitron");
+    cy.get("input[name=phoneNumber]").clear().type("1010101");
+    cy.get("input[name=username]").clear().type("espen");
+    cy.get("input[name=password]").clear().type("espen");
+    cy.getBySel("googleMap").click();
+    cy.interceptDB();
+    cy.interceptDB();
+    cy.getBySel("signUpSubmit").click();
+    cy.waitDB();
+    cy.waitDB();
+
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("userInfo")
+      .should("contain", "Espen Cogitron (espen)")
+      .and("contain", "1010101")
+      .and("contain", "Privatbruker");
+
+    cy.login("espen", "espen");
+    cy.getBySel("loginBtn").should("contain", "Logg ut");
+
+    cy.login("lars", "batteryhorsestaple");
+    cy.on("window:alert", (str) => expect(str).to.equal("Feil passord!"));
+  });
 });

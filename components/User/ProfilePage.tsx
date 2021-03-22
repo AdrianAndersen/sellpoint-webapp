@@ -38,7 +38,7 @@ const ProfilePage = ({ user }: { user: User }) => {
           </Typography>
           {hasEditPerm && (
             <IconButton
-              data-cy="editAdBtn"
+              data-cy="editUserBtn"
               color="secondary"
               onClick={(e) => {
                 e.preventDefault();
