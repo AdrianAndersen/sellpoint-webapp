@@ -26,7 +26,7 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.get("input[name=username]").type("lars");
     cy.get("input[name=password]").type("batteryhorsestaple");
     cy.getBySel("googleMap").click();
-    cy.getBySel("signUpPrivateSubmit").click();
+    cy.getBySel("signUpSubmit").click();
 
     cy.url().should("include", "/");
     cy.getBySel("loginBtn").should("contain", "Logg ut");
@@ -45,12 +45,12 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.getBySel("registerLink").click();
     cy.getBySel("accountSwitch").click();
 
-    cy.get("input[name=companyName]").type("Henrik Aasheim");
-    cy.get("input[name=phone]").type("31415");
+    cy.get("input[name=name]").type("Henrik Aasheim");
+    cy.get("input[name=phoneNumber]").type("31415");
     cy.get("input[name=username]").type("henrik");
     cy.get("input[name=password]").type("hemmelig");
     cy.getBySel("googleMap").click();
-    cy.getBySel("signUpBusinessSubmit").click();
+    cy.getBySel("signUpSubmit").click();
 
     cy.url().should("include", "/");
     cy.getBySel("loginBtn").should("contain", "Logg ut");
