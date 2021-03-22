@@ -48,6 +48,16 @@ const NavButtons = () => {
           <AccountCircle />
         </Typography>
       </Button>
+      {state.currentUser && (
+        <Button
+          onClick={() => {
+            router.push("/users/" + state.currentUser);
+          }}
+          color="inherit"
+        >
+          <Typography>Min profil</Typography>
+        </Button>
+      )}
     </div>
   );
 };
