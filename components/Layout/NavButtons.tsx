@@ -50,6 +50,7 @@ const NavButtons = () => {
       </Button>
       {state.currentUser && (
         <Button
+          data-cy="myProfileBtn"
           onClick={() => {
             router.push("/users/" + state.currentUser);
           }}

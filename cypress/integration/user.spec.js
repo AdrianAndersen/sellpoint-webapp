@@ -103,6 +103,31 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.getBySel("distanceOverview").eq(2).should("contain", "0.00");
   });
 
+  it("se min egen profil med annonser/reklamer (U5)", () => {
+    cy.login("ola", "ola");
+    cy.getBySel("myProfileBtn").click();
+
+    cy.getBySel("userInfo")
+      .should("contain", "Ola Halvorsen (ola)")
+      .and("contain", "98765432")
+      .and("contain", "Privatbruker");
+
+    cy.getBySel("listingOverview").should("exist");
+    cy.getBySel("viewListing").should("have.length", 2);
+    cy.getBySel("adSlide").should("not.exist");
+
+    cy.login("erna", "erna");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("listingOverview").should("not.exist");
+    cy.getBySel("adSlide").should("exist");
+
+    cy.login("admin", "admin");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("listingOverview").should("exist");
+    cy.getBySel("viewListing").should("have.length", 1);
+    cy.getBySel("adSlide").should("exist");
+  });
+
   it("se en annonse samt kontaktinfo til privatbrukeren som har annonsen (U7)", () => {
     cy.getBySel("viewListing").eq(2).click();
 

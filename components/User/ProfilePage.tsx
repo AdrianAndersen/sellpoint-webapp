@@ -20,7 +20,7 @@ const ProfilePage = ({ user }: { user: User }) => {
 
   return (
     <Card className="flex flex-row flex-wrap justify-center">
-      <div className="ml-5 w-full">
+      <div data-cy="userInfo" className="ml-5 w-full">
         <Typography variant="h4">
           {user.name} ({user.username})
         </Typography>
