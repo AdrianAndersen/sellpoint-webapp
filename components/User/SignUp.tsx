@@ -45,12 +45,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp({ role }: { role: UserRole }) {
+export default function SignUp({
+  role,
+  initialUser,
+}: {
+  role: UserRole;
+  initialUser?: User;
+}) {
   const classes = useStyles();
   const router = useRouter();
-  const [user, setUser] = useState<Partial<User>>({});
+  const [user, setUser] = useState<Partial<User>>(initialUser || {});
   const { state, dispatch } = useGlobalState();
-
   return (
     <Grid container component="main">
       <CssBaseline />
@@ -78,12 +83,14 @@ export default function SignUp({ role }: { role: UserRole }) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {role === "private" ? "Ny privatkonto" : "Ny bedriftskonto"}
+            {initialUser ? "Endre " : "Ny "}
+            {role === "private" ? "privatkonto" : "bedriftskonto"}
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  defaultValue={initialUser?.name}
                   autoComplete="fname"
                   name="name"
                   variant="outlined"
@@ -98,6 +105,7 @@ export default function SignUp({ role }: { role: UserRole }) {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  defaultValue={initialUser?.phoneNumber}
                   variant="outlined"
                   required
                   fullWidth
@@ -112,6 +120,7 @@ export default function SignUp({ role }: { role: UserRole }) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  defaultValue={initialUser?.username}
                   variant="outlined"
                   required
                   fullWidth
@@ -126,6 +135,7 @@ export default function SignUp({ role }: { role: UserRole }) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  defaultValue={initialUser?.password}
                   variant="outlined"
                   required
                   fullWidth
@@ -140,7 +150,13 @@ export default function SignUp({ role }: { role: UserRole }) {
                 />
               </Grid>
               <Grid item xs={12}>
-                <GoogleMapsComponent user={user} setUser={setUser} />
+                <GoogleMapsComponent
+                  initialMarkers={
+                    initialUser ? [initialUser.location] : undefined
+                  }
+                  user={user}
+                  setUser={setUser}
+                />
               </Grid>
             </Grid>
             <Button
@@ -149,6 +165,21 @@ export default function SignUp({ role }: { role: UserRole }) {
                 e.preventDefault();
                 const userWithRole = { ...user, role: role };
                 if (validateUser(userWithRole)) {
+                  if (initialUser) {
+                    dispatch({
+                      type: "REMOVE_USER",
+                      payload: initialUser.id,
+                    });
+                    if (state.usingDB) {
+                      await fetch("/api/users", {
+                        method: "PATCH",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ id: initialUser.id }),
+                      });
+                    }
+                  }
                   if (state.usingDB) {
                     const response = await fetch("/api/users", {
                       method: "POST",
@@ -182,13 +213,15 @@ export default function SignUp({ role }: { role: UserRole }) {
               color="primary"
               className={classes.submit}
             >
-              Registrer deg
+              {initialUser ? "Oppdater konto" : "Registrer deg"}
             </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link href="/login">Har du allerede en konto? Logg inn</Link>
+            {!initialUser && (
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link href="/login">Har du allerede en konto? Logg inn</Link>
+                </Grid>
               </Grid>
-            </Grid>
+            )}
           </form>
         </div>
       </Grid>

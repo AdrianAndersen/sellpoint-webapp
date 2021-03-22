@@ -93,7 +93,8 @@ const AdvertisementSlideshow = ({
   specificAds?: Advertisement[];
 }) => {
   const { state } = useGlobalState();
-  if (state.advertisements.length === 0) return <p>Ingen reklamer å vise...</p>;
+  if (state.advertisements.length === 0)
+    return <p className="text-center">Ingen reklamer å vise...</p>;
   return <Slideshow ads={specificAds ? specificAds : state.advertisements} />;
 };
 

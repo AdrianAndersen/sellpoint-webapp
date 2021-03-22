@@ -27,7 +27,7 @@ import { useState } from "react";
 const useStyles = makeStyles((theme) => ({
   filterControls: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
     marginTop: theme.spacing(1),
