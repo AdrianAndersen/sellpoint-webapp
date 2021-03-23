@@ -110,7 +110,13 @@ const ListingOverview = ({
             >
               <CardHeader
                 data-cy="listingTitle"
-                avatar={<Avatar></Avatar>}
+                avatar={
+                  <Link href={"/users/" + listing.owner}>
+                    <IconButton>
+                      <Avatar />
+                    </IconButton>
+                  </Link>
+                }
                 title={listing.title + (listing.sold ? " SOLGT" : "")}
                 subheader={moment().format("DD/MM/YYYY")}
               />
