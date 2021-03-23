@@ -26,7 +26,7 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.get("input[name=username]").type("lars");
     cy.get("input[name=password]").type("batteryhorsestaple");
     cy.getBySel("googleMap").click();
-    cy.getBySel("signUpPrivateSubmit").click();
+    cy.getBySel("signUpSubmit").click();
 
     cy.url().should("include", "/");
     cy.getBySel("loginBtn").should("contain", "Logg ut");
@@ -45,12 +45,12 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.getBySel("registerLink").click();
     cy.getBySel("accountSwitch").click();
 
-    cy.get("input[name=companyName]").type("Henrik Aasheim");
-    cy.get("input[name=phone]").type("31415");
+    cy.get("input[name=name]").type("Henrik Aasheim");
+    cy.get("input[name=phoneNumber]").type("31415");
     cy.get("input[name=username]").type("henrik");
     cy.get("input[name=password]").type("hemmelig");
     cy.getBySel("googleMap").click();
-    cy.getBySel("signUpBusinessSubmit").click();
+    cy.getBySel("signUpSubmit").click();
 
     cy.url().should("include", "/");
     cy.getBySel("loginBtn").should("contain", "Logg ut");
@@ -103,6 +103,31 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.getBySel("distanceOverview").eq(2).should("contain", "0.00");
   });
 
+  it("se min egen profil med annonser/reklamer (U5)", () => {
+    cy.login("ola", "ola");
+    cy.getBySel("myProfileBtn").click();
+
+    cy.getBySel("userInfo")
+      .should("contain", "Ola Halvorsen (ola)")
+      .and("contain", "98765432")
+      .and("contain", "Privatbruker");
+
+    cy.getBySel("listingOverview").should("exist");
+    cy.getBySel("viewListing").should("have.length", 2);
+    cy.getBySel("adSlide").should("not.exist");
+
+    cy.login("erna", "erna");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("listingOverview").should("not.exist");
+    cy.getBySel("adSlide").should("exist");
+
+    cy.login("admin", "admin");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("listingOverview").should("exist");
+    cy.getBySel("viewListing").should("have.length", 1);
+    cy.getBySel("adSlide").should("exist");
+  });
+
   it("se en annonse samt kontaktinfo til privatbrukeren som har annonsen (U7)", () => {
     cy.getBySel("viewListing").eq(2).click();
 
@@ -137,5 +162,33 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.get("[data-value=Hage]").click();
 
     cy.get("body").type("{esc}"); // Hide the select menu
+  });
+
+  it("redigere opplysningene jeg har oppgitt i profilen min (U9)", () => {
+    cy.login("lars", "batteryhorsestaple");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("editUserBtn").click();
+    cy.get("input[name=name]").clear().type("Espen Cogitron");
+    cy.get("input[name=phoneNumber]").clear().type("1010101");
+    cy.get("input[name=username]").clear().type("espen");
+    cy.get("input[name=password]").clear().type("espen");
+    cy.getBySel("googleMap").click();
+    cy.interceptDB();
+    cy.interceptDB();
+    cy.getBySel("signUpSubmit").click();
+    cy.waitDB();
+    cy.waitDB();
+
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("userInfo")
+      .should("contain", "Espen Cogitron (espen)")
+      .and("contain", "1010101")
+      .and("contain", "Privatbruker");
+
+    cy.login("espen", "espen");
+    cy.getBySel("loginBtn").should("contain", "Logg ut");
+
+    cy.login("lars", "batteryhorsestaple");
+    cy.on("window:alert", (str) => expect(str).to.equal("Feil passord!"));
   });
 });

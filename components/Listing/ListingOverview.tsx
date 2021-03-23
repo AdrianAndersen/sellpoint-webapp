@@ -27,7 +27,7 @@ import { useState } from "react";
 const useStyles = makeStyles((theme) => ({
   filterControls: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     flexWrap: "wrap",
     marginTop: theme.spacing(1),
@@ -50,9 +50,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListingOverview = () => {
+const ListingOverview = ({
+  specificListings,
+}: {
+  specificListings?: Listing[];
+}) => {
   const classes = useStyles();
   const { state, dispatch } = useGlobalState();
+  const listings = specificListings ? specificListings : state.listings;
   const currentUser = state.users.find((user) => user.id === state.currentUser);
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
@@ -90,7 +95,7 @@ const ListingOverview = () => {
         justify="center"
         alignItems="flex-start"
       >
-        {state.listings
+        {listings
           .filter(
             (listing) =>
               selectedCategories.length == 0 ||

@@ -33,10 +33,12 @@ function GoogleMapsComponent({
   initialMarkers,
   user,
   setUser,
+  readonly,
 }: {
   initialMarkers?: Array<LatLng>;
   user?: Partial<User>;
   setUser?: Dispatch<SetStateAction<Partial<User>>>;
+  readonly?: boolean;
 }) {
   const [markers, setMarkers] = useState(
     initialMarkers ? [...initialMarkers] : []
@@ -142,8 +144,10 @@ function GoogleMapsComponent({
       <Typography variant="body1" className="text-center">
         {markers.length > 1
           ? getPrettyDistance(markers[0], markers[1])
-          : setUser
-          ? "Velg din posisjon"
+          : user
+          ? readonly
+            ? ""
+            : "Velg din posisjon"
           : "Du må logge inn for å se avstand"}
       </Typography>
     </div>

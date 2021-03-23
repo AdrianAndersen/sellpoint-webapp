@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import { Advertisement } from "../../lib/Types";
 
-const Slideshow = () => {
+const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
   const { state, dispatch } = useGlobalState();
   const [index, setIndex] = useState(0);
   const currentUser = state.users.find((user) => user.id === state.currentUser);
@@ -15,29 +16,29 @@ const Slideshow = () => {
 
   useEffect(() => {
     const interval = setTimeout(() => {
-      setIndex((index + 1) % state.advertisements.length);
+      setIndex((index + 1) % ads.length);
     }, 2000);
 
     return () => clearTimeout(interval);
-  }, [index, state.advertisements]);
+  }, [index, ads]);
 
   return (
-    <Link href={state.advertisements[index].link}>
+    <Link href={ads[index].link}>
       <div
         data-cy="adSlide"
         className="w-full bg-center bg-cover cursor-pointer"
         style={{
-          backgroundImage: state.advertisements[index]
-            ? "url(" + state.advertisements[index].imageURL + ")"
+          backgroundImage: ads[index]
+            ? "url(" + ads[index].imageURL + ")"
             : "none",
           backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundColor: "gray",
           height: "10rem",
         }}
-        title={state.advertisements[index]?.title}
+        title={ads[index]?.title}
       >
-        {(state.currentUser === state.advertisements[index].owner ||
+        {(state.currentUser === ads[index].owner ||
           (currentUser && currentUser.role === "admin")) && (
           <span className="inline-block bg-gray-50 m-2 p-1 rounded">
             <IconButton
@@ -45,9 +46,7 @@ const Slideshow = () => {
               color="secondary"
               onClick={(e) => {
                 e.preventDefault();
-                router.push(
-                  "/edit-advertisement/" + state.advertisements[index].id
-                );
+                router.push("/edit-advertisement/" + ads[index].id);
               }}
             >
               <EditIcon />
@@ -65,7 +64,7 @@ const Slideshow = () => {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                      id: state.advertisements[index].id,
+                      id: ads[index].id,
                     }),
                   }).then((response) => response.json());
                 }
@@ -73,7 +72,7 @@ const Slideshow = () => {
                 if (response || !state.usingDB) {
                   dispatch({
                     type: "REMOVE_ADVERTISEMENT",
-                    payload: state.advertisements[index].id,
+                    payload: ads[index].id,
                   });
                   setIndex(0);
                 }
@@ -88,10 +87,15 @@ const Slideshow = () => {
   );
 };
 
-const AdvertisementSlideshow = () => {
+const AdvertisementSlideshow = ({
+  specificAds,
+}: {
+  specificAds?: Advertisement[];
+}) => {
   const { state } = useGlobalState();
-  if (state.advertisements.length === 0) return <p>Ingen reklamer å vise...</p>;
-  return <Slideshow />;
+  if (state.advertisements.length === 0)
+    return <p className="text-center">Ingen reklamer å vise...</p>;
+  return <Slideshow ads={specificAds ? specificAds : state.advertisements} />;
 };
 
 export default AdvertisementSlideshow;

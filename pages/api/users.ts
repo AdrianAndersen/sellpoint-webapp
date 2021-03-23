@@ -34,5 +34,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       where: { id: req.body["userId"] },
     });
     res.json(200);
+  } else if (req.method === "PATCH") {
+    await prisma.user.delete({
+      where: { id: req.body["id"] },
+    });
+    res.json(200);
   }
 };

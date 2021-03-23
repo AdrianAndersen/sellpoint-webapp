@@ -1,7 +1,6 @@
 import { FormControlLabel, Switch } from "@material-ui/core";
 import { useState } from "react";
-import SignUpCompany from "../components/User/SignUpCompany";
-import SignUpUser from "../components/User/SignUppageUser";
+import SignUp from "../components/User/SignUp";
 import Head from "next/head";
 
 const LoginPage = () => {
@@ -27,15 +26,9 @@ const LoginPage = () => {
       />
 
       <div>
-        {person ? (
-          <div className="w-full flex flex-row justify-center">
-            <SignUpUser />
-          </div>
-        ) : (
-          <div className="w-full flex flex-row justify-center">
-            <SignUpCompany />
-          </div>
-        )}
+        <div className="w-full flex flex-row justify-center">
+          <SignUp role={person ? "private" : "business"} />
+        </div>
       </div>
     </div>
   );
