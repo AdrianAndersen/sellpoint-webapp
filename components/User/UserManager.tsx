@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { User } from "../../lib/Types";
 import { error } from "../../lib/toasts";
+import { deleteUserDB } from "../../lib/requests";
 
 const UserManager = () => {
   const { state, dispatch } = useGlobalState();
@@ -56,7 +57,7 @@ const UserManager = () => {
             if (selectedUser.role !== "business") {
               state.listings
                 .filter((listing) => listing.owner === selectedUser.id)
-                .forEach(async (listing) => {
+                .forEach((listing) => {
                   dispatch({
                     type: "REMOVE_LISTING",
                     payload: listing.id,
@@ -67,7 +68,7 @@ const UserManager = () => {
             if (selectedUser.role !== "private") {
               state.advertisements
                 .filter((ad) => ad.owner === selectedUser.id)
-                .forEach(async (ad) => {
+                .forEach((ad) => {
                   dispatch({
                     type: "REMOVE_ADVERTISEMENT",
                     payload: ad.id,
@@ -81,16 +82,10 @@ const UserManager = () => {
               const userAds = state.advertisements
                 .filter((ad) => ad.owner === currentUser.id)
                 .map((ad) => ad.id);
-              await fetch("/api/users", {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  userId: currentUser.id,
-                  ads: userAds,
-                  listings: userListings,
-                }),
+              await deleteUserDB({
+                userId: currentUser.id,
+                ads: userAds,
+                listings: userListings,
               });
             }
             dispatch({

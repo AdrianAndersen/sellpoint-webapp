@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Advertisement } from "../../lib/Types";
+import { deleteAdDB } from "../../lib/requests";
 
 const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
   const { state, dispatch } = useGlobalState();
@@ -56,25 +57,13 @@ const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
               color="secondary"
               onClick={async (e) => {
                 e.preventDefault();
-                let response;
+                dispatch({
+                  type: "REMOVE_ADVERTISEMENT",
+                  payload: state.advertisements[index].id,
+                });
+                setIndex(0);
                 if (state.usingDB) {
-                  response = await fetch("/api/advertisements", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      id: ads[index].id,
-                    }),
-                  }).then((response) => response.json());
-                }
-
-                if (response || !state.usingDB) {
-                  dispatch({
-                    type: "REMOVE_ADVERTISEMENT",
-                    payload: ads[index].id,
-                  });
-                  setIndex(0);
+                  await deleteAdDB({ id: ads[index].id });
                 }
               }}
             >

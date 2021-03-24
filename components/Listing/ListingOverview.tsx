@@ -20,9 +20,9 @@ import moment from "moment";
 import { getPrettyDistance } from "../GoogleMaps/GoogleMapsComponent";
 import { Category, Listing } from "../../lib/Types";
 import SortComponent from "./SortComponent";
-import { error } from "../../lib/toasts";
 import CategorySelect from "./CategorySelect";
 import { useState } from "react";
+import { deleteListingDB, patchListingDB } from "../../lib/requests";
 
 const useStyles = makeStyles((theme) => ({
   filterControls: {
@@ -69,13 +69,7 @@ const ListingOverview = ({
       payload: state.listings,
     });
     if (state.usingDB) {
-      await fetch("/api/listings", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: listing.id, sold: listing.sold }),
-      });
+      await patchListingDB({ id: listing.id, sold: listing.sold });
     }
   };
 
@@ -168,22 +162,14 @@ const ListingOverview = ({
                         data-cy="deleteListing"
                         color="secondary"
                         onClick={async () => {
-                          let response;
+                          dispatch({
+                            type: "REMOVE_LISTING",
+                            payload: listing.id,
+                          });
+
                           if (state.usingDB) {
-                            response = await fetch("/api/listings", {
-                              method: "DELETE",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({ id: listing.id }),
-                            }).then((response) => response.json());
+                            await deleteListingDB({ id: listing.id });
                           }
-                          if (response || !state.usingDB) {
-                            dispatch({
-                              type: "REMOVE_LISTING",
-                              payload: listing.id,
-                            });
-                          } else error("Fjerning av annonsen feilet!");
                         }}
                       >
                         <Delete />

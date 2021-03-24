@@ -15,6 +15,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { Listing } from "../../lib/Types";
 import validateListing from "../Validators/ListingValidator";
 import { error } from "../../lib/toasts";
+import { createListingDB, deleteListingDB } from "../../lib/requests";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -141,21 +142,10 @@ const CreateListingForm = ({
               }
               if (state.usingDB) {
                 if (initialListing) {
-                  await fetch("/api/listings", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ id: initialListing.id }),
-                  });
+                  await deleteListingDB({ id: initialListing.id });
                 }
-                const response = await fetch("/api/listings", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(newListing),
-                }).then((response) => response.json());
+
+                const response = await createListingDB(newListing);
                 if (response) {
                   dispatch({
                     type: "ADD_LISTING",
