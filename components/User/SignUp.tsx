@@ -15,6 +15,7 @@ import validateUser from "../Validators/UserValidator";
 import { User, UserRole } from "../../lib/Types";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { error } from "../../lib/toasts";
+import { addUserDB } from "../../lib/requests";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -181,13 +182,7 @@ export default function SignUp({
                     }
                   }
                   if (state.usingDB) {
-                    const response = await fetch("/api/users", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify(userWithRole),
-                    }).then((response) => response.json());
+                    const response = await addUserDB(userWithRole);
                     if (response) {
                       dispatch({
                         type: "ADD_USER",

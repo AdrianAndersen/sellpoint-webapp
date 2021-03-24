@@ -8,6 +8,7 @@ import {
   emptyState,
 } from "../components/StateManagement/GlobalStateProvider";
 import { useRouter } from "next/router";
+import { addAllDB } from "../lib/requests";
 
 const DatabaseManager = () => {
   const { state, dispatch } = useGlobalState();
@@ -29,13 +30,7 @@ const DatabaseManager = () => {
   };
 
   const loadData = async (data: GlobalState) => {
-    await fetch("/api/all", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    await addAllDB(data);
     success("Databasen ble oppdatert!");
     dispatch({ type: "SET_STATE", payload: { ...data, usingDB: true } });
     router.push("/");

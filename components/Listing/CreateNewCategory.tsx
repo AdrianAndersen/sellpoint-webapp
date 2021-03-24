@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, createStyles, makeStyles, TextField } from "@material-ui/core";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { AddBox } from "@material-ui/icons";
+import { addCategoryDB } from "../../lib/requests";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -44,13 +45,7 @@ const CreateNewCategory = () => {
               payload: category,
             });
             if (state.usingDB) {
-              await fetch("/api/categories", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name: category }),
-              });
+              await addCategoryDB({ name: category });
             }
             setCategory("");
           }

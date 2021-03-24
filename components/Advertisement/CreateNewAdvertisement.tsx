@@ -6,6 +6,7 @@ import { Advertisement } from "../../lib/Types";
 import Link from "next/link";
 import validateAdvertisement from "../Validators/AdvertisementValidator";
 import { error } from "../../lib/toasts";
+import { deleteAdDB, createAdDB } from "../../lib/requests";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,
@@ -73,21 +74,9 @@ const CreateNewAdvertisement = ({
               }
               if (state.usingDB) {
                 if (initialAdvertisement) {
-                  await fetch("/api/advertisements", {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ id: initialAdvertisement.id }),
-                  });
+                  deleteAdDB({ id: initialAdvertisement.id });
                 }
-                const response = await fetch("/api/advertisements", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(advertisement),
-                }).then((response) => response.json());
+                const response = await createAdDB(advertisement);
                 if (response) {
                   dispatch({
                     type: "ADD_ADVERTISEMENT",
