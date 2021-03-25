@@ -57,7 +57,7 @@ describe("Som privatbruker vil jeg kunne", () => {
     });
     cy.getBySel("rating").should("contain", "(3)");
   });
-. . . . . . . . .
+
   it("markere annonsen min som solgt (P5)", () => {
     cy.logout();
     cy.get("input[name=sold]").should("not.exist");
