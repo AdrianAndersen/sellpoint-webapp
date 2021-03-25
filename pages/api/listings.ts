@@ -32,6 +32,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         sold: req.body["sold"],
       },
     });
-    return result;
+    res.json(result);
   }
 };

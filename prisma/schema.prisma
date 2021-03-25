@@ -27,6 +27,18 @@ model User {
   lng            Decimal
   listings       Listing[]
   advertisements Advertisement[]
+  ownRatings     Rating[]         @relation("OwnedRatings")
+  givenRatings   Rating[]         @relation("GivenRatings")
+}
+
+model Rating {
+  fromId  Int
+  toId    Int
+  rating  Int
+  from    User  @relation("GivenRatings", fields: [fromId], references: [id])
+  to      User  @relation("OwnedRatings", fields: [toId], references: [id])
+
+  @@id([fromId, toId])
 }
 
 model Category {

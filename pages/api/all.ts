@@ -18,6 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
           advertisements: true,
+          ownRatings: true,
         },
       });
 
@@ -28,9 +29,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const userObj: any = {
           ...user,
           location: { lat: Number(user.lat), lng: Number(user.lng) },
+          ratings: user.ownRatings.map((rating) => ({
+            from: rating.fromId,
+            rating: rating.rating,
+          })),
         };
         delete userObj.listings;
         delete userObj.advertisements;
+        delete userObj.ownRatings;
         delete userObj.lat;
         delete userObj.lng;
 
@@ -76,12 +82,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.advertisement.deleteMany();
     await prisma.category.deleteMany();
     await prisma.user.deleteMany();
+    await prisma.rating.deleteMany();
+
     const users = req.body["users"];
     const categories = req.body["categories"];
     const listings = req.body["listings"];
     const advertisements = req.body["advertisements"];
 
-    for (const user of users) {
+    for (const user of users as User[]) {
       await prisma.user.create({
         data: {
           id: user.id,
@@ -92,6 +100,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           role: user.role,
           lat: user.location.lat,
           lng: user.location.lng,
+          ownRatings: {
+            create: user.ratings.map((rating) => ({
+              fromId: rating.from,
+              rating: rating.rating,
+            })),
+          },
         },
       });
     }

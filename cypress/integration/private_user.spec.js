@@ -48,6 +48,16 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("deleteListing").should("have.length", 2);
   });
 
+  it("gi rating til en privatbruker (P4)", () => {
+    cy.login("sverre", "sverre");
+
+    cy.getBySel("profileBtn").eq(1).click();
+    cy.getBySel("rating").within(() => {
+      cy.get("label").eq(2).click();
+    });
+    cy.getBySel("rating").should("contain", "(3)");
+  });
+
   it("markere annonsen min som solgt (P5)", () => {
     cy.logout();
     cy.get("input[name=sold]").should("not.exist");
