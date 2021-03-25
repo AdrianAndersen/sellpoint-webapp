@@ -16,6 +16,7 @@ import { Listing } from "../../lib/Types";
 import validateListing from "../Validators/ListingValidator";
 import { error } from "../../lib/toasts";
 import { createListingDB, deleteListingDB } from "../../lib/requests";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +59,11 @@ const CreateListingForm = ({
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   return (
-    <form className="w-1/2 p-4 flex flex-col">
+    <form
+      className={
+        isMobile ? "w-full p-4 flex flex-col" : "w-1/2 p-4 flex flex-col"
+      }
+    >
       <TextField
         name="title"
         label="Tittel"
