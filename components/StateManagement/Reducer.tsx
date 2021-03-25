@@ -4,6 +4,11 @@ const Reducer = (state: GlobalState, action: DispatchObject) => {
   switch (action.type) {
     case "SET_STATE":
       return { ...action.payload };
+    case "SET_USERS":
+      return {
+        ...state,
+        users: action.payload,
+      };
     case "ADD_USER":
       return {
         ...state,

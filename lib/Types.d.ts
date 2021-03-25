@@ -5,6 +5,11 @@ export type LatLng = {
   lat: number;
 };
 
+export type Rating = {
+  from: ID;
+  rating: number;
+};
+
 export type ID = number;
 
 export type User = {
@@ -15,6 +20,7 @@ export type User = {
   phoneNumber: string;
   role: UserRole;
   location: LatLng;
+  ratings: Rating[];
 };
 
 export type Listing = {
@@ -49,6 +55,7 @@ export type GlobalState = {
 
 export type DispatchAction =
   | "SET_STATE"
+  | "SET_USERS"
   | "ADD_USER"
   | "REMOVE_USER"
   | "SET_CURRENT_USER"

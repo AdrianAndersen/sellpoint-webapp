@@ -6,7 +6,7 @@ import AdvertisementSlideshow from "../Advertisement/AdvertisementSlideshow";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import ListingOverview from "../Listing/ListingOverview";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
-
+import Rating from "./Rating";
 const ProfilePage = ({ user }: { user: User }) => {
   const { state } = useGlobalState();
   const userRole =
@@ -56,6 +56,8 @@ const ProfilePage = ({ user }: { user: User }) => {
           user={user}
           readonly={true}
         />
+
+        {user.role === "private" && <Rating user={user} />}
       </div>
 
       {user.role !== "business" && (

@@ -39,9 +39,15 @@ export const patchListingDB = async (data: any) => {
 export const addCategoryDB = async (data: any) => {
   return await fetchData("POST", data, "/api/categories");
 };
+
 export const addUserDB = (data: any) => {
   return fetchData("POST", data, "/api/users");
 };
+
+export const updateUserDB = (data: any) => {
+  return fetchData("PATCH", data, "/api/users");
+};
+
 export const deleteUserDB = async (data: any) => {
   return await fetchData("DELETE", data, "/api/users");
 };

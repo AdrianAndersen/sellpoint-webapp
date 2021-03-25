@@ -106,7 +106,7 @@ const ListingOverview = ({
                 data-cy="listingTitle"
                 avatar={
                   <Link href={"/users/" + listing.owner}>
-                    <IconButton>
+                    <IconButton data-cy="profileBtn">
                       <Avatar />
                     </IconButton>
                   </Link>

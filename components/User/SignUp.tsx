@@ -15,7 +15,7 @@ import validateUser from "../Validators/UserValidator";
 import { User, UserRole } from "../../lib/Types";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { error } from "../../lib/toasts";
-import { addUserDB } from "../../lib/requests";
+import { addUserDB, updateUserDB } from "../../lib/requests";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -164,25 +164,22 @@ export default function SignUp({
               data-cy="signUpSubmit"
               onClick={async (e) => {
                 e.preventDefault();
-                const userWithRole = { ...user, role: role };
+                const userWithRole = { ...user, role: role, ratings: [] };
                 if (validateUser(userWithRole)) {
                   if (initialUser) {
                     dispatch({
                       type: "REMOVE_USER",
                       payload: initialUser.id,
                     });
-                    if (state.usingDB) {
-                      await fetch("/api/users", {
-                        method: "PATCH",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ id: initialUser.id }),
-                      });
-                    }
                   }
                   if (state.usingDB) {
-                    const response = await addUserDB(userWithRole);
+                    let response;
+                    if (initialUser) {
+                      response = await updateUserDB(userWithRole);
+                    } else {
+                      response = await addUserDB(userWithRole);
+                    }
+
                     if (response) {
                       dispatch({
                         type: "ADD_USER",
