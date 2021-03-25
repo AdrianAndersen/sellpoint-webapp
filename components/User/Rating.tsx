@@ -39,7 +39,7 @@ export default function SimpleRating({ user }: { user: User }) {
           currentUser.role === "business"
         }
         value={avgRating}
-        onChange={async (_event, newValue) => {
+        onChange={(_event, newValue) => {
           if (newValue === null || state.currentUser === undefined) {
             return;
           }
