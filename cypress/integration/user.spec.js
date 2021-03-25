@@ -193,15 +193,13 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
   });
 
   it("Se profilsidene til andre privatbrukere (U6)", () => {
-    cy.getBySel("homeBtn").click()
+    cy.getBySel("homeBtn").click();
     cy.getBySel("viewListing").eq(2).click();
     cy.url().should("include", "/listings/1");
     cy.getBySel("seProfil").click();
     cy.getBySel("userName").should("contain", "Ola Halvorsen");
 
-    
     cy.getBySel("profileBtn").eq(0).click();
     cy.getBySel("userName").should("contain", "Ola Halvorsen");
-    
   });
 });
