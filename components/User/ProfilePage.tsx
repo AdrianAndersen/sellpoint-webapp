@@ -33,7 +33,7 @@ const ProfilePage = ({ user }: { user: User }) => {
     <Card className="flex flex-row flex-wrap justify-center p-5">
       <div data-cy="userInfo" className="w-full text-center">
         <div className="flex flex-row w-full justify-center">
-          <Typography variant="h4">
+          <Typography variant="h4" data-cy="userName">
             {user.name} ({user.username})
           </Typography>
           {hasEditPerm && (

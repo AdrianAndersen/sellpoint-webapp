@@ -7,7 +7,9 @@ import {
   Grid,
   makeStyles,
   Typography,
+  Button,
 } from "@material-ui/core";
+import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import { Listing } from "../../lib/Types";
@@ -60,9 +62,17 @@ const ViewListing = ({ listing }: { listing: Listing }) => {
       <Grid item xs={isMobile ? 12 : 4}>
         <Card>
           <CardContent>
-            <Typography variant="h5" gutterBottom>
-              Kontakt
-            </Typography>
+            <div className="flex justify-between">
+              <Typography variant="h5" gutterBottom>
+                Kontakt
+              </Typography>
+
+              <Link href={"/users/" + listing.owner}>
+                <Button variant="contained" color="primary" data-cy="seProfil">
+                  Se profil
+                </Button>
+              </Link>
+            </div>
 
             <Typography variant="h6">Navn:</Typography>
             <Typography data-cy="ownerName" gutterBottom>

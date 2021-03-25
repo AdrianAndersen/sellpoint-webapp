@@ -191,4 +191,17 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.login("lars", "batteryhorsestaple");
     cy.on("window:alert", (str) => expect(str).to.equal("Feil passord!"));
   });
+
+  it("Se profilsidene til andre privatbrukere (U6)", () => {
+    cy.getBySel("homeBtn").click()
+    cy.getBySel("viewListing").eq(2).click();
+    cy.url().should("include", "/listings/1");
+    cy.getBySel("seProfil").click();
+    cy.getBySel("userName").should("contain", "Ola Halvorsen");
+
+    
+    cy.getBySel("profileBtn").eq(0).click();
+    cy.getBySel("userName").should("contain", "Ola Halvorsen");
+    
+  });
 });
