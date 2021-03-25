@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { User, Rating } from "../../lib/Types";
+import { updateUserDB } from "../../lib/requests";
 
 const averageRating = (ratings: Rating[]) => {
   const rating =
@@ -62,13 +63,7 @@ export default function SimpleRating({ user }: { user: User }) {
           });
 
           if (state.usingDB) {
-            await fetch("/api/users", {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ id: user.id, ratings: user.ratings }),
-            });
+            updateUserDB(user);
           }
         }}
       />

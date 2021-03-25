@@ -50,7 +50,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const result = await prisma.user.update({
       where: { id: req.body["id"] },
       data: {
-        ownRatings: {
+        name: req.body["name"],
+        username: req.body["username"],
+        password: req.body["password"],
+        phoneNumber: req.body["phoneNumber"],
+        role: req.body["role"],
+        lat: req.body["location"]["lat"],
+        lng: req.body["location"]["lng"],
+        ownRatings: req.body["ratings"] && {
           create: req.body["ratings"].map((rating: Rating) => ({
             fromId: rating.from,
             rating: rating.rating,
