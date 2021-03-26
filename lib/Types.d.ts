@@ -5,11 +5,6 @@ export type LatLng = {
   lat: number;
 };
 
-export type Rating = {
-  from: ID;
-  rating: number;
-};
-
 export type ID = number;
 
 export type User = {
@@ -20,7 +15,6 @@ export type User = {
   phoneNumber: string;
   role: UserRole;
   location: LatLng;
-  ratings: Rating[];
 };
 
 export type Listing = {
@@ -32,6 +26,8 @@ export type Listing = {
   categories: Category[];
   owner: ID;
   sold: boolean;
+  soldToId: ID?;
+  rating: number?;
 };
 
 export type Category = string;

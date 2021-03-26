@@ -18,7 +18,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
           advertisements: true,
-          ownRatings: true,
         },
       });
 
@@ -29,14 +28,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const userObj: any = {
           ...user,
           location: { lat: Number(user.lat), lng: Number(user.lng) },
-          ratings: user.ownRatings.map((rating) => ({
-            from: rating.fromId,
-            rating: rating.rating,
-          })),
         };
         delete userObj.listings;
         delete userObj.advertisements;
-        delete userObj.ownRatings;
         delete userObj.lat;
         delete userObj.lng;
 
@@ -81,7 +75,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.listing.deleteMany();
     await prisma.advertisement.deleteMany();
     await prisma.category.deleteMany();
-    await prisma.rating.deleteMany();
     await prisma.user.deleteMany();
 
     const users = req.body["users"];
@@ -100,12 +93,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           role: user.role,
           lat: user.location.lat,
           lng: user.location.lng,
-          ownRatings: {
-            create: user.ratings.map((rating) => ({
-              fromId: rating.from,
-              rating: rating.rating,
-            })),
-          },
         },
       });
     }
