@@ -5,6 +5,21 @@ describe("Som en admin vil jeg kunne", () => {
     cy.wait("@loadPage");
   });
 
+  it("promotere andre brukere til admin (A+)", () => {
+    cy.login("admin", "admin");
+    cy.getBySel("navAdminBtn").click();
+    cy.getBySel("selectUser").click();
+    cy.get("[data-value=2]").click();
+
+    cy.getBySel("selectRole").click();
+    cy.get("[data-value=admin]").click();
+    cy.getBySel("homeBtn").click();
+
+    cy.login("erna", "erna");
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("userInfo").should("contain", "Administrator");
+  });
+
   it("slette annonser (A1)", () => {
     cy.login("admin", "admin");
 

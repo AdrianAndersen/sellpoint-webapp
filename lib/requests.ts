@@ -55,3 +55,6 @@ export const deleteUserDB = async (data: any) => {
 export const addAllDB = async (data: any) => {
   return await fetchData("POST", data, "/api/all");
 };
+
+export const updateRoleDB = async (data: any) =>
+  await fetchData("PATCH", data, "/api/update_role");
