@@ -19,8 +19,8 @@ import {
   FormControlLabel,
   TextField,
 } from "@material-ui/core";
-import { Edit, Delete } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
+import { Edit, Delete, FavoriteBorder, Favorite } from "@material-ui/icons";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
@@ -67,6 +67,7 @@ const ListingOverview = ({
   const { state, dispatch } = useGlobalState();
   const listings = specificListings ? specificListings : state.listings;
   const currentUser = state.users.find((user) => user.id === state.currentUser);
+  const [favoriteListing, setFavoriteListing] = useState();
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [soldDialogListing, setSoldDialogListing] = useState<Listing | null>(
@@ -76,7 +77,7 @@ const ListingOverview = ({
   const [selectedBuyerInput, setSelectedBuyerInput] = useState("");
 
   const handleSold = async (e: any, listing: Listing) => {
-    listing.sold = e.target.checked ? true : false;
+    listing.sold = e.target.checked;
     dispatch({
       type: "SET_LISTINGS",
       payload: state.listings,
@@ -87,6 +88,16 @@ const ListingOverview = ({
 
     if (listing.sold) {
       setSoldDialogListing(listing);
+    }
+  };
+  const handleFavorite = async (e: any, listing: Listing) => {
+    setFavoriteListing(!favoriteListing);
+    dispatch({
+      type: "SET_LISTINGS",
+      payload: listing.id,
+    });
+    if (state.usingDB) {
+      await patchListingDB({ id: listing.id, favorite: listing.favorite });
     }
   };
 
@@ -166,33 +177,39 @@ const ListingOverview = ({
                 <Link href={"/listings/" + listing.id}>
                   <Button data-cy="viewListing">Se mer</Button>
                 </Link>
-                {currentUser &&
-                  (currentUser.role === "admin" ||
-                    currentUser.id === listing.owner) && (
-                    <>
-                      <Link href={"/edit-listing/" + listing.id}>
-                        <IconButton data-cy="editListing" color="secondary">
-                          <Edit />
-                        </IconButton>
-                      </Link>
-                      <IconButton
-                        data-cy="deleteListing"
-                        color="secondary"
-                        onClick={async () => {
-                          dispatch({
-                            type: "REMOVE_LISTING",
-                            payload: listing.id,
-                          });
+                <>
+                  {currentUser &&
+                    (currentUser.role === "admin" ||
+                      currentUser.id === listing.owner) && (
+                      <>
+                        <Link href={"/edit-listing/" + listing.id}>
+                          <IconButton data-cy="editListing" color="secondary">
+                            <Edit />
+                          </IconButton>
+                        </Link>
+                        <IconButton
+                          data-cy="deleteListing"
+                          color="secondary"
+                          onClick={async () => {
+                            dispatch({
+                              type: "REMOVE_LISTING",
+                              payload: listing.id,
+                            });
 
-                          if (state.usingDB) {
-                            await deleteListingDB({ id: listing.id });
-                          }
-                        }}
-                      >
-                        <Delete />
-                      </IconButton>
-                    </>
-                  )}
+                            if (state.usingDB) {
+                              await deleteListingDB({ id: listing.id });
+                            }
+                          }}
+                        >
+                          <Delete />
+                        </IconButton>
+                      </>
+                    )}
+                  <IconButton onClick={handleFavorite}>
+                    {favoriteListing ? <Favorite /> : <FavoriteBorder />}
+                  </IconButton>
+                </>
+
                 {currentUser &&
                   (currentUser.id === listing.owner ||
                     currentUser.role == "admin") && (
