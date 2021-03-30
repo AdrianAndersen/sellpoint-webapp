@@ -7,6 +7,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Advertisement } from "../../lib/Types";
 import { deleteAdDB } from "../../lib/requests";
+import { isMobile } from "react-device-detect";
 
 const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
   const { state, dispatch } = useGlobalState();
@@ -32,7 +33,7 @@ const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
           backgroundImage: ads[index]
             ? "url(" + ads[index].imageURL + ")"
             : "none",
-          backgroundSize: "contain",
+          backgroundSize: isMobile ? "cover" : "contain",
           backgroundRepeat: "no-repeat",
           backgroundColor: "gray",
           height: "10rem",

@@ -6,6 +6,7 @@ import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { User } from "../../lib/Types";
 import { error } from "../../lib/toasts";
 import { deleteUserDB } from "../../lib/requests";
+import { isMobile } from "react-device-detect";
 
 const UserManager = () => {
   const { state, dispatch } = useGlobalState();
@@ -25,7 +26,13 @@ const UserManager = () => {
   }
 
   return (
-    <div className="w-full flex flex-row items-center">
+    <div
+      className={
+        isMobile
+          ? "flex-col w-full flex items-center"
+          : "flex-row w-full flex items-center"
+      }
+    >
       <Autocomplete
         className="mr-4"
         value={selectedUser}

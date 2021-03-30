@@ -11,6 +11,7 @@ import {
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import GoogleMapsComponent from "../GoogleMaps/GoogleMapsComponent";
 import { Listing } from "../../lib/Types";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles(() => ({
   price: {
@@ -29,8 +30,8 @@ const ViewListing = ({ listing }: { listing: Listing }) => {
   const classes = useStyles();
 
   return (
-    <Grid container direction="row" spacing={3}>
-      <Grid item xs={8}>
+    <Grid container direction={isMobile ? "column" : "row"} spacing={3}>
+      <Grid item xs={isMobile ? 12 : 8}>
         <Card>
           <CardMedia image={listing.imageURL} style={{ height: 300 }} />
           <CardContent>
@@ -56,7 +57,7 @@ const ViewListing = ({ listing }: { listing: Listing }) => {
         </Card>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={isMobile ? 12 : 4}>
         <Card>
           <CardContent>
             <Typography variant="h5" gutterBottom>

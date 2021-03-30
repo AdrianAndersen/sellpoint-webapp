@@ -3,11 +3,12 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import NavButtons from "../Layout/NavButtons";
+import { isMobile } from "react-device-detect";
 
 const NavBar = ({ loading = false }: { loading?: boolean }) => {
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar className={isMobile ? "flex flex-col" : undefined}>
         <Link href="/">
           <Button data-cy="homeBtn" color="inherit">
             <div

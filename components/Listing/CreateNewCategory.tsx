@@ -3,6 +3,7 @@ import { Button, createStyles, makeStyles, TextField } from "@material-ui/core";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { AddBox } from "@material-ui/icons";
 import { addCategoryDB } from "../../lib/requests";
+import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -20,7 +21,13 @@ const CreateNewCategory = () => {
   const classes = useStyles();
 
   return (
-    <div className="w-full my-4 flex flex-row items-center">
+    <div
+      className={
+        isMobile
+          ? "w-full my-4 flex flex-col items-center"
+          : "w-full my-4 flex flex-row items-center"
+      }
+    >
       <TextField
         data-cy="newCategoryField"
         className={classes.root}

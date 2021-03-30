@@ -7,6 +7,7 @@ import Link from "next/link";
 import validateAdvertisement from "../Validators/AdvertisementValidator";
 import { error } from "../../lib/toasts";
 import { deleteAdDB, createAdDB } from "../../lib/requests";
+import { isMobile } from "react-device-detect";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,
@@ -19,7 +20,11 @@ const CreateNewAdvertisement = ({
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   return (
-    <form className="w-1/2 p-4 flex flex-col">
+    <form
+      className={
+        isMobile ? "w-full p-4 flex flex-col" : "w-1/2 p-4 flex flex-col"
+      }
+    >
       <TextField
         name="title"
         label="Tittel"
