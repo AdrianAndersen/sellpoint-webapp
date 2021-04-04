@@ -68,7 +68,11 @@ const ViewListing = ({ listing }: { listing: Listing }) => {
               </Typography>
 
               <Link href={"/users/" + listing.owner}>
-                <Button variant="contained" color="primary" data-cy="seProfil">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  data-cy="viewProfile"
+                >
                   Se profil
                 </Button>
               </Link>

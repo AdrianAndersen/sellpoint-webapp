@@ -196,7 +196,7 @@ describe("Som en privatperson / bedrift vil jeg kunne", () => {
     cy.getBySel("homeBtn").click();
     cy.getBySel("viewListing").eq(2).click();
     cy.url().should("include", "/listings/1");
-    cy.getBySel("seProfil").click();
+    cy.getBySel("viewProfile").click();
     cy.getBySel("userName").should("contain", "Ola Halvorsen");
 
     cy.getBySel("profileBtn").eq(0).click();
