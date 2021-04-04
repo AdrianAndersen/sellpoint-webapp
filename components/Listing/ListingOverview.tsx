@@ -20,7 +20,13 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { Edit, Delete, FavoriteBorder, Favorite } from "@material-ui/icons";
+import {
+  Edit,
+  Delete,
+  FavoriteBorder,
+  Favorite,
+  ContactsOutlined,
+} from "@material-ui/icons";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
@@ -29,8 +35,9 @@ import { Category, Listing } from "../../lib/Types";
 import SortComponent from "./SortComponent";
 import CategorySelect from "./CategorySelect";
 import { useState } from "react";
-import { deleteListingDB, patchListingDB } from "../../lib/requests";
 import { User } from "../../lib/Types";
+import { deleteListingDB, patchListingDB } from "../../lib/requests";
+import { error } from "../../lib/toasts";
 
 const useStyles = makeStyles((theme) => ({
   filterControls: {
@@ -67,7 +74,6 @@ const ListingOverview = ({
   const { state, dispatch } = useGlobalState();
   const listings = specificListings ? specificListings : state.listings;
   const currentUser = state.users.find((user) => user.id === state.currentUser);
-  const [favoriteListing, setFavoriteListing] = useState();
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [soldDialogListing, setSoldDialogListing] = useState<Listing | null>(
@@ -91,16 +97,26 @@ const ListingOverview = ({
     }
   };
   const handleFavorite = async (e: any, listing: Listing) => {
-    setFavoriteListing(!favoriteListing);
-    dispatch({
-      type: "SET_LISTINGS",
-      payload: listing.id,
-    });
-    if (state.usingDB) {
-      await patchListingDB({ id: listing.id, favorite: listing.favorite });
+    if (currentUser?.favorites.includes(listing) && listing !== undefined) {
+      var index = currentUser?.favorites.indexOf(listing);
+      currentUser?.favorites.splice(index, 1);
+    } else {
+      currentUser?.favorites.push(listing);
+    }
+    try {
+      if (currentUser !== undefined) {
+        const userObj = state.users.find((user) => user.id === currentUser.id);
+        if (userObj !== undefined) {
+          const users = state.users.filter((user) => user.id !== userObj.id);
+          //currentUser.role = userObj;
+          users.push(userObj);
+          dispatch({ type: "SET_USERS", payload: users });
+        }
+      }
+    } catch (e) {
+      error("Feil!");
     }
   };
-
   return (
     <>
       <div className={classes.filterControls}>
@@ -205,9 +221,18 @@ const ListingOverview = ({
                         </IconButton>
                       </>
                     )}
-                  <IconButton onClick={handleFavorite}>
-                    {favoriteListing ? <Favorite /> : <FavoriteBorder />}
-                  </IconButton>
+                  {currentUser && currentUser.role !== "business" && (
+                    <IconButton
+                      data-cy="favoriteListing"
+                      onClick={(e) => handleFavorite(e, listing)}
+                    >
+                      {currentUser.favorites.includes(listing) ? (
+                        <Favorite />
+                      ) : (
+                        <FavoriteBorder />
+                      )}
+                    </IconButton>
+                  )}
                 </>
 
                 {currentUser &&
@@ -297,5 +322,4 @@ const ListingOverview = ({
     </>
   );
 };
-
 export default ListingOverview;
