@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-const indeks=Math.floor(Math.random() * 3 );
+const index = Math.floor(Math.random() * 3);
 
 export default function SignInSide() {
   const classes = useStyles();
@@ -42,8 +42,12 @@ export default function SignInSide() {
   const [password, setPassword] = useState("");
   const { state, dispatch } = useGlobalState();
   const router = useRouter();
-  const greenQuotes=["Go green. There is no planet B.","Try to leave the earth a better place than when you arrived.","We do not inherit the earth from our ancestors. We borrow it from our children."];
- 
+  const greenQuotes = [
+    "Go green. There is no planet B.",
+    "Try to leave the earth a better place than when you arrived.",
+    "We do not inherit the earth from our ancestors. We borrow it from our children.",
+  ];
+
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <div className={classes.paper}>
@@ -115,7 +119,7 @@ export default function SignInSide() {
             </Grid>
           </Grid>
           <Typography className="mt-96 text-center" component="h1" variant="h5">
-            {greenQuotes[indeks]}
+            {greenQuotes[index]}
           </Typography>
         </form>
       </div>

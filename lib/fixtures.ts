@@ -111,7 +111,6 @@ export const testData: GlobalState = {
   ],
 };
 
-//husk å endre tilbake!!!
 export const demoData: GlobalState = {
   currentUser: undefined,
   usingDB: false,
@@ -130,8 +129,8 @@ export const demoData: GlobalState = {
       id: 2,
       name: "Biltema",
       phoneNumber: "12345677",
-      username: "Biltema",
-      password: "bil",
+      username: "biltema",
+      password: "biltema",
       role: "business",
       location: { lat: 63.418769, lng: 10.403894 },
       ratings: [],
@@ -178,7 +177,7 @@ export const demoData: GlobalState = {
       description: "Meget pent brukt. Nesten som ny.",
       price: 300000,
       categories: ["Kjøretøy"],
-      owner: 2,
+      owner: 3,
       sold: false,
     },
     {
@@ -186,8 +185,7 @@ export const demoData: GlobalState = {
       title: "Solcelledrevet mobillader",
       imageURL:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgjzoPfn00B__HXbBn2Gz-ETd3-i3cQZMxeQ&usqp=CAU",
-      description:
-        "Gir mange timer ekstra levetid for mobilen",
+      description: "Gir mange timer ekstra levetid for mobilen",
       price: 100,
       categories: ["Elektronikk"],
       owner: 4,
