@@ -22,4 +22,4 @@ verify:
     - yarn build
     - yarn cypress install
     - yarn run start &
-    - yarn cypress run --record --key 6921aa94-9a76-4801-92c0-ed91f40e5e57 --browser chrome
+    - yarn cypress run --browser chrome
