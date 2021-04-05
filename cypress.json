@@ -1,6 +1,7 @@
 {
   "projectId": "s4pa6r",
   "baseUrl": "http://localhost:3000",
+  "videoCompression": false,
   "testFiles": [
     "user.spec.js",
     "private_user.spec.js",
