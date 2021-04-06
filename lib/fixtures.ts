@@ -119,7 +119,6 @@ export const demoData: GlobalState = {
       password: "ola",
       role: "private",
       location: { lat: 63.436179, lng: 10.417865 },
-      ratings: [],
     },
     {
       id: 2,
@@ -129,7 +128,6 @@ export const demoData: GlobalState = {
       password: "biltema",
       role: "business",
       location: { lat: 63.418769, lng: 10.403894 },
-      ratings: [],
     },
     {
       id: 3,
@@ -139,7 +137,6 @@ export const demoData: GlobalState = {
       password: "admin",
       role: "admin",
       location: { lat: 63.426926, lng: 10.395967 },
-      ratings: [],
     },
     {
       id: 4,
@@ -149,7 +146,6 @@ export const demoData: GlobalState = {
       password: "sverre",
       role: "private",
       location: { lat: 63.406926, lng: 10.395967 },
-      ratings: [],
     },
   ],
   listings: [
