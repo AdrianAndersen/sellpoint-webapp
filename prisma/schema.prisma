@@ -25,20 +25,9 @@ model User {
   role           Role
   lat            Decimal
   lng            Decimal
-  listings       Listing[]
+  listings       Listing[]       @relation("OwnedListings")
   advertisements Advertisement[]
-  ownRatings     Rating[]         @relation("OwnedRatings")
-  givenRatings   Rating[]         @relation("GivenRatings")
-}
-
-model Rating {
-  fromId  Int
-  toId    Int
-  rating  Int
-  from    User  @relation("GivenRatings", fields: [fromId], references: [id])
-  to      User  @relation("OwnedRatings", fields: [toId], references: [id])
-
-  @@id([fromId, toId])
+  boughtListings Listing[]        @relation("BoughtListings")
 }
 
 model Category {
@@ -54,8 +43,11 @@ model Listing {
   price       Int
   categories  Category[]
   ownerId     Int?
-  owner       User?      @relation(fields: [ownerId], references: [id])
+  owner       User?      @relation("OwnedListings", fields: [ownerId], references: [id])
   sold        Boolean    @default(false)
+  soldToId    Int?
+  soldTo      User?      @relation("BoughtListings", fields: [soldToId], references: [id])
+  rating      Int?
 }
 
 model Advertisement {

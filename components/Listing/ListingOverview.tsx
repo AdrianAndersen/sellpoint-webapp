@@ -7,13 +7,20 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   makeStyles,
   Typography,
   Checkbox,
   FormControlLabel,
+  TextField,
 } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
+import { Autocomplete } from "@material-ui/lab";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
@@ -23,6 +30,7 @@ import SortComponent from "./SortComponent";
 import CategorySelect from "./CategorySelect";
 import { useState } from "react";
 import { deleteListingDB, patchListingDB } from "../../lib/requests";
+import { User } from "../../lib/Types";
 
 const useStyles = makeStyles((theme) => ({
   filterControls: {
@@ -61,6 +69,11 @@ const ListingOverview = ({
   const currentUser = state.users.find((user) => user.id === state.currentUser);
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [soldDialogListing, setSoldDialogListing] = useState<Listing | null>(
+    null
+  );
+  const [selectedBuyer, setSelectedBuyer] = useState<User | null>(null);
+  const [selectedBuyerInput, setSelectedBuyerInput] = useState("");
 
   const handleSold = async (e: any, listing: Listing) => {
     listing.sold = e.target.checked ? true : false;
@@ -70,6 +83,10 @@ const ListingOverview = ({
     });
     if (state.usingDB) {
       await patchListingDB({ id: listing.id, sold: listing.sold });
+    }
+
+    if (listing.sold) {
+      setSoldDialogListing(listing);
     }
   };
 
@@ -198,6 +215,68 @@ const ListingOverview = ({
             </Card>
           ))}
       </Grid>
+      <Dialog
+        open={soldDialogListing !== null}
+        onClose={() => setSoldDialogListing(null)}
+      >
+        <DialogTitle>Velg kjøper</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Velg hvilken person du selger denne annonse til.
+          </DialogContentText>
+          <Autocomplete
+            className="mr-4"
+            value={selectedBuyer}
+            onChange={(_event, newValue) => setSelectedBuyer(newValue)}
+            inputValue={selectedBuyerInput}
+            onInputChange={(_event, newInputValue) =>
+              setSelectedBuyerInput(newInputValue)
+            }
+            options={state.users.filter(
+              (user) =>
+                user.id !== state.currentUser && user.role !== "business"
+            )}
+            getOptionLabel={(option) => `${option.name}`}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="soldToUser"
+                label="Velg en bruker"
+                variant="outlined"
+              />
+            )}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            data-cy="soldToSubmit"
+            onClick={() => {
+              if (selectedBuyer !== null) {
+                if (soldDialogListing) {
+                  soldDialogListing.soldToId = selectedBuyer.id;
+
+                  dispatch({
+                    type: "SET_LISTINGS",
+                    payload: state.listings,
+                  });
+
+                  if (state.usingDB) {
+                    patchListingDB({
+                      id: soldDialogListing.id,
+                      soldToId: soldDialogListing.soldToId,
+                    });
+                  }
+                }
+
+                setSoldDialogListing(null);
+              }
+            }}
+          >
+            Sett som kjøper
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

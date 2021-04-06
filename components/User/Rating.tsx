@@ -2,12 +2,19 @@ import RatingComponent from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
-import { User, Rating } from "../../lib/Types";
-import { updateUserDB } from "../../lib/requests";
+import { User, Listing } from "../../lib/Types";
+import { patchListingDB } from "../../lib/requests";
 
-const averageRating = (ratings: Rating[]) => {
+const averageRating = (listings: Listing[]) => {
+  const ratedListings = listings.filter(
+    (listing) => listing.rating !== undefined && listing.rating !== null
+  );
+
   const rating =
-    ratings.reduce((prev, curr) => prev + curr.rating, 0) / ratings.length;
+    ratedListings.reduce(
+      (prev, curr) => prev + (curr.rating ? curr.rating : 0),
+      0
+    ) / ratedListings.length;
 
   if (isNaN(rating)) {
     return 0;
@@ -18,9 +25,15 @@ const averageRating = (ratings: Rating[]) => {
 
 export default function SimpleRating({ user }: { user: User }) {
   const { state, dispatch } = useGlobalState();
-  const currentUser = state.users.find((user) => user.id === state.currentUser);
+  const userListings = state.listings.filter(
+    (listing) => listing.owner === user.id
+  );
+  const currentUser = state.users.find((u) => u.id === state.currentUser);
 
-  const avgRating = averageRating(user.ratings);
+  const avgRating = averageRating(userListings);
+  const boughtListings = userListings.filter(
+    (listing) => listing.soldToId === currentUser?.id
+  );
 
   return (
     <Box
@@ -36,7 +49,7 @@ export default function SimpleRating({ user }: { user: User }) {
         readOnly={
           currentUser === undefined ||
           currentUser.id === user.id ||
-          currentUser.role === "business"
+          boughtListings.length === 0
         }
         value={avgRating}
         onChange={(_event, newValue) => {
@@ -44,26 +57,22 @@ export default function SimpleRating({ user }: { user: User }) {
             return;
           }
 
-          const previousRating = user.ratings.find(
-            (rating) => rating.from === state.currentUser
+          const previouslyRatedListing = boughtListings.find(
+            (listing) => listing.rating !== null
           );
+          const listingToRate = previouslyRatedListing
+            ? previouslyRatedListing
+            : boughtListings[0];
 
-          if (previousRating) {
-            previousRating.rating = newValue;
-          } else {
-            user.ratings.push({
-              from: state.currentUser,
-              rating: newValue,
-            });
-          }
+          listingToRate.rating = newValue;
 
           dispatch({
-            type: "SET_USERS",
-            payload: state.users,
+            type: "SET_LISTINGS",
+            payload: state.listings,
           });
 
           if (state.usingDB) {
-            updateUserDB(user);
+            patchListingDB(listingToRate);
           }
         }}
       />

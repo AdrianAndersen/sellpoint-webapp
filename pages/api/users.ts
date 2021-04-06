@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
-import { Rating } from "../../lib/Types";
+import { User } from "../../lib/Types";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
@@ -16,14 +16,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         role: req.body["role"],
         lat: req.body["location"]["lat"],
         lng: req.body["location"]["lng"],
-        ownRatings: {
-          create: req.body["ratings"].map((rating: Rating) => ({
-            fromId: rating.from,
-            rating: rating.rating,
-          })),
-        },
       },
     });
+
     res.json(result);
   } else if (req.method === "DELETE") {
     for (const listing of req.body["listings"]) {
@@ -37,32 +32,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         where: { id: ad },
       });
     }
+
     await prisma.user.delete({
       where: { id: req.body["userId"] },
     });
+
     res.json(200);
   } else if (req.method === "PATCH") {
-    await prisma.rating.deleteMany({
-      where: {
-        toId: req.body["id"],
-      },
-    });
+    const reqUser = req.body as Partial<User>;
     const result = await prisma.user.update({
       where: { id: req.body["id"] },
       data: {
-        name: req.body["name"],
-        username: req.body["username"],
-        password: req.body["password"],
-        phoneNumber: req.body["phoneNumber"],
-        role: req.body["role"],
-        lat: req.body["location"]["lat"],
-        lng: req.body["location"]["lng"],
-        ownRatings: req.body["ratings"] && {
-          create: req.body["ratings"].map((rating: Rating) => ({
-            fromId: rating.from,
-            rating: rating.rating,
-          })),
-        },
+        name: reqUser.name,
+        username: reqUser.username,
+        password: reqUser.password,
+        phoneNumber: reqUser.phoneNumber,
+        role: reqUser.role,
+        lat: reqUser.location?.lat,
+        lng: reqUser.location?.lng,
       },
     });
 

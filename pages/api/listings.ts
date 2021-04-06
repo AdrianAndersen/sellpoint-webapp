@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
+import { Listing } from "../../lib/Types";
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
@@ -24,14 +25,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
     res.json(result);
   } else if (req.method === "PATCH") {
+    const reqListing = req.body as Partial<Listing>;
+
     const result = await prisma.listing.update({
       where: {
         id: req.body["id"],
       },
       data: {
-        sold: req.body["sold"],
+        sold: reqListing.sold,
+        soldTo: reqListing.soldToId
+          ? {
+              connect: { id: reqListing.soldToId },
+            }
+          : undefined,
+        rating: reqListing.rating,
       },
     });
+
     res.json(result);
   }
 };

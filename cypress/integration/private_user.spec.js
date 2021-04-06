@@ -49,13 +49,23 @@ describe("Som privatbruker vil jeg kunne", () => {
   });
 
   it("gi rating til en privatbruker (P4)", () => {
-    cy.login("sverre", "sverre");
+    cy.get("input[name=sold]").eq(0).check();
+    cy.get("input[name=soldToUser]").type("sverre{downarrow}{enter}");
+    cy.getBySel("soldToSubmit").click();
 
+    cy.login("sverre", "sverre");
     cy.getBySel("profileBtn").eq(1).click();
     cy.getBySel("rating").within(() => {
       cy.get("label").eq(2).click();
     });
     cy.getBySel("rating").should("contain", "(3)");
+
+    cy.login("admin", "admin");
+    cy.getBySel("profileBtn").eq(1).click();
+
+    cy.getBySel("rating").within(() => {
+      cy.get("label").should("not.exist"); // Does not exist if the user cannot give a rating
+    });
   });
 
   it("markere annonsen min som solgt (P5)", () => {
@@ -64,10 +74,11 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.login("ola", "ola");
 
     cy.get("input[name=sold]").should("have.length", 2);
-    cy.get("input[name=sold]").eq(0).should("not.be.checked");
-    cy.get("input[name=sold]").eq(0).check();
-    cy.get("input[name=sold]").eq(0).should("be.checked");
-    cy.get("input[name=sold]").eq(0).uncheck();
-    cy.get("input[name=sold]").eq(0).should("not.be.checked");
+    cy.get("input[name=sold]").eq(1).should("not.be.checked");
+    cy.get("input[name=sold]").eq(1).check();
+    cy.get("body").type("{esc}");
+    cy.get("input[name=sold]").eq(1).should("be.checked");
+    cy.get("input[name=sold]").eq(1).uncheck();
+    cy.get("input[name=sold]").eq(1).should("not.be.checked");
   });
 });
