@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, useMediaQuery } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import Link from "next/link";
@@ -7,7 +7,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Advertisement } from "../../lib/Types";
 import { deleteAdDB } from "../../lib/requests";
-import { isMobile } from "react-device-detect";
 
 const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
   const { state, dispatch } = useGlobalState();
@@ -15,6 +14,7 @@ const Slideshow = ({ ads }: { ads: Advertisement[] }) => {
   const currentUser = state.users.find((user) => user.id === state.currentUser);
 
   const router = useRouter();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     const interval = setTimeout(() => {

@@ -1,4 +1,9 @@
-import { Button, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { Delete } from "@material-ui/icons";
 import { useState } from "react";
@@ -6,12 +11,12 @@ import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { User } from "../../lib/Types";
 import { error } from "../../lib/toasts";
 import { deleteUserDB } from "../../lib/requests";
-import { isMobile } from "react-device-detect";
 
 const UserManager = () => {
   const { state, dispatch } = useGlobalState();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [inputValue, setInputValue] = useState("");
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   if (currentUser?.role !== "admin") {

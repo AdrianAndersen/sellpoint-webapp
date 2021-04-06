@@ -1,65 +1,99 @@
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import Link from "next/link";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { useRouter } from "next/router";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  Button,
+  makeStyles,
+  createStyles,
+} from "@material-ui/core";
+import { Component, MouseEventHandler } from "react";
 
-const NavButtons = () => {
-  const { state, dispatch } = useGlobalState();
+const useStyles = makeStyles(() =>
+  createStyles({
+    listNavbar: {
+      display: "flex",
+      flexDirection: "row",
+    },
+    listDrawer: {
+      minWidth: 200,
+    },
+  })
+);
+
+const makeLinkItem = (
+  isInDrawer: boolean,
+  onClick?: MouseEventHandler<unknown>
+) => {
+  const LinkItem = ({
+    text,
+    icon,
+    link,
+    ...buttonProps
+  }: {
+    text: string;
+    icon?: Component;
+    link: string;
+  }) => {
+    return isInDrawer ? (
+      <Link href={link}>
+        <ListItem {...buttonProps} button onClick={onClick}>
+          {icon && <ListItemIcon>{icon}</ListItemIcon>}
+          <ListItemText primary={text} />
+        </ListItem>
+      </Link>
+    ) : (
+      <Link href={link}>
+        <Button {...buttonProps} color="inherit" onClick={onClick}>
+          <Typography>{text}</Typography>
+          {icon && icon}
+        </Button>
+      </Link>
+    );
+  };
+  return LinkItem;
+};
+
+const NavButtons = ({
+  isInDrawer = false,
+  onListItemClick,
+}: {
+  isInDrawer: boolean;
+  onListItemClick?: MouseEventHandler<unknown>;
+}) => {
+  const { state } = useGlobalState();
   const currentUser = state.users.find((user) => user.id === state.currentUser);
-  const router = useRouter();
+
+  const classes = useStyles();
+  const LinkItem = makeLinkItem(isInDrawer, onListItemClick);
+
   return (
-    <div className="flex flex-row justify-end">
+    <List className={isInDrawer ? classes.listDrawer : classes.listNavbar}>
       {currentUser && currentUser.role === "admin" && (
-        <Link href="/admin">
-          <Button color="inherit">
-            <Typography data-cy="navAdminBtn">Admin</Typography>
-          </Button>
-        </Link>
+        <LinkItem link="/admin" text="Admin" data-cy="navAdminBtn" />
       )}
       {currentUser && currentUser.role !== "private" && (
-        <Link href="/new-ad">
-          <Button color="inherit">
-            <Typography data-cy="navNewAdBtn">Ny reklame</Typography>
-          </Button>
-        </Link>
+        <LinkItem link="/new-ad" text="Ny reklame" data-cy="navNewAdBtn" />
       )}
       {currentUser && currentUser.role !== "business" && (
-        <Link href="/new-listing">
-          <Button color="inherit">
-            <Typography data-cy="navNewListingBtn">Ny annonse</Typography>
-          </Button>
-        </Link>
+        <LinkItem
+          link="/new-listing"
+          text="Ny annonse"
+          data-cy="navNewListingBtn"
+        />
       )}
-      <Button
-        onClick={() => {
-          if (currentUser === undefined) {
-            router.push("/login");
-          } else {
-            router.push("/");
-            dispatch({ type: "SET_CURRENT_USER", payload: undefined });
-          }
-        }}
-        color="inherit"
-      >
-        <Typography data-cy="loginBtn">
-          {state.currentUser === undefined ? "Logg inn" : "Logg ut"}{" "}
-          <AccountCircle />
-        </Typography>
-      </Button>
+
       {state.currentUser && (
-        <Button
+        <LinkItem
+          link={"/users/" + state.currentUser}
+          text="Min profil"
           data-cy="myProfileBtn"
-          onClick={() => {
-            router.push("/users/" + state.currentUser);
-          }}
-          color="inherit"
-        >
-          <Typography>Min profil</Typography>
-        </Button>
+        />
       )}
-    </div>
+    </List>
   );
 };
 

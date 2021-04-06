@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, useMediaQuery } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { Advertisement } from "../../lib/Types";
@@ -7,18 +7,20 @@ import Link from "next/link";
 import validateAdvertisement from "../Validators/AdvertisementValidator";
 import { error } from "../../lib/toasts";
 import { deleteAdDB, createAdDB } from "../../lib/requests";
-import { isMobile } from "react-device-detect";
 
 const CreateNewAdvertisement = ({
   initialAdvertisement,
 }: {
   initialAdvertisement?: Advertisement;
 }) => {
+  const router = useRouter();
+  const { state, dispatch } = useGlobalState();
   const [title, setTitle] = useState(initialAdvertisement?.title);
   const [link, setLink] = useState(initialAdvertisement?.link);
   const [imageURL, setImageURL] = useState(initialAdvertisement?.imageURL);
-  const router = useRouter();
-  const { state, dispatch } = useGlobalState();
+
+  const isMobile = useMediaQuery("(max-width:600px)");
+
   return (
     <form
       className={

@@ -1,14 +1,73 @@
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import NavButtons from "../Layout/NavButtons";
-import { isMobile } from "react-device-detect";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  IconButton,
+  useMediaQuery,
+  makeStyles,
+  Drawer,
+  Typography,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import { createStyles } from "@material-ui/styles";
+import { useState } from "react";
+import { useGlobalState } from "../StateManagement/GlobalStateProvider";
+import { useRouter } from "next/router";
+import { AccountCircle } from "@material-ui/icons";
+
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+  })
+);
+
+const LoginLogout = () => {
+  const { state, dispatch } = useGlobalState();
+  const currentUser = state.users.find((user) => user.id === state.currentUser);
+  const router = useRouter();
+
+  return (
+    <Button
+      onClick={() => {
+        if (currentUser === undefined) {
+          router.push("/login");
+        } else {
+          router.push("/");
+          dispatch({ type: "SET_CURRENT_USER", payload: undefined });
+        }
+      }}
+      color="inherit"
+    >
+      <Typography data-cy="loginBtn">
+        {state.currentUser === undefined ? "Logg inn" : "Logg ut"}{" "}
+        <AccountCircle />
+      </Typography>
+    </Button>
+  );
+};
 
 const NavBar = ({ loading = false }: { loading?: boolean }) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const classes = useStyles();
+  const isMobile = useMediaQuery("(max-width:768px)");
+
   return (
     <AppBar position="static">
-      <Toolbar className={isMobile ? "flex flex-col" : undefined}>
+      <Toolbar>
+        {isMobile && (
+          <IconButton
+            color="inherit"
+            onClick={() => setDrawerOpen(true)}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
         <Link href="/">
           <Button data-cy="homeBtn" color="inherit">
             <div
@@ -24,7 +83,25 @@ const NavBar = ({ loading = false }: { loading?: boolean }) => {
           </Button>
         </Link>
         <div style={{ flexGrow: 1 }}></div>
-        {!loading && <NavButtons />}
+        {!loading && (
+          <>
+            {isMobile ? (
+              <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+              >
+                <NavButtons
+                  isInDrawer={true}
+                  onListItemClick={() => setDrawerOpen(false)}
+                />
+              </Drawer>
+            ) : (
+              <NavButtons isInDrawer={false} />
+            )}
+            <LoginLogout />
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );
