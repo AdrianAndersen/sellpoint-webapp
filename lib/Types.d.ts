@@ -26,8 +26,8 @@ export type Listing = {
   categories: Category[];
   owner: ID;
   sold: boolean;
-  soldToId: ID?;
-  rating: number?;
+  soldToId?: ID;
+  rating?: number;
 };
 
 export type Category = string;

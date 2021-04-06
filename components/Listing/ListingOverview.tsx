@@ -69,7 +69,9 @@ const ListingOverview = ({
   const currentUser = state.users.find((user) => user.id === state.currentUser);
 
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [soldDialogOpen, setSoldDialogOpen] = useState(false);
+  const [soldDialogListing, setSoldDialogListing] = useState<Listing | null>(
+    null
+  );
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>(null);
   const [selectedBuyerInput, setSelectedBuyerInput] = useState("");
 
@@ -84,7 +86,7 @@ const ListingOverview = ({
     }
 
     if (listing.sold) {
-      setSoldDialogOpen(true);
+      setSoldDialogListing(listing);
     }
   };
 
@@ -213,7 +215,10 @@ const ListingOverview = ({
             </Card>
           ))}
       </Grid>
-      <Dialog open={soldDialogOpen} onClose={() => setSoldDialogOpen(false)}>
+      <Dialog
+        open={soldDialogListing !== null}
+        onClose={() => setSoldDialogListing(null)}
+      >
         <DialogTitle>Velg kjøper</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -222,22 +227,21 @@ const ListingOverview = ({
           <Autocomplete
             className="mr-4"
             value={selectedBuyer}
-            onChange={(_event, newValue) =>
-              setSelectedBuyer(newValue)
-            }
+            onChange={(_event, newValue) => setSelectedBuyer(newValue)}
             inputValue={selectedBuyerInput}
             onInputChange={(_event, newInputValue) =>
               setSelectedBuyerInput(newInputValue)
             }
             options={state.users.filter(
-              (user) => user.id !== state.currentUser && user.role !== "business"
+              (user) =>
+                user.id !== state.currentUser && user.role !== "business"
             )}
             getOptionLabel={(option) => `${option.name}`}
             style={{ width: 300 }}
             renderInput={(params) => (
               <TextField
                 {...params}
-                name="userToDelete"
+                name="soldToUser"
                 label="Velg en bruker"
                 variant="outlined"
               />
@@ -245,12 +249,33 @@ const ListingOverview = ({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {
-            if (selectedBuyer !== null) {
-              setSoldDialogOpen(false);
-            }
-            // TODO: Set soldToId on the listing
-          }}>Sett som kjøper</Button>
+          <Button
+            data-cy="soldToSubmit"
+            onClick={() => {
+              if (selectedBuyer !== null) {
+                // TODO: Set soldToId on the listing
+                if (soldDialogListing) {
+                  soldDialogListing.soldToId = selectedBuyer.id;
+
+                  dispatch({
+                    type: "SET_LISTINGS",
+                    payload: state.listings,
+                  });
+
+                  if (state.usingDB) {
+                    patchListingDB({
+                      id: soldDialogListing.id,
+                      soldToId: soldDialogListing.soldToId,
+                    });
+                  }
+                }
+
+                setSoldDialogListing(null);
+              }
+            }}
+          >
+            Sett som kjøper
+          </Button>
         </DialogActions>
       </Dialog>
     </>

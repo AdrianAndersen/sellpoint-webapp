@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.json(result);
   } else if (req.method === "PATCH") {
     const reqListing = req.body as Partial<Listing>;
-    
+
     if (reqListing.soldToId === null) {
       reqListing.soldToId = undefined;
     }
@@ -37,9 +37,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
       data: {
         sold: reqListing.sold,
-        soldTo: {
-          connect: {id: reqListing.soldToId}
-        },
+        soldTo: reqListing.soldToId
+          ? {
+              connect: { id: reqListing.soldToId },
+            }
+          : undefined,
         rating: reqListing.rating,
       },
     });

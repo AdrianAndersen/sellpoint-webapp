@@ -6,8 +6,15 @@ import { User, Listing } from "../../lib/Types";
 import { patchListingDB } from "../../lib/requests";
 
 const averageRating = (listings: Listing[]) => {
+  const ratedListings = listings.filter(
+    (listing) => listing.rating !== undefined && listing.rating !== null
+  );
+
   const rating =
-    listings.reduce((prev, curr) => prev + (curr.rating ? curr.rating : 0), 0) / listings.length;
+    ratedListings.reduce(
+      (prev, curr) => prev + (curr.rating ? curr.rating : 0),
+      0
+    ) / ratedListings.length;
 
   if (isNaN(rating)) {
     return 0;
@@ -18,7 +25,9 @@ const averageRating = (listings: Listing[]) => {
 
 export default function SimpleRating({ user }: { user: User }) {
   const { state, dispatch } = useGlobalState();
-  const userListings = state.listings.filter((listing) => listing.owner === user.id);
+  const userListings = state.listings.filter(
+    (listing) => listing.owner === user.id
+  );
   const currentUser = state.users.find((u) => u.id === state.currentUser);
 
   const avgRating = averageRating(userListings);
@@ -48,8 +57,12 @@ export default function SimpleRating({ user }: { user: User }) {
             return;
           }
 
-          const previouslyRatedListing = boughtListings.find((listing) => listing.rating !== null);
-          const listingToRate = previouslyRatedListing ? previouslyRatedListing : boughtListings[0];
+          const previouslyRatedListing = boughtListings.find(
+            (listing) => listing.rating !== null
+          );
+          const listingToRate = previouslyRatedListing
+            ? previouslyRatedListing
+            : boughtListings[0];
 
           listingToRate.rating = newValue;
 
