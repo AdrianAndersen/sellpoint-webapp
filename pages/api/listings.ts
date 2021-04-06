@@ -27,10 +27,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (req.method === "PATCH") {
     const reqListing = req.body as Partial<Listing>;
 
-    if (reqListing.soldToId === null) {
-      reqListing.soldToId = undefined;
-    }
-
     const result = await prisma.listing.update({
       where: {
         id: req.body["id"],

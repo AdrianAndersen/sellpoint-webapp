@@ -64,7 +64,7 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("profileBtn").eq(1).click();
 
     cy.getBySel("rating").within(() => {
-      cy.get("label").should("not.exist"); // Does not exsist if the user cannot give a rating
+      cy.get("label").should("not.exist"); // Does not exist if the user cannot give a rating
     });
   });
 

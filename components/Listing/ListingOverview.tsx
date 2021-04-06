@@ -253,7 +253,6 @@ const ListingOverview = ({
             data-cy="soldToSubmit"
             onClick={() => {
               if (selectedBuyer !== null) {
-                // TODO: Set soldToId on the listing
                 if (soldDialogListing) {
                   soldDialogListing.soldToId = selectedBuyer.id;
 
