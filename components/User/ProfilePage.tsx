@@ -24,7 +24,7 @@ const ProfilePage = ({ user }: { user: User }) => {
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   const userIsAdmin = user.role === "admin";
   const favoriteListing = state.listings.filter((listing) =>
-    currentUser?.favorites.includes(listing)
+    currentUser?.favorites.includes(listing.id)
   );
   const hasEditPerm =
     currentUser &&

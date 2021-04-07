@@ -50,6 +50,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         role: reqUser.role,
         lat: reqUser.location?.lat,
         lng: reqUser.location?.lng,
+        favorites: reqUser.favorites,
       },
     });
 

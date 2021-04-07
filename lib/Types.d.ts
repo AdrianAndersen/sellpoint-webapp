@@ -15,7 +15,7 @@ export type User = {
   phoneNumber: string;
   role: UserRole;
   location: LatLng;
-  favorites: Listing[];
+  favorites: ID[];
 };
 
 export type Listing = {

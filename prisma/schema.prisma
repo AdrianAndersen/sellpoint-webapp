@@ -27,7 +27,8 @@ model User {
   lng            Decimal
   listings       Listing[]       @relation("OwnedListings")
   advertisements Advertisement[]
-  boughtListings Listing[]        @relation("BoughtListings")
+  boughtListings Listing[]       @relation("BoughtListings")
+  favorites      Int[]
 }
 
 model Category {

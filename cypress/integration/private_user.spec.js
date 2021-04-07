@@ -41,7 +41,6 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("myProfileBtn").click();
     cy.getBySel("favListings").should("not.contain", "Volvo 240");
     cy.getBySel("favListings").should("contain", "Sykkel");
-
   });
 
   it("redigere annonsene mine (P3)", () => {

@@ -20,13 +20,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import {
-  Edit,
-  Delete,
-  FavoriteBorder,
-  Favorite,
-  ContactsOutlined,
-} from "@material-ui/icons";
+import { Edit, Delete, FavoriteBorder, Favorite } from "@material-ui/icons";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import moment from "moment";
@@ -36,8 +30,11 @@ import SortComponent from "./SortComponent";
 import CategorySelect from "./CategorySelect";
 import { useState } from "react";
 import { User } from "../../lib/Types";
-import { deleteListingDB, patchListingDB } from "../../lib/requests";
-import { error } from "../../lib/toasts";
+import {
+  deleteListingDB,
+  patchListingDB,
+  updateUserDB,
+} from "../../lib/requests";
 
 const useStyles = makeStyles((theme) => ({
   filterControls: {
@@ -74,16 +71,17 @@ const ListingOverview = ({
   const { state, dispatch } = useGlobalState();
   const listings = specificListings ? specificListings : state.listings;
   const currentUser = state.users.find((user) => user.id === state.currentUser);
-
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [soldDialogListing, setSoldDialogListing] = useState<Listing | null>(
     null
   );
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>(null);
   const [selectedBuyerInput, setSelectedBuyerInput] = useState("");
-
+  const [favorites, setFavorites] = useState(
+    (currentUser && currentUser.favorites) || []
+  );
   const handleSold = async (e: any, listing: Listing) => {
-    listing.sold = e.target.checked;
+    listing.sold = e.target.checked ? true : false;
     dispatch({
       type: "SET_LISTINGS",
       payload: state.listings,
@@ -97,26 +95,20 @@ const ListingOverview = ({
     }
   };
   const handleFavorite = async (e: any, listing: Listing) => {
-    if (currentUser?.favorites.includes(listing) && listing !== undefined) {
-      var index = currentUser?.favorites.indexOf(listing);
-      currentUser?.favorites.splice(index, 1);
-    } else {
-      currentUser?.favorites.push(listing);
-    }
-    try {
-      if (currentUser !== undefined) {
-        const userObj = state.users.find((user) => user.id === currentUser.id);
-        if (userObj !== undefined) {
-          const users = state.users.filter((user) => user.id !== userObj.id);
-          //currentUser.role = userObj;
-          users.push(userObj);
-          dispatch({ type: "SET_USERS", payload: users });
-        }
+    if (currentUser) {
+      if (currentUser.favorites.includes(listing.id) && listing !== undefined) {
+        const index = currentUser.favorites.indexOf(listing.id);
+        currentUser.favorites.splice(index, 1);
+      } else {
+        currentUser.favorites.push(listing.id);
       }
-    } catch (e) {
-      error("Feil!");
+      setFavorites([...currentUser.favorites]);
+      if (state.usingDB) {
+        updateUserDB(currentUser);
+      }
     }
   };
+
   return (
     <>
       <div className={classes.filterControls}>
@@ -226,7 +218,7 @@ const ListingOverview = ({
                       data-cy="favoriteListing"
                       onClick={(e) => handleFavorite(e, listing)}
                     >
-                      {currentUser.favorites.includes(listing) ? (
+                      {favorites.includes(listing.id) ? (
                         <Favorite />
                       ) : (
                         <FavoriteBorder />
