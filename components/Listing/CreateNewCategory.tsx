@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Button, createStyles, makeStyles, TextField } from "@material-ui/core";
+import {
+  Button,
+  createStyles,
+  makeStyles,
+  TextField,
+  useMediaQuery,
+} from "@material-ui/core";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { AddBox } from "@material-ui/icons";
 import { addCategoryDB } from "../../lib/requests";
-import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -19,6 +24,7 @@ const CreateNewCategory = () => {
   const [category, setCategory] = useState("");
   const { state, dispatch } = useGlobalState();
   const classes = useStyles();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   return (
     <div

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, useMediaQuery } from "@material-ui/core";
 import Link from "next/link";
 import { useGlobalState } from "../StateManagement/GlobalStateProvider";
 import { useRouter } from "next/router";
@@ -16,7 +16,6 @@ import { Listing } from "../../lib/Types";
 import validateListing from "../Validators/ListingValidator";
 import { error } from "../../lib/toasts";
 import { createListingDB, deleteListingDB } from "../../lib/requests";
-import { isMobile } from "react-device-detect";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +54,7 @@ const CreateListingForm = ({
   );
 
   const classes = useStyles();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
