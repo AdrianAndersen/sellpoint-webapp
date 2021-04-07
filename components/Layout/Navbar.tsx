@@ -51,6 +51,7 @@ const LoginLogout = () => {
 };
 
 const NavBar = ({ loading = false }: { loading?: boolean }) => {
+  const { state } = useGlobalState();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const classes = useStyles();
@@ -59,7 +60,7 @@ const NavBar = ({ loading = false }: { loading?: boolean }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        {isMobile && (
+        {isMobile && state.currentUser && (
           <IconButton
             color="inherit"
             onClick={() => setDrawerOpen(true)}
