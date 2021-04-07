@@ -30,6 +30,19 @@ describe("Som privatbruker vil jeg kunne", () => {
     cy.getBySel("listingOverview").should("contain", "20000");
   });
 
+  it("lagre annonser som favoritter, og senere se disse (P2)", () => {
+    cy.getBySel("favoriteListing").eq(3).click();
+    cy.getBySel("favoriteListing").eq(0).click();
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("favListings").should("contain", "Volvo 240");
+    cy.getBySel("favListings").should("contain", "Sykkel");
+    cy.getBySel("homeBtn").click();
+    cy.getBySel("favoriteListing").eq(3).click();
+    cy.getBySel("myProfileBtn").click();
+    cy.getBySel("favListings").should("not.contain", "Volvo 240");
+    cy.getBySel("favListings").should("contain", "Sykkel");
+  });
+
   it("redigere annonsene mine (P3)", () => {
     cy.getBySel("homeBtn").click();
 

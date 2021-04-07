@@ -18,10 +18,14 @@ const ProfilePage = ({ user }: { user: User }) => {
   const userListings = state.listings.filter(
     (listing) => listing.owner === user.id
   );
+
   const userAds = state.advertisements.filter((ad) => ad.owner === user.id);
   const isMyProfile = state.currentUser === user.id;
   const currentUser = state.users.find((user) => user.id === state.currentUser);
   const userIsAdmin = user.role === "admin";
+  const favoriteListing = state.listings.filter((listing) =>
+    currentUser?.favorites.includes(listing.id)
+  );
   const hasEditPerm =
     currentUser &&
     (isMyProfile || currentUser.role === "admin") &&
@@ -61,15 +65,29 @@ const ProfilePage = ({ user }: { user: User }) => {
       </div>
 
       {user.role !== "business" && (
-        <div className="mt-5 w-full">
-          <Typography variant="h4" className="text-center">
-            Annonser
-          </Typography>
-          {userListings.length > 0 ? (
-            <ListingOverview specificListings={userListings} />
-          ) : (
-            <p className="text-center">Brukeren har ingen annonser.</p>
-          )}
+        <div>
+          <div className="mt-5 w-full">
+            <Typography variant="h4" className="text-center">
+              Annonser
+            </Typography>
+            {userListings.length > 0 ? (
+              <ListingOverview specificListings={userListings} />
+            ) : (
+              <p className="text-center">Brukeren har ingen annonser.</p>
+            )}
+          </div>
+          <div data-cy="favListings" className="mt-5 w-full">
+            <Typography variant="h4" className="text-center">
+              Favorittannonser
+            </Typography>
+            {favoriteListing.length > 0 ? (
+              <ListingOverview specificListings={favoriteListing} />
+            ) : (
+              <p className="text-center">
+                Brukeren har ingen favorittannonser.
+              </p>
+            )}
+          </div>
         </div>
       )}
 

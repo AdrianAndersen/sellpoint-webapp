@@ -164,7 +164,12 @@ export default function SignUp({
               data-cy="signUpSubmit"
               onClick={async (e) => {
                 e.preventDefault();
-                const userWithRole = { ...user, role: role };
+                const favorites = initialUser ? initialUser.favorites : [];
+                const userWithRole = {
+                  ...user,
+                  role: role,
+                  favorites: favorites,
+                };
                 if (validateUser(userWithRole)) {
                   if (initialUser) {
                     dispatch({
