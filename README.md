@@ -14,6 +14,11 @@ $ yarn dev
 
 The dev server starts on [http://localhost:3000](http://localhost:3000)
 
+## Required Environment Variables (Put these in a .env file)
+- NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: To enable Google Maps integration
+- DATABASE_URL: A URL to the Postgres Database you want to use
+
+
 ## Code formatting
 
 Use the following commands to ensure your code meets our coding standards:
