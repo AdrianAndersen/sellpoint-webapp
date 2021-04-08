@@ -13,7 +13,6 @@ const fetchData = async (method: string, data: any, links: string) => {
       return response.json();
     });
   } catch (e) {
-    error("Oppdatering var ikke vellykket");
   }
 };
 
